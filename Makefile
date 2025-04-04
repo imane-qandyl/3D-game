@@ -6,29 +6,36 @@
 #    By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/04 07:50:40 by imqandyl          #+#    #+#              #
-#    Updated: 2025/04/04 07:51:53 by imqandyl         ###   ########.fr        #
+#    Updated: 2025/04/04 10:10:04 by imqandyl         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = cub3d
-CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+NAME    = cub3d
+CC      = gcc
+CFLAGS  = -Wall -Wextra -Werror -Iincludes
+LIBRARY := -L./minilibx -lmlx -framework OpenGL -framework AppKit
 
-SRCS = 
+MINILIBX := minilibx/
 
-OBJS = $(SRCS:.c=.o)
+SRC     = srcs/main.c \
+          parsing/parse_map.c \
+          srcs/draw_map.c \
 
-MLX_DIR = lib
-MLX = $(MLX_DIR)/
+OBJS    = $(SRC:.c=.o)
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -L$(MLX_DIR) -lmlx -framework OpenGL -framework AppKit -o $(NAME)
+	make -C $(MINILIBX)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBRARY) -o $(NAME)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
+	make clean -C $(MINILIBX)
 	rm -f $(OBJS)
-
+	
 fclean: clean
 	rm -f $(NAME)
 
