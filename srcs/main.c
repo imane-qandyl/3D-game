@@ -1,36 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cub3d.h                                            :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/04 08:19:31 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/04/04 09:21:29 by imqandyl         ###   ########.fr       */
+/*   Created: 2025/04/04 08:19:23 by imqandyl          #+#    #+#             */
+/*   Updated: 2025/04/04 10:10:37 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUB3D_H
-# define CUB3D_H
+#include "../includes/cub3d.h"
 
-# include <stdio.h>
-# include <stdlib.h>
-# include <string.h>
-# include "../includes/mlx.h"
-
-# define TILE_SIZE 32
-# define WIN_WIDTH 640
-# define WIN_HEIGHT 480
-
-typedef struct s_game
+int	main(void)
 {
-	void	*mlx;
-	void	*win;
-	char	**map;
-}	t_game;
+	t_game	game;
 
-char	**read_map(const char *filename);
-void	draw_map(t_game *game);
-void	free_map(char **map);
-
-#endif
+	game.map = read_map("maps/level1.cub");
+	if (!game.map)
+	{
+		printf("Failed to load map.\n");
+		return (1);
+	}
+	game.mlx = mlx_init();
+	game.win = mlx_new_window(game.mlx, WIN_WIDTH, WIN_HEIGHT, "Cub3D");
+	draw_map(&game);
+	mlx_loop(game.mlx);
+	free_map(game.map);
+	return (0);
+}
