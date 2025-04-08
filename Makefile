@@ -6,7 +6,7 @@
 #    By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/04 07:50:40 by imqandyl          #+#    #+#              #
-#    Updated: 2025/04/04 11:19:55 by imqandyl         ###   ########.fr        #
+#    Updated: 2025/04/08 09:49:34 by imqandyl         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,10 @@ MINILIBX := minilibx/
 
 SRC     = srcs/main.c \
           parsing/parse_map.c \
-          srcs/draw_map.c \
+          parsing/parse.c \
+          parsing/parse_textures.c \
+          parsing/parse_colors.c \
+          srcs/draw_map.c
 
 OBJS    = $(SRC:.c=.o)
 
@@ -28,6 +31,7 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	make -C $(MINILIBX)
 	$(CC) $(CFLAGS) $(OBJS) $(LIBRARY) -o $(NAME)
+
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -40,3 +44,5 @@ fclean: clean
 	rm -f $(NAME)
 
 re: fclean all
+
+.PHONY: all clean fclean re
