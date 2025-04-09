@@ -6,13 +6,13 @@
 /*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 11:09:12 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/04/08 09:31:35 by imqandyl         ###   ########.fr       */
+/*   Updated: 2025/04/09 19:58:32 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-static int count_map_lines(FILE *file)
+static int	count_map_lines(FILE *file)
 {
 	char	*line;
 	size_t	len;
@@ -26,9 +26,10 @@ static int count_map_lines(FILE *file)
 	while (getline(&line, &len, file) != -1)
 	{
 		// Skip empty lines and texture/color configurations before map
-		if (!found_map && (line[0] == '\n' || line[0] == 'N' || line[0] == 'S' ||
-			line[0] == 'W' || line[0] == 'E' || line[0] == 'F' || line[0] == 'C'))
-			continue;
+		if (!found_map && (line[0] == '\n' || line[0] == 'N' || line[0] == 'S'
+				|| line[0] == 'W' || line[0] == 'E' || line[0] == 'F'
+				|| line[0] == 'C'))
+			continue ;
 		found_map = 1;
 		count++;
 	}
@@ -37,7 +38,7 @@ static int count_map_lines(FILE *file)
 	return (count);
 }
 
-static int get_map_width(FILE *file)
+static int	get_map_width(FILE *file)
 {
 	char	*line;
 	size_t	len;
@@ -51,9 +52,10 @@ static int get_map_width(FILE *file)
 	while (getline(&line, &len, file) != -1)
 	{
 		// Skip empty lines and texture/color configurations before map
-		if (!found_map && (line[0] == '\n' || line[0] == 'N' || line[0] == 'S' ||
-			line[0] == 'W' || line[0] == 'E' || line[0] == 'F' || line[0] == 'C'))
-			continue;
+		if (!found_map && (line[0] == '\n' || line[0] == 'N' || line[0] == 'S'
+				|| line[0] == 'W' || line[0] == 'E' || line[0] == 'F'
+				|| line[0] == 'C'))
+			continue ;
 		found_map = 1;
 		if (strlen(line) > (size_t)max_width)
 			max_width = strlen(line);
@@ -65,23 +67,23 @@ static int get_map_width(FILE *file)
 	return (max_width);
 }
 
-static int is_map_line(char *line)
+static int	is_map_line(char *line)
 {
 	int	i;
 
 	i = 0;
 	while (line[i])
 	{
-		if (line[i] != '0' && line[i] != '1' && line[i] != ' ' &&
-			line[i] != 'N' && line[i] != 'S' && line[i] != 'E' &&
-			line[i] != 'W' && line[i] != '\n')
+		if (line[i] != '0' && line[i] != '1' && line[i] != ' ' && line[i] != 'N'
+			&& line[i] != 'S' && line[i] != 'E' && line[i] != 'W'
+			&& line[i] != '\n')
 			return (0);
 		i++;
 	}
 	return (1);
 }
 
-char **read_map(const char *filename)
+char	**read_map(const char *filename)
 {
 	FILE	*file;
 	char	**map;
@@ -95,17 +97,14 @@ char **read_map(const char *filename)
 	file = fopen(filename, "r");
 	if (!file)
 		return (NULL);
-
 	height = count_map_lines(file);
 	width = get_map_width(file);
-
 	map = malloc(sizeof(char *) * (height + 1));
 	if (!map)
 	{
 		fclose(file);
 		return (NULL);
 	}
-
 	i = 0;
 	found_map = 0;
 	line = NULL;
@@ -113,18 +112,16 @@ char **read_map(const char *filename)
 	while (getline(&line, &len, file) != -1)
 	{
 		// Skip empty lines and texture/color configurations before map
-		if (!found_map && (line[0] == '\n' || line[0] == 'N' || line[0] == 'S' ||
-			line[0] == 'W' || line[0] == 'E' || line[0] == 'F' || line[0] == 'C'))
-			continue;
-
+		if (!found_map && (line[0] == '\n' || line[0] == 'N' || line[0] == 'S'
+				|| line[0] == 'W' || line[0] == 'E' || line[0] == 'F'
+				|| line[0] == 'C'))
+			continue ;
 		if (!is_map_line(line))
-			continue;
-
+			continue ;
 		found_map = 1;
 		// Remove newline if present
 		if (line[strlen(line) - 1] == '\n')
 			line[strlen(line) - 1] = '\0';
-
 		map[i] = strdup(line);
 		if (!map[i])
 		{
@@ -138,19 +135,17 @@ char **read_map(const char *filename)
 		i++;
 	}
 	map[i] = NULL;
-
 	free(line);
 	fclose(file);
 	return (map);
 }
 
-void print_map(char **map)
+void	print_map(char **map)
 {
 	int	i;
 
 	if (!map)
-		return;
-
+		return ;
 	i = 0;
 	while (map[i])
 	{
@@ -159,13 +154,12 @@ void print_map(char **map)
 	}
 }
 
-void free_map(char **map)
+void	free_map(char **map)
 {
-	int	i;
+	int i;
 
 	if (!map)
-		return;
-
+		return ;
 	i = 0;
 	while (map[i])
 	{
