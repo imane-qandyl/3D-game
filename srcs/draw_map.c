@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 08:32:20 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/04/04 11:22:22 by imqandyl         ###   ########.fr       */
+/*   Updated: 2025/04/09 20:05:38 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,24 @@ void	draw_map(t_game *game)
 			x++;
 		}
 		y++;
+	}
+}
+
+void	draw_player(t_game *game)
+{
+	int	x;
+	int	y;
+	
+	x = -1;
+	y = -1;
+	while (++y < 4)
+	{
+		while (++x < 4)
+		{
+			mlx_pixel_put(game->mlx, game->win,\
+						game->player_x + x,\
+						game->player_y + y, 0xFFFF00);
+		}
+		x = -1;
 	}
 }
