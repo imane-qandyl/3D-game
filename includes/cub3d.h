@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 08:19:31 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/04/04 11:23:26 by imqandyl         ###   ########.fr       */
+/*   Updated: 2025/04/09 21:45:43 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,69 @@
 
 # include <stdio.h>
 # include <stdlib.h>
+# include <fcntl.h>
+# include <unistd.h>
 # include <string.h>
+# include <math.h>
 # include "../includes/mlx.h"
 
 # define TILE_SIZE 32
-# define WIN_WIDTH 640
-# define WIN_HEIGHT 480
+# define WIN_WIDTH 1100
+# define WIN_HEIGHT 500
+# define PI 3.141592653589
+
+typedef enum e_error {
+    ERR_NONE,
+    ERR_MALLOC,
+    ERR_INVALID_FILE,
+    ERR_MISSING_TEXTURE,
+    ERR_INVALID_COLOR,
+    ERR_INVALID_MAP,
+    ERR_PLAYER_COUNT,
+    ERR_MAP_NOT_CLOSED
+} t_error;
 
 typedef struct s_game
 {
 	void	*mlx;
 	void	*win;
 	char	**map;
+	char    *no_texture;
+    char    *so_texture;
+    char    *we_texture;
+    char    *ea_texture;
+    int     tex_width;
+    int     tex_height;
+    int     floor_color[3];
+    int     ceiling_color[3];
+    int     map_width;
+    int     map_height;
+    char    player_dir;
+    int     player_x;
+    int     player_y;
+    int     player_dx;
+    int     player_dy;
 }	t_game;
+
+typedef enum keys
+{
+	W = 13,
+	A= 0,
+	S = 1,
+	D = 2,
+	ESC = 53,
+	UP = 126,
+	DOWN = 125,
+	RIGHT = 124,
+	LEFT = 123
+}	t_keys;
 
 char	**read_map(const char *filename);
 void	draw_map(t_game *game);
 void	free_map(char **map);
+void	draw_player(t_game *game);
+int		key_pressed(int key, t_game *game);
+void	move_player(t_game *game, int new_x, int new_y);
+int		finish(t_game *game, int i);
 
 #endif

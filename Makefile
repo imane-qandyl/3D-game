@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+         #
+#    By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/04 07:50:40 by imqandyl          #+#    #+#              #
-#    Updated: 2025/04/04 11:19:55 by imqandyl         ###   ########.fr        #
+#    Updated: 2025/04/09 21:25:39 by lalwafi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ MINILIBX := minilibx/
 
 SRC     = srcs/main.c \
           parsing/parse_map.c \
-          srcs/draw_map.c \
+          srcs/draw_map.c srcs/movement.c \
 
 OBJS    = $(SRC:.c=.o)
 
