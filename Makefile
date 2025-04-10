@@ -22,8 +22,8 @@ SRC     = srcs/main.c \
           parsing/parse.c \
           parsing/parse_textures.c \
           parsing/parse_colors.c \
-          srcs/draw_map.c
-          srcs/draw_map.c srcs/movement.c \
+          srcs/draw_map.c\
+          srcs/draw_map.c srcs/movement.c
 
 OBJS    = $(SRC:.c=.o)
 
