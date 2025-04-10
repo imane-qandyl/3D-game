@@ -6,7 +6,7 @@
 /*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 08:19:31 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/04/09 21:45:43 by lalwafi          ###   ########.fr       */
+/*   Updated: 2025/04/10 19:53:05 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,14 @@
 # define PI 3.141592653589
 
 typedef enum e_error {
-    ERR_NONE,
-    ERR_MALLOC,
-    ERR_INVALID_FILE,
-    ERR_MISSING_TEXTURE,
-    ERR_INVALID_COLOR,
-    ERR_INVALID_MAP,
-    ERR_PLAYER_COUNT,
-    ERR_MAP_NOT_CLOSED
+	ERR_NONE,
+	ERR_MALLOC,
+	ERR_INVALID_FILE,
+	ERR_MISSING_TEXTURE,
+	ERR_INVALID_COLOR,
+	ERR_INVALID_MAP,
+	ERR_PLAYER_COUNT,
+	ERR_MAP_NOT_CLOSED
 } t_error;
 
 typedef struct s_game
@@ -42,21 +42,22 @@ typedef struct s_game
 	void	*mlx;
 	void	*win;
 	char	**map;
-	char    *no_texture;
-    char    *so_texture;
-    char    *we_texture;
-    char    *ea_texture;
-    int     tex_width;
-    int     tex_height;
-    int     floor_color[3];
-    int     ceiling_color[3];
-    int     map_width;
-    int     map_height;
-    char    player_dir;
-    int     player_x;
-    int     player_y;
-    int     player_dx;
-    int     player_dy;
+	char	*no_texture;
+	char	*so_texture;
+	char	*we_texture;
+	char	*ea_texture;
+	int		tex_width;
+	int		tex_height;
+	int		floor_color[3];
+	int		ceiling_color[3];
+	int		map_width;
+	int		map_height;
+	char	player_dir;
+	float	player_x;
+	float	player_y;
+	float	angle;
+	float	player_dx;
+	float	player_dy;
 }	t_game;
 
 typedef enum keys
@@ -79,5 +80,6 @@ void	draw_player(t_game *game);
 int		key_pressed(int key, t_game *game);
 void	move_player(t_game *game, int new_x, int new_y);
 int		finish(t_game *game, int i);
+void	get_end_of_vector(float px, float py, double angle);
 
 #endif

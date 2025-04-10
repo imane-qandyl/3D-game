@@ -21,6 +21,7 @@ void	temp_init_for_exec(t_game *game)
 	game->player_dy = sin(game->player_y) * 5;
 	game->map_height = 6;
 	game->map_width = 6;
+	printf("dx = %f\n", game->player_dx);
 }
 
 int	main(void)
