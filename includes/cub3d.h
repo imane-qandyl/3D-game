@@ -75,7 +75,8 @@ void    print_map(char **map);
 void    free_map(char **map);
 
 // Drawing functions
-void    draw_map(t_game *game);
+void    draw_map(t_game *game)
+{
     int     player_dx;
     int     player_dy;
 }	t_game;
