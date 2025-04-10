@@ -6,7 +6,7 @@
 /*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 08:19:31 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/04/09 21:45:43 by lalwafi          ###   ########.fr       */
+/*   Updated: 2025/04/08 10:24:52 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@
 # define WIN_WIDTH 1100
 # define WIN_HEIGHT 500
 # define PI 3.141592653589
-
 typedef enum e_error {
     ERR_NONE,
     ERR_MALLOC,
@@ -55,6 +54,28 @@ typedef struct s_game
     char    player_dir;
     int     player_x;
     int     player_y;
+}	t_game;
+
+/* Function prototypes */
+// Initialization and cleanup
+void    init_map_info(t_game *info);
+void    free_map_info(t_game *info);
+
+// Parsing functions
+t_error parse_file(const char *filename, t_game *info);
+t_error parse_textures(char *line, t_game *info);
+t_error parse_colors(char *line, t_game *info);
+t_error parse_map_content(char **lines, t_game *info);
+t_error validate_map(t_game *info);
+void    print_error(t_error error);
+
+// Map functions
+char    **read_map(const char *filename);
+void    print_map(char **map);
+void    free_map(char **map);
+
+// Drawing functions
+void    draw_map(t_game *game);
     int     player_dx;
     int     player_dy;
 }	t_game;
