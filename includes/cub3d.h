@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 08:19:31 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/04/08 10:24:52 by imqandyl         ###   ########.fr       */
+/*   Updated: 2025/04/11 07:18:59 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ typedef struct s_game
     char    player_dir;
     int     player_x;
     int     player_y;
+	float	player_dx;
+	float	player_dy;
 }	t_game;
 
 /* Function prototypes */
@@ -74,12 +76,6 @@ char    **read_map(const char *filename);
 void    print_map(char **map);
 void    free_map(char **map);
 
-// Drawing functions
-void    draw_map(t_game *game)
-{
-    int     player_dx;
-    int     player_dy;
-}	t_game;
 
 typedef enum keys
 {
@@ -101,5 +97,6 @@ void	draw_player(t_game *game);
 int		key_pressed(int key, t_game *game);
 void	move_player(t_game *game, int new_x, int new_y);
 int		finish(t_game *game, int i);
+void	get_end_of_vector(float px, float py, double angle);
 
 #endif

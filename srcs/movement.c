@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   movement.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 15:26:04 by lalwafi           #+#    #+#             */
-/*   Updated: 2025/04/09 21:55:39 by lalwafi          ###   ########.fr       */
+/*   Updated: 2025/04/11 07:18:44 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,46 @@ void	move_player(t_game *game, int px, int py)
 	game->player_x += px;
 	game->player_y += py;
 }
+void	get_end_of_vector(float px, float py, double angle)
+{
+	float	lx;
+	float	ly;
+	float	lz;
+	float	new_px;
+	float	new_py;
 
+	printf("px = %f\npy = %f\nangle = %f\nweird = %f\n", px,py,angle, (px/TILE_SIZE));
+	if (angle > 0 && angle < 90)
+	{
+		lx = TILE_SIZE - px;
+		ly = lx * tanf(angle * PI/180);
+		lz = lx / cosf(angle * PI/180);
+		new_px = px + lx;
+		new_py = py - ly;
+	}
+	else if (angle > 90 && angle < 180)
+	{
+		lx = px;
+		ly = lx * tanf(angle * PI/180);
+		lz = lx / cosf(angle * PI/180);
+		new_px = px - lx;
+		new_py = py - ly;
+	}
+	else if (angle > 180 && angle < 270)
+	{
+		lx = px;
+		ly = lx * tanf(angle * PI/180);
+		lz = lx / cosf(angle * PI/180);
+		new_px = px - lx;
+		new_py = py + ly;
+	}
+	else
+	{
+		lx = TILE_SIZE - px;
+		ly = lx * tanf(angle * PI/180);
+		lz = lx / cosf(angle * PI/180);
+		new_px = px + lx;
+		new_py = py + ly;
+	}
+	printf("lx = %f\nly = %f\nlz = %f\nnew_px = %f\nnew_py = %f\n", lx,ly,lz,new_px,new_py);
+}

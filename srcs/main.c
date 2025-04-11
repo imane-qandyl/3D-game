@@ -6,7 +6,6 @@
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 08:19:23 by imqandyl          #+#    #+#             */
 /*   Updated: 2025/04/08 10:19:15 by imqandyl         ###   ########.fr       */
-=======
 /*   Updated: 2025/04/09 19:06:21 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -14,6 +13,15 @@
 #include "../includes/cub3d.h"
 
 static void cleanup_and_exit(t_game *game, char *error_msg)
+{
+	if (error_msg)
+		printf("Error\n%s\n", error_msg);
+	if (game->map)
+		free_map(game->map);
+	if (game->mlx && game->win)
+		mlx_destroy_window(game->mlx, game->win);
+	exit(1);
+}
 void	temp_init_for_exec(t_game *game)
 {
 		// char *map[7] = {"111111" , "100001" , "1000P1" , "100001" , "100001" , "111111"};
@@ -24,17 +32,7 @@ void	temp_init_for_exec(t_game *game)
 	game->player_dy = sin(game->player_y) * 5;
 	game->map_height = 6;
 	game->map_width = 6;
-}
-
-int	main(void)
-{
-	if (error_msg)
-		printf("Error\n%s\n", error_msg);
-	if (game->map)
-		free_map(game->map);
-	if (game->mlx && game->win)
-		mlx_destroy_window(game->mlx, game->win);
-	exit(1);
+	printf("dx = %f\n", game->player_dx);
 }
 
 static int load_textures(t_game *game)
@@ -111,16 +109,18 @@ int main(int argc, char **argv)
 
 	// Draw the map
 	draw_map(&game);
-
+	draw_player(&game);
+	mlx_hook(game.win, 2, 0, key_pressed, &game);
+	mlx_hook(game.win, 17, 0, finish, &game);
 	// Start the game loop
 	mlx_loop(game.mlx);
 
 	// Cleanup (this won't be reached due to mlx_loop)
-	free_map_info(&game);
-	draw_player(&game);
-	mlx_hook(game.win, 2, 0, key_pressed, &game);
-	mlx_hook(game.win, 17, 0, finish, &game);
-	mlx_loop(game.mlx);
+	//free_map_info(&game);
+	// draw_player(&game);
+	// mlx_hook(game.win, 2, 0, key_pressed, &game);
+	// mlx_hook(game.win, 17, 0, finish, &game);
+	// mlx_loop(game.mlx);
 	return (0);
 }
 

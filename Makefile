@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+         #
+#    By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/04 07:50:40 by imqandyl          #+#    #+#              #
-#    Updated: 2025/04/08 09:49:34 by imqandyl         ###   ########.fr        #
+#    Updated: 2025/04/11 07:17:20 by imqandyl         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ SRC     = srcs/main.c \
           parsing/parse_textures.c \
           parsing/parse_colors.c \
           srcs/draw_map.c\
-          srcs/draw_map.c srcs/movement.c
+          srcs/movement.c
 
 OBJS    = $(SRC:.c=.o)
 
