@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 08:19:31 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/04/11 07:18:59 by imqandyl         ###   ########.fr       */
+/*   Updated: 2025/04/11 17:25:27 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ t_error parse_colors(char *line, t_game *info);
 t_error parse_map_content(char **lines, t_game *info);
 t_error validate_map(t_game *info);
 void    print_error(t_error error);
+int		get_map_width(FILE *file);
+int		count_map_lines(FILE *file);
 
 // Map functions
 char    **read_map(const char *filename);

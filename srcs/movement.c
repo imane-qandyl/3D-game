@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   movement.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 15:26:04 by lalwafi           #+#    #+#             */
-/*   Updated: 2025/04/11 07:18:44 by imqandyl         ###   ########.fr       */
+/*   Updated: 2025/04/11 17:15:38 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	move_player(t_game *game, int px, int py)
 	game->player_x += px;
 	game->player_y += py;
 }
+
 void	get_end_of_vector(float px, float py, double angle)
 {
 	float	lx;

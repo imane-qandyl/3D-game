@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 11:09:12 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/04/11 13:28:55 by imqandyl         ###   ########.fr       */
+/*   Updated: 2025/04/11 17:25:18 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-static int	count_map_lines(FILE *file)
+int	count_map_lines(FILE *file)
 {
 	char	*line;
 	size_t	len;
@@ -37,7 +37,7 @@ static int	count_map_lines(FILE *file)
 	return (count); //reset to start
 }
 //returns the width (number of columns)
-static int	get_map_width(FILE *file)
+int	get_map_width(FILE *file)
 {
 	char	*line;
 	size_t	len; //total number of characters in the line
