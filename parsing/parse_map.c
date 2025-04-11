@@ -6,7 +6,7 @@
 /*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 11:09:12 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/04/09 19:58:32 by imqandyl         ###   ########.fr       */
+/*   Updated: 2025/04/11 13:28:55 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ static int	count_map_lines(FILE *file)
 	size_t	len;
 	int		count;
 	int		found_map; //whether the map section has started
-
 	count = 0;
 	found_map = 0;
 	line = NULL;
@@ -35,13 +34,13 @@ static int	count_map_lines(FILE *file)
 	}
 	free(line);
 	rewind(file);
-	return (count);
+	return (count); //reset to start
 }
-
+//returns the width (number of columns)
 static int	get_map_width(FILE *file)
 {
 	char	*line;
-	size_t	len;
+	size_t	len; //total number of characters in the line
 	int		max_width;
 	int		found_map;
 
@@ -80,7 +79,7 @@ static int	is_map_line(char *line)
 			return (0);
 		i++;
 	}
-	return (1);
+	return (1); // All characters are valid
 }
 
 char	**read_map(const char *filename)
