@@ -6,7 +6,7 @@
 /*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 15:26:04 by lalwafi           #+#    #+#             */
-/*   Updated: 2025/04/10 20:27:49 by lalwafi          ###   ########.fr       */
+/*   Updated: 2025/04/11 19:05:23 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ int key_pressed(int key, t_game *game)
 		game->angle += 1;
 		if (game->angle >= 360)
 			game->angle -= 360;
-		get_end_of_vector(game->player_x, game->player_y, game->angle);
+		get_end_of_vector(game->player_x, game->player_y, game->angle * (PI/180));
 	}
 	if (key == RIGHT)	
 	{
 		game->angle -= 1;
 		if (game->angle < 0)
 			game->angle += 360;
-		get_end_of_vector(game->player_x, game->player_y, game->angle);
+		get_end_of_vector(game->player_x, game->player_y, game->angle * (PI/180));
 	}
 	return (0);
 }
@@ -78,38 +78,44 @@ void	get_end_of_vector(float px, float py, double angle)
 	float	new_px;
 	float	new_py;
 
-	printf("px = %f\npy = %f\nangle = %f\nweird = %f\n", px,py,angle, (px/TILE_SIZE));
-	if (angle > 0 && angle < 90)
+	printf("---------------------------------------------------------\n");
+	printf("px = %f\npy = %f\nangle = %f\n", px,py,angle);
+	if (angle >= 0 && angle <= 0.5*PI)
 	{
-		lx = TILE_SIZE - px;
-		ly = lx * tanf(angle * PI/180);
-		lz = lx / cosf(angle * PI/180);
+		lx = (((int)(px / TILE_SIZE) + 1) * TILE_SIZE) - px;
+		// lx = (TILE_SIZE) - px;
+		ly = lx * tanf(angle);
+		lz = lx / cosf(angle);
 		new_px = px + lx;
 		new_py = py - ly;
 	}
-	else if (angle > 90 && angle < 180)
+	else if (angle > 90 && angle <= PI)
 	{
+		angle = PI - angle;
 		lx = px;
-		ly = lx * tanf(angle * PI/180);
-		lz = lx / cosf(angle * PI/180);
+		ly = lx * tanf(angle);
+		lz = lx / cosf(angle);
 		new_px = px - lx;
 		new_py = py - ly;
 	}
-	else if (angle > 180 && angle < 270)
+	else if (angle > 180 && angle <= 1.5*PI)
 	{
+		angle = angle - PI;
 		lx = px;
-		ly = lx * tanf(angle * PI/180);
-		lz = lx / cosf(angle * PI/180);
+		ly = lx * tanf(angle);
+		lz = lx / cosf(angle);
 		new_px = px - lx;
 		new_py = py + ly;
 	}
 	else
 	{
+		angle = 2*PI - angle;
 		lx = TILE_SIZE - px;
-		ly = lx * tanf(angle * PI/180);
-		lz = lx / cosf(angle * PI/180);
+		ly = lx * tanf(angle);
+		lz = lx / cosf(angle);
 		new_px = px + lx;
 		new_py = py + ly;
 	}
 	printf("lx = %f\nly = %f\nlz = %f\nnew_px = %f\nnew_py = %f\n", lx,ly,lz,new_px,new_py);
+	printf("---------------------------------------------------------\n");
 }
