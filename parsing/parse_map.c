@@ -17,7 +17,7 @@ static int	count_map_lines(FILE *file)
 	char	*line;
 	size_t	len;
 	int		count;
-	int		found_map;
+	int		found_map; //whether the map section has started
 
 	count = 0;
 	found_map = 0;
