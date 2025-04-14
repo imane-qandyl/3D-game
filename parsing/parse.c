@@ -81,8 +81,12 @@ t_error	parse_file(const char *filename, t_game *info)
 	len = 0;
 	while (getline(&line, &len, file) != -1)
 	{
-		if (line[0] == '\n' || line[0] == '\0')
+		if (line[0] == '\n' || is_empty_line(line))
+		{
+			free(line);
+			line = NULL;
 			continue;
+		}
 		// Parse textures and colors first
 		if (strncmp(line, "NO ", 3) == 0 || strncmp(line, "SO ", 3) == 0
 			|| strncmp(line, "WE ", 3) == 0 || strncmp(line, "EA ", 3) == 0)
@@ -92,6 +96,11 @@ t_error	parse_file(const char *filename, t_game *info)
 		else if (strncmp(line, "F ", 2) == 0 || strncmp(line, "C ", 2) == 0)
 		{
 			err = parse_colors(line, info);
+			if (err == ERR_INVALID_COLOR)
+			{
+				printf("invalid map >255\n");
+				exit(EXIT_FAILURE);
+			}
 		}
 			// // TODO: Add map parsing once textures and colors are done
 		else if (line[0] == '1' || line[0] == ' ') //detect the beginning of the map
