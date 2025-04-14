@@ -72,7 +72,7 @@ t_error	parse_colors(char *line, t_game *info)
 	while (*ptr && (*ptr == ' ' || *ptr == '\t'))
 		ptr++;
 	// Parse each color component
-	while(i < 3)
+	while(i < 3) //rgb
 	{
 		// printf("%s\n",ptr);
 		if ((err = parse_color_value(ptr,&target[i])) != ERR_NONE)
@@ -83,12 +83,12 @@ t_error	parse_colors(char *line, t_game *info)
 	// Skip to next component
 	while (*ptr && *ptr != ',')
 		ptr++;
-	if (i < 2)
-	{
-		if (!*ptr)
-		return (ERR_INVALID_COLOR);
-		ptr++;
-	}
+		if (i < 2) //move past the comma
+		{
+			if (!*ptr)
+				return (ERR_INVALID_COLOR);
+			ptr++;
+		}
 		i++;
 	}
 	i = 0;
