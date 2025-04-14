@@ -33,6 +33,11 @@ void	temp_init_for_exec(t_game *game)
 	game->player_dx = cos(game->player_x) * 5;
 	game->player_dy = sin(game->player_y) * 5;
 	fp = fopen("./maps/level1.cub", "r+" );
+	if (!fp)
+	{
+		perror("Error opening map file");
+		exit(1);  // or use cleanup_and_exit()
+	}
 	game->map_width = get_map_width(fp);
 	game->map_height = count_map_lines(fp);
 	printf("dx = %f\n", game->player_dx);

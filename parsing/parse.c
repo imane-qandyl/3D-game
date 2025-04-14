@@ -61,17 +61,6 @@ void	free_map_info(t_game *info)
 	init_map_info(info);
 }
 
-static int	is_empty_line(const char *line)
-{
-	while (*line)
-	{
-		if (*line != ' ' && *line != '\t' && *line != '\n')
-			return (0);
-		line++;
-	}
-	return (1);
-}
-
 t_error	parse_file(const char *filename, t_game *info)
 {
 	FILE	*file;
@@ -92,36 +81,33 @@ t_error	parse_file(const char *filename, t_game *info)
 	len = 0;
 	while (getline(&line, &len, file) != -1)
 	{
-		if (is_empty_line(line))
-			continue ;
-		// Remove newline if present
-		if (line[strlen(line) - 1] == '\n')
-			line[strlen(line) - 1] = '\0';
 		// Parse textures and colors first
 		if (strncmp(line, "NO ", 3) == 0 || strncmp(line, "SO ", 3) == 0
 			|| strncmp(line, "WE ", 3) == 0 || strncmp(line, "EA ", 3) == 0)
 		{
 			if ((err = parse_textures(line, info)) != ERR_NONE)
-			{
-				free(line);
-				fclose(file);
-				return (err);
-			}
+				return (free(line), fclose(file), err);
 		}
 		else if (line[0] == 'F' || line[0] == 'C')
 		{
 			if ((err = parse_colors(line, info)) != ERR_NONE)
-			{
-				free(line);
-				fclose(file);
-				return (err);
-			}
+				return (free(line), fclose(file), err);
 		}
 		// TODO: Add map parsing once textures and colors are done
 	}
 	free(line);
 	fclose(file);
 	return (ERR_NONE);
+}
+int	is_empty_line(const char *line)
+{
+	while (*line)
+	{
+		if (*line != ' ' && *line != '\t' && *line != '\n')
+			return (0);
+		line++;
+	}
+	return (1);
 }
 
 void	print_error(t_error error)
@@ -133,3 +119,4 @@ void	print_error(t_error error)
 
 	printf("Error\n%s\n", error_messages[error]);
 }
+

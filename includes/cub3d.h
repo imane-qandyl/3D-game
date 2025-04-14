@@ -18,8 +18,10 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <string.h>
+#include <ctype.h>
 # include <math.h>
 # include "../includes/mlx.h"
+#include "../libft/libft.h"
 
 # define TILE_SIZE 32
 # define WIN_WIDTH 1100
@@ -65,17 +67,24 @@ void    free_map_info(t_game *info);
 
 // Parsing functions
 t_error parse_file(const char *filename, t_game *info);
-t_error parse_textures(char *line, t_game *info);
+t_error	parse_textures(char *line, t_game *info);
 t_error parse_colors(char *line, t_game *info);
 t_error parse_map_content(char **lines, t_game *info);
-t_error validate_map(t_game *info);
+int	validate_texture_file(const char *path);
+char	*extract_path(const char *line);
+
+// t_error validate_map(char **map_lines, t_game *info);
+// int	is_map_closed(char **map, int height, int width);
+// char	*ft_strchr(const char *s, int c);
+int     is_map_line(char *line);
+int	is_empty_line(const char *line);
+
 void    print_error(t_error error);
 int		get_map_width(FILE *file);
 int		count_map_lines(FILE *file);
 
 // Map functions
 char    **read_map(const char *filename);
-void    print_map(char **map);
 void    free_map(char **map);
 
 
@@ -92,7 +101,6 @@ typedef enum keys
 	LEFT = 123
 }	t_keys;
 
-char	**read_map(const char *filename);
 void	draw_map(t_game *game);
 void	free_map(char **map);
 void	draw_player(t_game *game);

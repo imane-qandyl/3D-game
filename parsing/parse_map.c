@@ -66,7 +66,7 @@ int	get_map_width(FILE *file)
 	return (max_width);
 }
 
-static int	is_map_line(char *line)
+int	is_map_line(char *line)
 {
 	int	i;
 
@@ -85,73 +85,41 @@ static int	is_map_line(char *line)
 char	**read_map(const char *filename)
 {
 	FILE	*file;
-	char	**map;
 	char	*line;
 	size_t	len;
-	int		i;
-	int		height;
-	int		width;
+	int		line_index;
 	int		found_map;
+	char	**map;
 
 	file = fopen(filename, "r");
 	if (!file)
 		return (NULL);
-	height = count_map_lines(file);
-	width = get_map_width(file);
-	map = malloc(sizeof(char *) * (height + 1));
-	if (!map)
-	{
-		fclose(file);
+	int map_lines = count_map_lines(file);
+	if (map_lines <= 0)
 		return (NULL);
-	}
-	i = 0;
+	map = malloc(sizeof(char *) * (map_lines + 1));
+	if (!map)
+		return (NULL);
+	
+	line_index = 0;
 	found_map = 0;
 	line = NULL;
 	len = 0;
 	while (getline(&line, &len, file) != -1)
 	{
-		// Skip empty lines and texture/color configurations before map
 		if (!found_map && (line[0] == '\n' || line[0] == 'N' || line[0] == 'S'
 				|| line[0] == 'W' || line[0] == 'E' || line[0] == 'F'
 				|| line[0] == 'C'))
 			continue ;
-		if (!is_map_line(line))
-			continue ;
 		found_map = 1;
-		// Remove newline if present
-		if (line[strlen(line) - 1] == '\n')
-			line[strlen(line) - 1] = '\0';
-		map[i] = strdup(line);
-		if (!map[i])
-		{
-			while (i > 0)
-				free(map[--i]);
-			free(map);
-			free(line);
-			fclose(file);
-			return (NULL);
-		}
-		i++;
+		map[line_index++] = strdup(line);
 	}
-	map[i] = NULL;
 	free(line);
+	map[line_index] = NULL;
 	fclose(file);
 	return (map);
 }
 
-void	print_map(char **map)
-{
-	int	i;
-
-	if (!map)
-		return ;
-	i = 0;
-	while (map[i])
-	{
-		printf("%s\n", map[i]);
-		i++;
-	}
-}
 
 void	free_map(char **map)
 {
