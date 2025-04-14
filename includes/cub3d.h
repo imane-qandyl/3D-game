@@ -72,6 +72,9 @@ t_error parse_colors(char *line, t_game *info);
 t_error parse_map_content(char **lines, t_game *info);
 int	validate_texture_file(const char *path);
 char	*extract_path(const char *line);
+int	is_valid_color(int value);
+t_error	parse_color_value(const char *str, int *color);
+
 
 // t_error validate_map(char **map_lines, t_game *info);
 // int	is_map_closed(char **map, int height, int width);

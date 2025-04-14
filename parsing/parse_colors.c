@@ -12,12 +12,12 @@
 
 #include "../includes/cub3d.h"
 
-static int	is_valid_color(int value)
+int	is_valid_color(int value)
 {
 	return (value >= 0 && value <= 255);
 }
 
-static t_error	parse_color_value(const char *str, int *color)
+t_error	parse_color_value(const char *str, int *color)
 {
 	int	value;
 	int	i;
@@ -27,6 +27,7 @@ static t_error	parse_color_value(const char *str, int *color)
 	// Skip leading whitespace
 	while (str[i] && (str[i] == ' ' || str[i] == '\t'))
 		i++;
+	
 	// Parse number
 	while (str[i] && str[i] >= '0' && str[i] <= '9')
 	{
@@ -55,7 +56,12 @@ t_error	parse_colors(char *line, t_game *info)
 
 	if (!line || !info || (line[0] != 'F' && line[0] != 'C'))
 		return (ERR_INVALID_COLOR);
-	target = (line[0] == 'F') ? info->floor_color : info->ceiling_color;
+		if (line[0] == 'F')
+		target = info->floor_color;
+		else if (line[0] == 'C')
+		target = info->ceiling_color;
+		else
+		return (ERR_INVALID_COLOR);
 	// Skip identifier and whitespace
 	ptr = line + 1;
 	while (*ptr && (*ptr == ' ' || *ptr == '\t'))

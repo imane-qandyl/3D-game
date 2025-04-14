@@ -91,8 +91,8 @@ int main(int argc, char **argv)
 	if (err != ERR_NONE)
 	{
 		print_error(err);
-		free_map_info(&game);
-		return (1);
+		//free_map_info(&game);
+		exit(EXIT_FAILURE);
 	}
 
 	// Load the map

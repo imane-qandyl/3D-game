@@ -26,7 +26,7 @@ void	init_map_info(t_game *info)
 	info->player_y = -1;
 	memset(info->floor_color, 0, sizeof(info->floor_color));
 	memset(info->ceiling_color, 0, sizeof(info->ceiling_color));
-}
+	}
 
 void	free_map_info(t_game *info)
 {
@@ -64,7 +64,7 @@ void	free_map_info(t_game *info)
 t_error	parse_file(const char *filename, t_game *info)
 {
 	FILE	*file;
-	char	*line;
+	char	*line = NULL;
 	size_t	len;
 	t_error	err;
 
@@ -81,19 +81,32 @@ t_error	parse_file(const char *filename, t_game *info)
 	len = 0;
 	while (getline(&line, &len, file) != -1)
 	{
+		if (line[0] == '\n' || line[0] == '\0')
+			continue;
 		// Parse textures and colors first
 		if (strncmp(line, "NO ", 3) == 0 || strncmp(line, "SO ", 3) == 0
 			|| strncmp(line, "WE ", 3) == 0 || strncmp(line, "EA ", 3) == 0)
 		{
-			if ((err = parse_textures(line, info)) != ERR_NONE)
-				return (free(line), fclose(file), err);
+			err = parse_textures(line, info);
 		}
-		else if (line[0] == 'F' || line[0] == 'C')
+		else if (strncmp(line, "F ", 2) == 0 || strncmp(line, "C ", 2) == 0)
 		{
-			if ((err = parse_colors(line, info)) != ERR_NONE)
-				return (free(line), fclose(file), err);
+			err = parse_colors(line, info);
 		}
-		// TODO: Add map parsing once textures and colors are done
+			// // TODO: Add map parsing once textures and colors are done
+		else if (line[0] == '1' || line[0] == ' ') //detect the beginning of the map
+		{
+			//err = parse_map(line, file, info);
+			free(line);
+			fclose(file);
+			return err;
+		}
+		else
+		{
+			free(line);
+			fclose(file);
+			return ERR_INVALID_MAP;
+		}
 	}
 	free(line);
 	fclose(file);
