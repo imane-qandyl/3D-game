@@ -11,17 +11,33 @@
 
 #include "../includes/cub3d.h"
 
+int	get_angle(char c)
+{
+	if (c == 'N')
+		return (90);
+	if (c == 'W')
+		return (180);
+	if (c == 'S')
+		return (270);
+	if (c == 'E')
+		return (0);
+	write(1, "this shouldnt show\n", 19);
+	return (0);
+}
+
 void	temp_init_for_exec(t_game *game)
 {
 		// char *map[7] = {"111111" , "100001" , "1000P1" , "100001" , "100001" , "111111"};
 	// game.map = map;
+	game->player_dir = 'S';
 	game->player_x = 4 * TILE_SIZE + (TILE_SIZE / 2);
 	game->player_y = 2 * TILE_SIZE + (TILE_SIZE / 2);
-	game->player_dx = cos(game->player_x) * 5;
-	game->player_dy = sin(game->player_y) * 5;
+	game->angle = get_angle(game->player_dir);
+	game->pdx = cosf(game->angle * PI/180);
+	game->pdy = sinf(game->angle * PI/180);
 	game->map_height = 6;
 	game->map_width = 6;
-	printf("dx = %f\n", game->player_dx);
+	printf("dx = %f\n", game->pdx);
 }
 
 int	main(void)

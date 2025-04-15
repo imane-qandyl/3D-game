@@ -56,8 +56,8 @@ typedef struct s_game
 	float	player_x;
 	float	player_y;
 	float	angle;
-	float	player_dx;
-	float	player_dy;
+	float	pdx;
+	float	pdy;
 }	t_game;
 
 typedef enum keys
@@ -78,7 +78,8 @@ void	draw_map(t_game *game);
 void	free_map(char **map);
 void	draw_player(t_game *game);
 int		key_pressed(int key, t_game *game);
-void	move_player(t_game *game, int new_x, int new_y);
+void	move_player(t_game *game, float dx, float dy);
+void	move_player_1px(t_game *game, int i);
 int		finish(t_game *game, int i);
 void	get_end_of_vector(float px, float py, double angle);
 
