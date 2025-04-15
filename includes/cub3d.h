@@ -79,8 +79,10 @@ void	free_map(char **map);
 void	draw_player(t_game *game);
 int		key_pressed(int key, t_game *game);
 void	move_player(t_game *game, float dx, float dy);
-void	move_player_1px(t_game *game, int i);
+void	move_player_1px(t_game *game, int steps, float dx, float dy);
 int		finish(t_game *game, int i);
 void	get_end_of_vector(float px, float py, double angle);
+float	change_angle(float angle, float change, int flag);
+void	draw_ray_5px(t_game *game);
 
 #endif

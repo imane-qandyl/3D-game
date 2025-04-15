@@ -53,19 +53,6 @@ void	draw_map(t_game *game)
 
 void	draw_player(t_game *game)
 {
-	int	x;
-	int	y;
-	
-	x = -1;
-	y = -1;
-	while (++y < 4)
-	{
-		while (++x < 4)
-		{
-			mlx_pixel_put(game->mlx, game->win,\
-						game->player_x + x,\
-						game->player_y + y, 0xFFFF00);
-		}
-		x = -1;
-	}
+	mlx_pixel_put(game->mlx, game->win, game->player_x, \
+		game->player_y, 0xFFFF00);
 }

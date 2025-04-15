@@ -16,91 +16,83 @@ int key_pressed(int key, t_game *game)
 {
 	if (key == ESC)
 		finish(game, 0);
+	// if (key == W)
+	// 	move_player(game, game->pdx, game->pdy);
+	// if (key == A)
+	// 	move_player(game, change_angle(game->angle, 270, 1), change_angle(game->angle, 270, 2));
+	// if (key == S)
+	// 	move_player(game, change_angle(game->angle, 180, 1), change_angle(game->angle, 180, 2));
+	// if (key == D)
+	// 	move_player(game, change_angle(game->angle, 90, 1), change_angle(game->angle, 90, 2));
 	if (key == W)
-		move_player(game, game->pdx, game->pdy);
+		move_player_1px(game, 1, game->pdx, game->pdy);
 	if (key == A)
-		move_player(game, game->pdx, game->pdy);
+		move_player_1px(game, 1, change_angle(game->angle, 270, 1), change_angle(game->angle, 270, 2));
 	if (key == S)
-		move_player(game, game->pdx, game->pdy);
+		move_player_1px(game, 1, change_angle(game->angle, 180, 1), change_angle(game->angle, 180, 2));
 	if (key == D)
-		move_player(game, game->pdx, game->pdy);
+		move_player_1px(game, 1, change_angle(game->angle, 90, 1), change_angle(game->angle, 90, 2));
 	if (key == LEFT)
 	{
-		game->angle += 1;
+		game->angle -= 5;
 		if (game->angle >= 360)
 			game->angle -= 360;
 		game->pdx = cosf(game->angle * PI/180);
 		game->pdy = sinf(game->angle * PI/180);
-		get_end_of_vector(game->player_x, game->player_y, game->angle * (PI/180));
+		// get_end_of_vector(game->player_x, game->player_y, game->angle * (PI/180));
+		draw_ray_5px(game);
 	}
 	if (key == RIGHT)	
 	{
-		game->angle -= 1;
+		game->angle += 5;
 		if (game->angle < 0)
 			game->angle += 360;	
 		game->pdx = cosf(game->angle * PI/180);
 		game->pdy = sinf(game->angle * PI/180);
-		get_end_of_vector(game->player_x, game->player_y, game->angle * (PI/180));
+		// get_end_of_vector(game->player_x, game->player_y, game->angle * (PI/180));
+		draw_ray_5px(game);
 	}
 	return (0);
 }
 
-void	move_player(t_game *game, float dx, float dy)
+void	draw_ray_5px(t_game *game)
 {
-	int	x;
-	int	y;
-	
-	x = -1;
-	y = -1;
-	if ((game->player_y + dy) >= (game->map_height * TILE_SIZE - 4) || \
-	(game->player_x + dx) >= (game->map_width * TILE_SIZE - 4))
-	return ;
-	while (++y < 4)
+	float	dx;
+	float	dy;
+	int		i;
+
+	dx = game->pdx;
+	dy = game->pdy;
+	i = 5;
+	while (i-- > 0)
 	{
-		while (++x < 4)
-		{
-			// printf("1 : %f\n", ((game->player_x + x + dx) / TILE_SIZE));
-			if (game->map[(int)((game->player_y + y) / TILE_SIZE)][(int)((game->player_x + x) / TILE_SIZE)] == '1')
-				mlx_pixel_put(game->mlx, game->win, game->player_x + x, game->player_y + y, 0xFF0000);
-			else
-				mlx_pixel_put(game->mlx, game->win, game->player_x + x, game->player_y + y, 0xAAAAAA);
-			mlx_pixel_put(game->mlx, game->win,\
-						game->player_x + x + dx,\
-						game->player_y + y + dy, 0xFFFF00);
-		}
-		x = -1;
+		dx += dx;
+		dy += dy;
+		mlx_pixel_put(game->mlx, game->win, game->player_x + dx, \
+			game->player_y + dy, 0x0000FF);
 	}
-	game->player_x += dx;
-	game->player_y += dy;
 }
 
-void	move_player_1px(t_game *game, int i)
+void	move_player_1px(t_game *game, int steps, float dx, float dy)
 {
-    while (i-- > 0)
+	// if ((game->player_y + dy) >= WIN_HEIGHT || (game->player_x + dx) >= WIN_WIDTH || \
+	// 	(game->player_y + dy) < 0 || (game->player_x + dx) < 0)
+	// 	return ;
+    while (steps-- > 0)
     {
-        if ((game->player_x + game->pdx) >= 1100 || (game->player_y + game->pdy) >= 500 \
-            || (game->player_x + game->pdx) <= 0 || (game->player_y + game->pdy) <= 0)
-            return ;
-		mlx_pixel_put(game->mlx, game->win, game->player_x + game->pdx, \
-                game->player_y + game->pdx, 0xFF0000);
-        game->player_x += game->pdx;
-        game->player_y += game->pdy;
+        if ((game->player_y + dy) >= WIN_HEIGHT || (game->player_x + dx) >= WIN_WIDTH || \
+			(game->player_y + dy) < 0 || (game->player_x + dx) < 0)
+			return ;
+		if (game->map[(int)((game->player_y) / TILE_SIZE)][(int)((game->player_x) / TILE_SIZE)] == '1')
+			mlx_pixel_put(game->mlx, game->win, game->player_x, game->player_y, 0xFF0000);
+		else
+			mlx_pixel_put(game->mlx, game->win, game->player_x, game->player_y, 0xAAAAAA);
+		mlx_pixel_put(game->mlx, game->win, game->player_x + dx, \
+                game->player_y + dy, 0xFFFF00);
+        game->player_x += dx;
+        game->player_y += dy;
     }
-}
-
-void	move_player_4px(t_game *game, int i)
-{
-    while (i-- > 0)
-    {
-        if ((game->player_x + game->pdx) >= 1100 || (game->player_y + game->pdy) >= 500 \
-            || (game->player_x + game->pdx) <= 0 || (game->player_y + game->pdy) <= 0)
-            return ;
-
-		mlx_pixel_put(game->mlx, game->win, game->player_x + game->pdx, \
-                game->player_y + game->pdx, 0xFF0000);
-        game->player_x += game->pdx;
-        game->player_y += game->pdy;
-    }
+	draw_ray_5px(game);
 }
 
 void	get_end_of_vector(float px, float py, double angle)
@@ -153,3 +145,21 @@ void	get_end_of_vector(float px, float py, double angle)
 	printf("---------------------------------------------------------\n");
 }
 
+float	change_angle(float angle, float change, int flag) // 0 angle change only, 1 dx change , 2 dy change
+{
+	float	new_angle;
+
+	new_angle = angle + change;
+	if (new_angle >= 360)
+		new_angle -= 360;
+	else if (new_angle <= 0)
+		new_angle += 360;
+	if (flag == 0)
+		return (new_angle);
+	if (flag == 1)
+		return (cosf(new_angle * (PI/180)));
+	if (flag == 2)
+		return (sinf(new_angle * (PI/180)));
+	write(1, "change_angle invalid flag\n", 26);
+	return (new_angle); // just return new angle if flag is incorrect
+}

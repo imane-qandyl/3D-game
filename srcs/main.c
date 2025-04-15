@@ -56,6 +56,7 @@ int	main(void)
 	draw_map(&game);
 	draw_player(&game);
 	mlx_hook(game.win, 2, 0, key_pressed, &game);
+	// mlx_hook(game.win, 3, 0, key_release, &game); // key release
 	mlx_hook(game.win, 17, 0, finish, &game);
 	mlx_loop(game.mlx);
 	return (0);
