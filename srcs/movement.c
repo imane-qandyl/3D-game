@@ -14,16 +14,10 @@
 
 int key_pressed(int key, t_game *game)
 {
+	draw_map(game);
+	draw_player(game);
 	if (key == ESC)
 		finish(game, 0);
-	// if (key == W)
-	// 	move_player(game, game->pdx, game->pdy);
-	// if (key == A)
-	// 	move_player(game, change_angle(game->angle, 270, 1), change_angle(game->angle, 270, 2));
-	// if (key == S)
-	// 	move_player(game, change_angle(game->angle, 180, 1), change_angle(game->angle, 180, 2));
-	// if (key == D)
-	// 	move_player(game, change_angle(game->angle, 90, 1), change_angle(game->angle, 90, 2));
 	if (key == W)
 		move_player_1px(game, 1, game->pdx, game->pdy);
 	if (key == A)
@@ -40,7 +34,8 @@ int key_pressed(int key, t_game *game)
 		game->pdx = cosf(game->angle * PI/180);
 		game->pdy = sinf(game->angle * PI/180);
 		// get_end_of_vector(game->player_x, game->player_y, game->angle * (PI/180));
-		draw_ray_5px(game);
+		// draw_ray_5px(game);
+		// length_of_raycast_H(game, game->player_x, game->player_y, (game->angle * PI/180));
 	}
 	if (key == RIGHT)	
 	{
@@ -50,7 +45,8 @@ int key_pressed(int key, t_game *game)
 		game->pdx = cosf(game->angle * PI/180);
 		game->pdy = sinf(game->angle * PI/180);
 		// get_end_of_vector(game->player_x, game->player_y, game->angle * (PI/180));
-		draw_ray_5px(game);
+		// draw_ray_5px(game);
+		// length_of_raycast_H(game, game->player_x, game->player_y, (game->angle * PI/180));
 	}
 	return (0);
 }
@@ -63,13 +59,17 @@ void	draw_ray_5px(t_game *game)
 
 	dx = game->pdx;
 	dy = game->pdy;
-	i = 5;
+	
+	i = 10;
 	while (i-- > 0)
 	{
-		dx += dx;
-		dy += dy;
 		mlx_pixel_put(game->mlx, game->win, game->player_x + dx, \
 			game->player_y + dy, 0x0000FF);
+			printf("%f, test0\n", dx);
+			printf("%f, test1\n", dy);
+			printf("----------------------------\n");
+		dx += game->pdx;
+		dy += game->pdy;
 	}
 }
 
@@ -83,66 +83,42 @@ void	move_player_1px(t_game *game, int steps, float dx, float dy)
         if ((game->player_y + dy) >= WIN_HEIGHT || (game->player_x + dx) >= WIN_WIDTH || \
 			(game->player_y + dy) < 0 || (game->player_x + dx) < 0)
 			return ;
-		if (game->map[(int)((game->player_y) / TILE_SIZE)][(int)((game->player_x) / TILE_SIZE)] == '1')
-			mlx_pixel_put(game->mlx, game->win, game->player_x, game->player_y, 0xFF0000);
-		else
-			mlx_pixel_put(game->mlx, game->win, game->player_x, game->player_y, 0xAAAAAA);
 		mlx_pixel_put(game->mlx, game->win, game->player_x + dx, \
                 game->player_y + dy, 0xFFFF00);
         game->player_x += dx;
         game->player_y += dy;
     }
-	draw_ray_5px(game);
+	// draw_ray_5px(game);
 }
 
-void	get_end_of_vector(float px, float py, double angle)
+float	length_of_raycast_H(t_game *game, float px, float py, double angle) // increment Y 
 {
-	float	lx;
-	float	ly;
 	float	lz;
-	float	new_px;
-	float	new_py;
+	int		i;
 
-	printf("---------------------------------------------------------\n");
-	printf("px = %f\npy = %f\nangle = %f\n", px,py,angle);
-	if (angle >= 0 && angle <= 0.5*PI)
+	if (angle == 0 || angle == PI)
+		return (-1);
+	lz = 0;
+	if (angle > 0 && angle < PI)
 	{
-		lx = (((int)(px / TILE_SIZE) + 1) * TILE_SIZE) - px;
-		// lx = (TILE_SIZE) - px;
-		ly = lx * tanf(angle);
-		lz = lx / cosf(angle);
-		new_px = px + lx;
-		new_py = py - ly;
+		i = (int)py;
+		while (game->map[(int)py][(int)px] != '1' && (py - i) > 0)
+		{
+			lz = (py - i)/sinf(angle);
+			i--;
+		}
 	}
-	else if (angle > 90 && angle <= PI)
+	else if (angle > PI && angle <= (2*PI))
 	{
-		angle = PI - angle;
-		lx = px;
-		ly = lx * tanf(angle);
-		lz = lx / cosf(angle);
-		new_px = px - lx;
-		new_py = py - ly;
+		i = (int)py + 1;
+		while (game->map[(int)py][(int)px] != '1' && i < WIN_WIDTH)
+		{
+			lz = (i - py)/sinf(angle);
+			i++;
+		}
 	}
-	else if (angle > 180 && angle <= 1.5*PI)
-	{
-		angle = angle - PI;
-		lx = px;
-		ly = lx * tanf(angle);
-		lz = lx / cosf(angle);
-		new_px = px - lx;
-		new_py = py + ly;
-	}
-	else
-	{
-		angle = 2*PI - angle;
-		lx = TILE_SIZE - px;
-		ly = lx * tanf(angle);
-		lz = lx / cosf(angle);
-		new_px = px + lx;
-		new_py = py + ly;
-	}
-	printf("lx = %f\nly = %f\nlz = %f\nnew_px = %f\nnew_py = %f\n", lx,ly,lz,new_px,new_py);
-	printf("---------------------------------------------------------\n");
+	printf("lz horizontal = %f\n", lz);
+	return (lz);
 }
 
 float	change_angle(float angle, float change, int flag) // 0 angle change only, 1 dx change , 2 dy change
