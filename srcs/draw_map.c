@@ -16,6 +16,9 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
 	char	*dst;
 
+	if ((y) >= WIN_HEIGHT || (x) >= WIN_WIDTH || \
+		(y) < 0 || (x) < 0)
+		return ;
 	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
 	*(unsigned int*)dst = color;
 }
@@ -40,6 +43,10 @@ void	draw_square(t_game *game, int x, int y, int color)
 
 void	draw_map(t_game *game)
 {
+	game->img.img = mlx_new_image(game->mlx, WIN_WIDTH, WIN_HEIGHT);
+	game->img.addr = mlx_get_data_addr(game->img.img, &game->img.bits_per_pixel, &game->img.line_length,
+								&game->img.endian);
+
 	int	y;
 	int	x;
 
@@ -63,4 +70,25 @@ void	draw_player(t_game *game)
 {
 	my_mlx_pixel_put(&game->img, game->player_x, \
 		game->player_y, 0xFFFF00);
+	draw_ray_5px(game);
+	mlx_put_image_to_window(game->mlx, game->win, game->img.img, 0, 0);
+}
+
+void	draw_ray_5px(t_game *game)
+{
+	float	dx;
+	float	dy;
+	int		i;
+
+	dx = game->pdx;
+	dy = game->pdy;
+	
+	i = 10;
+	while (i-- > 0)
+	{
+		my_mlx_pixel_put(&game->img, game->player_x + dx, \
+			game->player_y + dy, 0x0000FF);
+		dx += game->pdx;
+		dy += game->pdy;
+	}
 }

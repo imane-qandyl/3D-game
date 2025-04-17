@@ -14,11 +14,11 @@
 int	get_angle(char c)
 {
 	if (c == 'N')
-		return (90);
+		return (270);
 	if (c == 'W')
 		return (180);
 	if (c == 'S')
-		return (270);
+		return (90);
 	if (c == 'E')
 		return (0);
 	write(1, "this shouldnt show\n", 19);
@@ -37,7 +37,7 @@ void	temp_init_for_exec(t_game *game)
 	game->pdy = sinf(game->angle * PI/180);
 	game->map_height = 6;
 	game->map_width = 6;
-	printf("dx = %f\n", game->pdx);
+	// printf("dx = %f\n", game->pdx);
 }
 
 int	main(void)
@@ -53,9 +53,9 @@ int	main(void)
 	temp_init_for_exec(&game);
 	game.mlx = mlx_init();
 	game.win = mlx_new_window(game.mlx, WIN_WIDTH, WIN_HEIGHT, "Cub3D");
-	game.img.img = mlx_new_image(game.mlx, WIN_WIDTH, WIN_HEIGHT);
-	game.img.addr = mlx_get_data_addr(game.img.img, &game.img.bits_per_pixel, &game.img.line_length,
-								&game.img.endian);
+	// game.img.img = mlx_new_image(game.mlx, WIN_WIDTH, WIN_HEIGHT);
+	// game.img.addr = mlx_get_data_addr(game.img.img, &game.img.bits_per_pixel, &game.img.line_length,
+	// 							&game.img.endian);
 	draw_map(&game);
 	draw_player(&game); // btw u need to draw ray as well when player first spawns
 	mlx_hook(game.win, 2, 0, key_pressed, &game);
@@ -70,5 +70,5 @@ int	finish(t_game *game, int i)
 	mlx_destroy_window(game->mlx, game->win);
 	free_map(game->map);
 	exit(i);
-	return (i);
+	// return (i);
 }
