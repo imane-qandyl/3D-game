@@ -37,10 +37,19 @@ typedef enum e_error {
 	ERR_MAP_NOT_CLOSED
 } t_error;
 
+typedef struct	s_data {
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}				t_data;
+
 typedef struct s_game
 {
 	void	*mlx;
 	void	*win;
+	t_data	img;
 	char	**map;
 	char	*no_texture;
 	char	*so_texture;
@@ -85,5 +94,8 @@ void	get_end_of_vector(float px, float py, double angle);
 float	change_angle(float angle, float change, int flag);
 void	draw_ray_5px(t_game *game);
 float	length_of_raycast_H(t_game *game, float px, float py, double angle);
+
+
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 
 #endif

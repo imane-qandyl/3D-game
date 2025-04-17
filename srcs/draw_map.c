@@ -12,6 +12,14 @@
 
 #include "../includes/cub3d.h"
 
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
+{
+	char	*dst;
+
+	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+	*(unsigned int*)dst = color;
+}
+
 void	draw_square(t_game *game, int x, int y, int color)
 {
 	int	i;
@@ -23,7 +31,7 @@ void	draw_square(t_game *game, int x, int y, int color)
 		j = 0;
 		while (j < TILE_SIZE)
 		{
-			mlx_pixel_put(game->mlx, game->win, x + j, y + i, color);
+			my_mlx_pixel_put(&game->img, x + j, y + i, color);
 			j++;
 		}
 		i++;
@@ -53,6 +61,6 @@ void	draw_map(t_game *game)
 
 void	draw_player(t_game *game)
 {
-	mlx_pixel_put(game->mlx, game->win, game->player_x, \
+	my_mlx_pixel_put(&game->img, game->player_x, \
 		game->player_y, 0xFFFF00);
 }

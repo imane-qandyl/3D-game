@@ -14,6 +14,10 @@
 
 int key_pressed(int key, t_game *game)
 {
+
+	game->img.img = mlx_new_image(game->mlx, WIN_WIDTH, WIN_HEIGHT);
+	game->img.addr = mlx_get_data_addr(game->img.img, &game->img.bits_per_pixel, &game->img.line_length,
+								&game->img.endian);
 	draw_map(game);
 	draw_player(game);
 	if (key == ESC)
@@ -34,7 +38,7 @@ int key_pressed(int key, t_game *game)
 		game->pdx = cosf(game->angle * PI/180);
 		game->pdy = sinf(game->angle * PI/180);
 		// get_end_of_vector(game->player_x, game->player_y, game->angle * (PI/180));
-		// draw_ray_5px(game);
+		draw_ray_5px(game);
 		// length_of_raycast_H(game, game->player_x, game->player_y, (game->angle * PI/180));
 	}
 	if (key == RIGHT)	
@@ -45,9 +49,11 @@ int key_pressed(int key, t_game *game)
 		game->pdx = cosf(game->angle * PI/180);
 		game->pdy = sinf(game->angle * PI/180);
 		// get_end_of_vector(game->player_x, game->player_y, game->angle * (PI/180));
-		// draw_ray_5px(game);
+		draw_ray_5px(game);
 		// length_of_raycast_H(game, game->player_x, game->player_y, (game->angle * PI/180));
 	}
+	mlx_put_image_to_window(game->mlx, game->win, game->img.img, 0, 0);
+	mlx_destroy_image(&game->mlx, &game->img);
 	return (0);
 }
 
@@ -63,11 +69,8 @@ void	draw_ray_5px(t_game *game)
 	i = 10;
 	while (i-- > 0)
 	{
-		mlx_pixel_put(game->mlx, game->win, game->player_x + dx, \
+		my_mlx_pixel_put(&game->img, game->player_x + dx, \
 			game->player_y + dy, 0x0000FF);
-			printf("%f, test0\n", dx);
-			printf("%f, test1\n", dy);
-			printf("----------------------------\n");
 		dx += game->pdx;
 		dy += game->pdy;
 	}
@@ -83,12 +86,12 @@ void	move_player_1px(t_game *game, int steps, float dx, float dy)
         if ((game->player_y + dy) >= WIN_HEIGHT || (game->player_x + dx) >= WIN_WIDTH || \
 			(game->player_y + dy) < 0 || (game->player_x + dx) < 0)
 			return ;
-		mlx_pixel_put(game->mlx, game->win, game->player_x + dx, \
+		my_mlx_pixel_put(&game->img, game->player_x + dx, \
                 game->player_y + dy, 0xFFFF00);
         game->player_x += dx;
         game->player_y += dy;
     }
-	// draw_ray_5px(game);
+	draw_ray_5px(game);
 }
 
 float	length_of_raycast_H(t_game *game, float px, float py, double angle) // increment Y 
