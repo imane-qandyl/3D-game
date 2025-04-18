@@ -53,14 +53,19 @@ int	main(void)
 	temp_init_for_exec(&game);
 	game.mlx = mlx_init();
 	game.win = mlx_new_window(game.mlx, WIN_WIDTH, WIN_HEIGHT, "Cub3D");
+	if (!game.win)
+	{
+		write(2, "window make fail\n", 17);
+		exit(1);
+	}
 	// game.img.img = mlx_new_image(game.mlx, WIN_WIDTH, WIN_HEIGHT);
 	// game.img.addr = mlx_get_data_addr(game.img.img, &game.img.bits_per_pixel, &game.img.line_length,
 	// 							&game.img.endian);
 	draw_map(&game);
 	draw_player(&game); // btw u need to draw ray as well when player first spawns
-	mlx_hook(game.win, 2, 0, key_pressed, &game);
+	mlx_hook(game.win, 2, 1L << 0, key_pressed, &game);
 	// mlx_hook(game.win, 3, 0, key_release, &game); // key release
-	mlx_hook(game.win, 17, 0, finish, &game);
+	mlx_hook(game.win, 17, 1L << 0, finish, &game);
 	mlx_loop(game.mlx);
 	return (0);
 }

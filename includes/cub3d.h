@@ -6,7 +6,7 @@
 /*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 08:19:31 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/04/10 19:53:05 by lalwafi          ###   ########.fr       */
+/*   Updated: 2025/04/18 17:37:17 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,32 @@
 # include <unistd.h>
 # include <string.h>
 # include <math.h>
-# include "../includes/mlx.h"
 
 # define TILE_SIZE 32
 # define WIN_WIDTH 1100
 # define WIN_HEIGHT 500
 # define PI 3.141592653589
+
+# ifdef OSX
+#  include "../includes/mlx.h"
+#  include <mlx.h>
+#  define ESC 53
+#  define W 13
+#  define A 0
+#  define S 1
+#  define D 2
+#  define LEFT 123
+#  define RIGHT 124
+# else
+#  include "../mlx-linux/mlx.h"
+#  define ESC 65307
+#  define W 119
+#  define A 97
+#  define S 115
+#  define D 100
+#  define LEFT 65361
+#  define RIGHT 65363
+# endif
 
 typedef enum e_error {
 	ERR_NONE,
@@ -69,18 +89,16 @@ typedef struct s_game
 	float	pdy;
 }	t_game;
 
-typedef enum keys
-{
-	W = 13,
-	A= 0,
-	S = 1,
-	D = 2,
-	ESC = 53,
-	UP = 126,
-	DOWN = 125,
-	RIGHT = 124,
-	LEFT = 123
-}	t_keys;
+// typedef enum keys
+// {
+// 	W = 13,
+// 	A= 0,
+// 	S = 1,
+// 	D = 2,
+// 	ESC = 53,
+// 	RIGHT = 124,
+// 	LEFT = 123
+// }	t_keys;
 
 char	**read_map(const char *filename);
 void	draw_map(t_game *game);

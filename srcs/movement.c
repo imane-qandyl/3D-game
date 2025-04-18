@@ -6,7 +6,7 @@
 /*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 15:26:04 by lalwafi           #+#    #+#             */
-/*   Updated: 2025/04/11 19:05:23 by lalwafi          ###   ########.fr       */
+/*   Updated: 2025/04/18 17:48:36 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 int key_pressed(int key, t_game *game)
 {
+	write(1, "key\n", 4);
 	draw_map(game);
 	draw_player(game);
 	if (key == ESC)
@@ -47,16 +48,13 @@ int key_pressed(int key, t_game *game)
 		// length_of_raycast_H(game, game->player_x, game->player_y, (game->angle * PI/180));
 	}
 	printf("angle = %f\n", game->angle);
-	length_of_raycast_H(game, game->player_x, game->player_y, (game->angle * (PI/180)));
+	// length_of_raycast_H(game, game->player_x, game->player_y, (game->angle * (PI/180)));
 	// mlx_destroy_image(&game->mlx, &game->img);
 	return (0);
 }
 
 void	move_player_1px(t_game *game, int steps, float dx, float dy)
 {
-	// if ((game->player_y + dy) >= WIN_HEIGHT || (game->player_x + dx) >= WIN_WIDTH || \
-	// 	(game->player_y + dy) < 0 || (game->player_x + dx) < 0)
-	// 	return ;
     while (steps-- > 0)
     {
         if ((game->player_y + dy) >= WIN_HEIGHT || (game->player_x + dx) >= WIN_WIDTH || \
@@ -69,31 +67,31 @@ void	move_player_1px(t_game *game, int steps, float dx, float dy)
     }
 }
 
-// void	move_player_2px(t_game *game, int steps, float dx, float dy)
-// {
-// 	int	x;
-// 	int	y;
+void	move_player_2px(t_game *game, int steps, float dx, float dy)
+{
+	int	x;
+	int	y;
 	
-// 	x = -1;
-// 	y = -1;
-// 	(void)steps;
-// 	while (++y < 4)
-// 	{
-// 		while (++x < 4)
-// 		{
-// 			if (game->map[(int)((game->player_y + y) / TILE_SIZE)][(int)((game->player_x + x) / TILE_SIZE)] == '1')
-// 				mlx_pixel_put(game->mlx, game->win, game->player_x + x, game->player_y + y, 0xFF0000);
-// 			else
-// 				mlx_pixel_put(game->mlx, game->win, game->player_x + x, game->player_y + y, 0xAAAAAA);
-// 			mlx_pixel_put(game->mlx, game->win,\
-// 						game->player_x + x + dx,\
-// 						game->player_y + y + dy, 0xFFFF00);
-// 		}
-// 		x = -1;
-// 	}
-// 	game->player_x += dx;
-// 	game->player_y += dy;
-// }
+	x = -1;
+	y = -1;
+	(void)steps;
+	while (++y < 4)
+	{
+		while (++x < 4)
+		{
+			if (game->map[(int)((game->player_y + y) / TILE_SIZE)][(int)((game->player_x + x) / TILE_SIZE)] == '1')
+				mlx_pixel_put(game->mlx, game->win, game->player_x + x, game->player_y + y, 0xFF0000);
+			else
+				mlx_pixel_put(game->mlx, game->win, game->player_x + x, game->player_y + y, 0xAAAAAA);
+			mlx_pixel_put(game->mlx, game->win,\
+						game->player_x + x + dx,\
+						game->player_y + y + dy, 0xFFFF00);
+		}
+		x = -1;
+	}
+	game->player_x += dx;
+	game->player_y += dy;
+}
 
 float	length_of_raycast_H(t_game *game, float px, float py, double angle) // increment Y 
 {
