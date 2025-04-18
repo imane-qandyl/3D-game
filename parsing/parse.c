@@ -6,7 +6,7 @@
 /*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 09:03:47 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/04/09 20:01:38 by imqandyl         ###   ########.fr       */
+/*   Updated: 2025/04/18 11:54:55 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ void	free_map_info(t_game *info)
 	if (info->map)
 	{
 		i = 0;
-		while(i < info->map_height)
-			free(info->map[i]);
+		while (i < info->map_height)
+			free(info->map[i++]);
 		i++;
 		free(info->map);
 	}
@@ -67,7 +67,7 @@ t_error	parse_file(const char *filename, t_game *info)
 	char	*line = NULL;
 	size_t	len;
 	t_error	err;
-
+	
 	if (!filename || !info)
 		return (ERR_INVALID_FILE);
 	// Check file extension
@@ -79,6 +79,9 @@ t_error	parse_file(const char *filename, t_game *info)
 		return (ERR_INVALID_FILE);
 	line = NULL;
 	len = 0;
+	err = ERR_NONE;  // Initialize err to ERR_NONE
+	info->map_height = count_map_lines(file);
+	info->map_width = get_map_width(file);
 	while (getline(&line, &len, file) != -1)
 	{
 		if (line[0] == '\n' || is_empty_line(line))
@@ -92,34 +95,67 @@ t_error	parse_file(const char *filename, t_game *info)
 			|| strncmp(line, "WE ", 3) == 0 || strncmp(line, "EA ", 3) == 0)
 		{
 			err = parse_textures(line, info);
+			if (err != ERR_NONE)
+			{
+				free(line);
+				fclose(file);
+				return (err);
+			}
 		}
 		else if (strncmp(line, "F ", 2) == 0 || strncmp(line, "C ", 2) == 0)
 		{
 			err = parse_colors(line, info);
-			if (err == ERR_INVALID_COLOR)
+			if (err != ERR_NONE)
 			{
-				printf("invalid map >255\n");
-				exit(EXIT_FAILURE);
+				free(line);
+				fclose(file);
+				return (ERR_INVALID_COLOR);
 			}
 		}
-			// // TODO: Add map parsing once textures and colors are done
 		else if (line[0] == '1' || line[0] == ' ') //detect the beginning of the map
 		{
-			//err = parse_map(line, file, info);
-			free(line);
-			fclose(file);
-			return err;
+			//printf("IMANE");
+			info->map = read_map(filename);
+			if (!info->map)
+			{
+				free(line);
+				fclose(file);
+				return (ERR_MALLOC);
+			}
+		
+			// printf("width =%d\n",info->map_width );
+			// printf("height =%d",info->map_height );
+
+			if (info->map_width == 0 || info->map_height == 0)
+			{
+				free(line);
+				fclose(file);
+				return (ERR_INVALID_MAP);
+			}
+			t_error map_err = validate_map(info);
+			if (map_err != ERR_NONE)
+			{
+				free(line);
+				fclose(file);
+				return (map_err);
+			}
+				free(line);
+				fclose(file);
+				return (ERR_NONE);
 		}
 		else
 		{
 			free(line);
 			fclose(file);
-			return ERR_INVALID_MAP;
+			return (ERR_INVALID_MAP);
 		}
+		free(line);
+		line = NULL;
 	}
-	free(line);
+	if (line)
+		free(line);
 	fclose(file);
-	return (ERR_NONE);
+	return (ERR_INVALID_MAP); // Return error if no map was found
 }
 int	is_empty_line(const char *line)
 {

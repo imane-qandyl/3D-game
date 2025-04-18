@@ -6,13 +6,13 @@
 #    By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/04 07:50:40 by imqandyl          #+#    #+#              #
-#    Updated: 2025/04/11 07:17:20 by imqandyl         ###   ########.fr        #
+#    Updated: 2025/04/18 10:50:09 by imqandyl         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME    = cub3d
 CC      = gcc
-CFLAGS  = -Wall -Wextra -Werror -Iincludes
+CFLAGS  = -Wall -Wextra -Werror -g -Iincludes
 LIBRARY := -L./minilibx -lmlx -framework OpenGL -framework AppKit
 
 MINILIBX := minilibx/

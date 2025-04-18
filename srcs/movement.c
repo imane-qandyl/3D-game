@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   movement.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 15:26:04 by lalwafi           #+#    #+#             */
-/*   Updated: 2025/04/11 17:15:38 by lalwafi          ###   ########.fr       */
+/*   Updated: 2025/04/18 10:45:27 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ int key_pressed(int key, t_game *game)
 		move_player(game, 0, 4);
 	if (key == D)
 		move_player(game, 4, 0);
-	if (key == LEFT)
-		;
-	if (key == RIGHT)	
-		;
+	// if (key == LEFT)
+	// 	;
+	// if (key == RIGHT)	
+	// 	;
 	return (0);
 }
 

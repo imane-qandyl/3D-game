@@ -39,7 +39,8 @@ void	temp_init_for_exec(t_game *game)
 		exit(1);  // or use cleanup_and_exit()
 	}
 	game->map_width = get_map_width(fp);
-	game->map_height = count_map_lines(fp);
+		game->map_height = count_map_lines(fp);
+
 	printf("dx = %f\n", game->player_dx);
 }
 
@@ -82,7 +83,11 @@ int main(int argc, char **argv)
 		printf("Usage: %s <map_file.cub>\n", argv[0]);
 		return (1);
 	}
-
+// Initialize MLX
+	temp_init_for_exec(&game);
+	game.mlx = mlx_init();
+	if (!game.mlx)
+		cleanup_and_exit(&game, "Failed to initialize MLX");
 	// Initialize game structure
 	init_map_info(&game);
 
@@ -94,17 +99,13 @@ int main(int argc, char **argv)
 		//free_map_info(&game);
 		exit(EXIT_FAILURE);
 	}
-
+	
 	// Load the map
 	game.map = read_map(argv[1]);
 	if (!game.map)
 		cleanup_and_exit(&game, "Failed to load map");
 
-	// Initialize MLX
-	temp_init_for_exec(&game);
-	game.mlx = mlx_init();
-	if (!game.mlx)
-		cleanup_and_exit(&game, "Failed to initialize MLX");
+	
 
 	// Create window
 	game.win = mlx_new_window(game.mlx, WIN_WIDTH, WIN_HEIGHT, "Cub3D");

@@ -6,7 +6,7 @@
 /*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 08:47:42 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/04/09 20:00:36 by imqandyl         ###   ########.fr       */
+/*   Updated: 2025/04/18 10:44:54 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,12 +76,10 @@ t_error	parse_colors(char *line, t_game *info)
 	{
 		// printf("%s\n",ptr);
 		if ((err = parse_color_value(ptr,&target[i])) != ERR_NONE)
-		{
 			//printf("Hello");
-			return (err);
-		}
+			return (err);		
 	// Skip to next component
-	while (*ptr && *ptr != ',')
+		while (*ptr && *ptr != ',')
 		ptr++;
 		if (i < 2) //move past the comma
 		{
@@ -99,5 +97,6 @@ t_error	parse_colors(char *line, t_game *info)
 			return (ERR_INVALID_COLOR);
 		i++;
 	}
+	
 	return (ERR_NONE);
 }
