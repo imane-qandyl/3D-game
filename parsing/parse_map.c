@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 11:09:12 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/04/11 17:25:18 by lalwafi          ###   ########.fr       */
+/*   Updated: 2025/04/20 21:45:52 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,15 @@ int	get_map_width(FILE *file)
 	len = 0;
 	while (getline(&line, &len, file) != -1)
 	{
+
 		// Skip empty lines and texture/color configurations before map
 		if (!found_map && (line[0] == '\n' || line[0] == 'N' || line[0] == 'S'
 				|| line[0] == 'W' || line[0] == 'E' || line[0] == 'F'
-				|| line[0] == 'C'))
+				|| line[0] == 'C' ))
 			continue ;
 		found_map = 1;
+		
+		// Remove newline
 		if (strlen(line) > (size_t)max_width)
 			max_width = strlen(line);
 		if (line[max_width - 1] == '\n')
@@ -86,7 +89,7 @@ int is_map_line(char *line)
     
     while (line[i])
     {
-        if (!ft_strchr("01NSEW\n", line[i]))
+        if (!ft_strchr("01NSEW \n", line[i]))
             return (0);
         i++;
     }
@@ -141,7 +144,24 @@ char	**read_map(const char *filename)
 	fclose(file);
 	return (map);
 }
-
+//padding logic → 1111␣␣
+void pad_map_lines(char **map, int height, int width)
+{
+    for (int y = 0; y < height; y++)
+    {
+        int len = ft_strlen(map[y]);
+        if (len < width)
+        {
+            char *padded = malloc(width + 1);
+            ft_memcpy(padded, map[y], len);
+            for (int i = len; i < width; i++)
+                padded[i] = ' ';
+            padded[width] = '\0';
+            free(map[y]);
+            map[y] = padded;
+        }
+    }
+}
 
 void	free_map(char **map)
 {
@@ -162,14 +182,20 @@ t_error validate_map(t_game *info)
 {
     if (!info->map)
         return (ERR_INVALID_MAP);
-    // Check borders
+     
+    // Check borders - treat spaces as equivalent to walls for validation Top and bottom rows must be entirely '1' or ' '
     for (int x = 0; x < info->map_width; x++) {
-        if (info->map[0][x] != '1' || info->map[info->map_height-1][x] != '1')
+        char top = info->map[0][x];
+        char bottom = info->map[info->map_height-1][x];
+        if ((top != '1' && top != ' ') || (bottom != '1' && bottom != ' '))
             return (ERR_MAP_NOT_CLOSED);
     }
-    
+    //Left and right columns must also be '1' or ' '.
+
     for (int y = 0; y < info->map_height; y++) {
-        if (info->map[y][0] != '1' || info->map[y][info->map_width-1] != '1')
+        char left = info->map[y][0];
+        char right = info->map[y][info->map_width-1];
+        if ((left != '1' && left != ' ') || (right != '1' && right != ' '))
             return (ERR_MAP_NOT_CLOSED);
     }
     
@@ -179,11 +205,12 @@ t_error validate_map(t_game *info)
             if (info->map[y][x] == '0' || info->map[y][x] == 'N' || 
                 info->map[y][x] == 'S' || info->map[y][x] == 'E' || 
                 info->map[y][x] == 'W') {
-                // Check all 4 directions
+                // Check all 4 directions space adjacent to it
                 if (info->map[y+1][x] == ' ' || info->map[y-1][x] == ' ' ||
                     info->map[y][x+1] == ' ' || info->map[y][x-1] == ' ')
-                    return (ERR_MAP_NOT_CLOSED);
-            }
+					return (ERR_MAP_NOT_CLOSED);
+					//printf("IMANE");
+				}
         }
     }
     

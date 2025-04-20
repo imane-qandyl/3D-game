@@ -6,7 +6,7 @@
 /*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 09:03:47 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/04/18 11:54:55 by imqandyl         ###   ########.fr       */
+/*   Updated: 2025/04/20 21:43:07 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,9 @@ t_error	parse_file(const char *filename, t_game *info)
 		{
 			//printf("IMANE");
 			info->map = read_map(filename);
+			pad_map_lines(info->map, info->map_height, info->map_width);
+			for (int i = 0; i < info->map_height; i++)
+	printf("|%s|\n", info->map[i]);
 			if (!info->map)
 			{
 				free(line);

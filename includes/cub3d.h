@@ -6,7 +6,7 @@
 /*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 08:19:31 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/04/18 10:47:11 by imqandyl         ###   ########.fr       */
+/*   Updated: 2025/04/20 21:29:12 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ char *skip_spaces(char *line);
 // Map functions
 char	**read_map(const char *filename);
 void    free_map(char **map);
+void pad_map_lines(char **map, int height, int width);
 
 
 typedef enum keys
