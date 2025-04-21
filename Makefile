@@ -14,7 +14,7 @@ NAME    = cub3d
 CC      = gcc
 CFLAGS  = -Wall -Wextra -Werror -Iincludes
 CFLAGS	+= -fsanitize=address -g3
-# LIBRARY := -L./minilibx -lmlx -lm -march=native -framework OpenGL AppKit #-framework
+LIBRARY := -L./minilibx -lmlx -lm -march=native -framework OpenGL AppKit -framework
 
 MINILIBX := minilibx/
 
