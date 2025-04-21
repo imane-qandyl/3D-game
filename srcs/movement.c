@@ -50,8 +50,8 @@ int key_pressed(int key, t_game *game)
 		// length_of_raycast_H(game, game->player_x, game->player_y, (game->angle * PI/180));
 	}
 	print_everything_for_debug(game);
-	length_of_raycast_H(game, (game->player_x/TILE_SIZE), (game->player_y/TILE_SIZE), (game->angle * (PI/180)));
-	length_of_raycast_V(game, (game->player_x/TILE_SIZE), (game->player_y/TILE_SIZE), (game->angle * (PI/180)));
+	length_of_raycast_H(game, (game->player_x/TILE_SIZE), (game->player_y/TILE_SIZE), game->angle);
+	length_of_raycast_V(game, (game->player_x/TILE_SIZE), (game->player_y/TILE_SIZE), game->angle);
 	// mlx_destroy_image(&game->mlx, &game->img);
 	return (0);
 }
@@ -96,70 +96,70 @@ void	move_player_2px(t_game *game, int steps, float dx, float dy)
 	game->player_y += dy;
 }
 
-float	length_of_raycast_H(t_game *game, float px, float py, double angle) // increment Y 
+float	length_of_raycast_H(t_game *game, float px, float py, int angle) // increment Y 
 {
 	float	lz;
 	int		i;
 
-	if (angle == 0 || angle == PI || angle == 2*PI)
+	if (angle == 0 || angle == 180 || angle == 360)
 		return (-1);
 	lz = 0;
-	printf("------------------------lz H\nlz horizontal = %f\npx = %f\npy = %f\nangle = %f\n\n", lz, px, py, angle);
-	if (angle > PI && angle <= (2*PI))
+	printf("------------------------lz H\nlz horizontal = %f\npx = %f\npy = %f\nangle = %d\n\n", lz, px, py, angle);
+	if (angle > 180 && angle <= 360)
 	{
 		i = (int)py;
 		while (i >= 0 && px >= 0 && game->map[i][(int)px] != '1')
 		{
 			printf("inside 0-PI   i = %d\n", i);
-			lz += (py - i)/sinf(angle);
+			lz += (py - i)/sinf(angle * (PI/180));
 			i--;
 		}
 	}
-	else if (angle > 0 && angle < PI)
+	else if (angle > 0 && angle < 180)
 	{
 		i = (int)py + 1;
 		while (i <= (WIN_HEIGHT/TILE_SIZE) && px <= (WIN_WIDTH/TILE_SIZE) && game->map[i][(int)px] != '1')
 		{
 			printf("inside PI-2PI   i = %d\n", i);
-			lz += (i - py)/sinf(angle);
+			lz += (i - py)/sinf(angle * (PI/180));
 			i++;
 		}
 	}
-	printf("lz horizontal = %f\npx = %f\npy = %f\nangle = %f\n------------------------\n", lz, px, py, angle);
+	printf("lz horizontal = %f\npx = %f\npy = %f\nangle = %d\n------------------------\n", lz, px, py, angle);
 	return (lz);
 }
 
-float	length_of_raycast_V(t_game *game, float px, float py, double angle) // increment x 
+float	length_of_raycast_V(t_game *game, float px, float py, int angle) // increment x 
 {
 	float	lz;
 	int		i;
 
-	if (angle == (PI*1.5) || angle == (PI/2))
+	if (angle == 90 || angle == 270)
 		return (-1);
 	lz = 0;
-	printf("------------------------lz V\nlz vertical = %f\npx = %f\npy = %f\nangle = %f\n\n", lz, px, py, angle);
-	if (angle > (PI/2) && angle < (PI*1.5))
+	printf("------------------------lz V\nlz vertical = %f\npx = %f\npy = %f\nangle = %d\n\n", lz, px, py, angle);
+	if (angle > 90 && angle < 270)
 	{
 		i = (int)px;
 		while (i >= 0 && py >= 0 && game->map[(int)py][i] != '1')
 		{
 			printf("inside PI/2-PI*1.5   i = %d\n", i);
-			lz += (px - i)/cosf(angle);
+			lz += (px - i)/cosf(angle * (PI/180));
 			i--;
 		}
 	}
-	else if (angle > (PI*1.5) || angle < (PI/2))
+	else if (angle > 270 || angle < 90)
 	{
 		i = (int)px + 1;
-		printf("here??n");
+		printf("here??\n");
 		while (i <= (WIN_WIDTH/TILE_SIZE) && py <= (WIN_HEIGHT/TILE_SIZE) && game->map[(int)py][i] != '1')
 		{
 			printf("inside PI*1.5-PI/2   i = %d\n", i);
-			lz += (i - px)/cosf(angle);
+			lz += (i - px)/cosf(angle * (PI/180));
 			i++;
 		}
 	}
-	printf("lz vertical = %f\npx = %f\npy = %f\nangle = %f\n------------------------\n", lz, px, py, angle);
+	printf("lz vertical = %f\npx = %f\npy = %f\nangle = %d\n------------------------\n", lz, px, py, angle);
 	return (lz);
 }
 
