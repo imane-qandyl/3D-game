@@ -6,7 +6,7 @@
 /*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 15:26:04 by lalwafi           #+#    #+#             */
-/*   Updated: 2025/04/18 17:48:36 by lalwafi          ###   ########.fr       */
+/*   Updated: 2025/04/21 04:03:45 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int key_pressed(int key, t_game *game)
 		move_player_1px(game, 1, change_angle(game->angle, 90, 1), change_angle(game->angle, 90, 2));
 	if (key == LEFT)
 	{
+		printf("left\n");
 		game->angle += 5;
 		if (game->angle >= 360)
 			game->angle -= 360;
@@ -39,6 +40,7 @@ int key_pressed(int key, t_game *game)
 	}
 	if (key == RIGHT)	
 	{
+		printf("right\n");
 		game->angle -= 5;
 		if (game->angle < 0)
 			game->angle += 360;	
@@ -47,8 +49,8 @@ int key_pressed(int key, t_game *game)
 		// get_end_of_vector(game->player_x, game->player_y, game->angle * (PI/180));
 		// length_of_raycast_H(game, game->player_x, game->player_y, (game->angle * PI/180));
 	}
-	printf("angle = %f\n", game->angle);
-	// length_of_raycast_H(game, game->player_x, game->player_y, (game->angle * (PI/180)));
+	print_everything_for_debug(game);
+	length_of_raycast_H(game, (game->player_x/TILE_SIZE), (game->player_y/TILE_SIZE), (game->angle * (PI/180)));
 	// mlx_destroy_image(&game->mlx, &game->img);
 	return (0);
 }
@@ -105,23 +107,21 @@ float	length_of_raycast_H(t_game *game, float px, float py, double angle) // inc
 	printf("----------------\nlz horizontal = %f\npx = %f\npy = %f\nangle = %f\n\n", lz, px, py, angle);
 	if (angle > 0 && angle < PI)
 	{
-		i = (int)(py/TILE_SIZE);
-		printf("0-PI   i = %dthing = %f\n", i, py - (i * TILE_SIZE));
-		while ((py - (i * TILE_SIZE)) > 0 && game->map[((int)py) * TILE_SIZE][((int)px) * TILE_SIZE] != '1')
+		i = (int)py;
+		while (i >= 0 && game->map[i][(int)px] != '1')
 		{
 			printf("inside 0-PI   i = %d\n", i);
-			lz += (py - (i * TILE_SIZE))/sinf(angle);
+			lz += (py - i)/sinf(angle);
 			i--;
 		}
 	}
 	else if (angle > PI && angle <= (2*PI))
 	{
-		i = (int)(py/TILE_SIZE) + 1;
-		printf("PI-2PI   i = %d\n", i);
-		while ((i * TILE_SIZE) < WIN_WIDTH && game->map[(int)py][(int)px] != '1')
+		i = (int)py + 1;
+		while (i <= (WIN_HEIGHT/TILE_SIZE) && game->map[i][(int)px] != '1')
 		{
 			printf("inside PI-2PI   i = %d\n", i);
-			lz += ((i * TILE_SIZE) - py)/sinf(angle);
+			lz += (i - py)/sinf(angle);
 			i++;
 		}
 	}
@@ -146,4 +146,15 @@ float	change_angle(float angle, float change, int flag) // 0 angle change only, 
 		return (sinf(new_angle * (PI/180)));
 	write(1, "change_angle invalid flag\n", 26);
 	return (new_angle); // just return new angle if flag is incorrect
+}
+
+void	print_everything_for_debug(t_game *game)
+{
+	printf("--------------------------\n");
+	printf("angle = %f\n", game->angle);
+	printf("x     = %f\n", game->player_x);
+	printf("y     = %f\n", game->player_y);
+	printf("dx    = %f\n", game->pdx);
+	printf("dy    = %f\n", game->pdy);
+	printf("--------------------------\n");
 }

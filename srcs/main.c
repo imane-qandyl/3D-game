@@ -14,11 +14,11 @@
 int	get_angle(char c)
 {
 	if (c == 'N')
-		return (270);
+		return (90);
 	if (c == 'W')
 		return (180);
 	if (c == 'S')
-		return (90);
+		return (270);
 	if (c == 'E')
 		return (0);
 	write(1, "this shouldnt show\n", 19);
@@ -55,7 +55,7 @@ int	main(void)
 	game.win = mlx_new_window(game.mlx, WIN_WIDTH, WIN_HEIGHT, "Cub3D");
 	if (!game.win)
 	{
-		write(2, "window make fail\n", 17);
+		write(2, "window init fail\n", 17);
 		exit(1);
 	}
 	// game.img.img = mlx_new_image(game.mlx, WIN_WIDTH, WIN_HEIGHT);

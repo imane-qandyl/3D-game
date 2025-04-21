@@ -100,3 +100,75 @@ void	move_player(t_game *game, float dx, float dy)
 	game->player_x += game->pdx;
 	game->player_y += game->pdy;
 }
+
+
+
+float	length_of_raycast_H(t_game *game, float px, float py, double angle) // increment Y 
+{
+	float	lz;
+	int		i;
+
+	printf("here?\n");
+	if (angle == 0 || angle == PI)
+	return (-1);
+	lz = 0;
+	printf("----------------\nlz horizontal = %f\npx = %f\npy = %f\nangle = %f\n\n", lz, px, py, angle);
+	if (angle > PI && angle <= (2*PI))
+	{
+		i = (int)py;
+		while (i >= 0 && game->map[i][(int)px] != '1')
+		{
+			printf("inside 0-PI   i = %d\n", i);
+			lz += (py - i)/sinf(angle);
+			i--;
+		}
+	}
+	else if (angle > 0 && angle < PI)
+	{
+		i = (int)py + 1;
+		while (i <= (WIN_HEIGHT/TILE_SIZE) && game->map[i][(int)px] != '1')
+		{
+			printf("inside PI-2PI   i = %d\n", i);
+			lz += (i - py)/sinf(angle);
+			i++;
+		}
+	}
+	printf("lz horizontal = %f\npx = %f\npy = %f\nangle = %f\n----------------\n", lz, px, py, angle);
+	return (lz);
+}
+
+float	length_of_raycast_H(t_game *game, float px, float py, double angle) // increment Y 
+{
+	float	lz;
+	int		i;
+
+	printf("here?\n");
+	if (angle == 0 || angle == PI)
+	return (-1);
+	lz = 0;
+	printf("----------------\nlz horizontal = %f\npx = %f\npy = %f\nangle = %f\n\n", lz, px, py, angle);
+	if (angle > 0 && angle < PI)
+	{
+		i = (int)(py/TILE_SIZE);
+		printf("0-PI   i = %dthing = %f\n", i, py - (i * TILE_SIZE));
+		while ((py - (i * TILE_SIZE)) > 0 && game->map[((int)py)/TILE_SIZE][((int)px)/TILE_SIZE] != '1')
+		{
+			printf("inside 0-PI   i = %d\n", i);
+			lz += (py - (i * TILE_SIZE))/sinf(angle); // might have to make sinf negative
+			i--;
+		}
+	}
+	else if (angle > PI && angle <= (2*PI))
+	{
+		i = floorf(py/TILE_SIZE) + 1;
+		printf("PI-2PI   i = %d\n", i);
+		while ((i * TILE_SIZE) < WIN_WIDTH && game->map[(int)py/TILE_SIZE][(int)px/TILE_SIZE] != '1')
+		{
+			printf("inside PI-2PI   i = %d\n", i);
+			lz += ((i * TILE_SIZE) - py)/sinf(angle); // might have to make sinf negative
+			i++;
+		}
+	}
+	printf("lz horizontal = %f\npx = %f\npy = %f\nangle = %f\n----------------\n", lz, px, py, angle);
+	return (lz);
+}

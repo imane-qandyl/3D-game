@@ -6,7 +6,7 @@
 /*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 08:19:31 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/04/18 17:37:17 by lalwafi          ###   ########.fr       */
+/*   Updated: 2025/04/20 18:06:56 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,5 +116,6 @@ float	length_of_raycast_H(t_game *game, float px, float py, double angle);
 
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
+void	print_everything_for_debug(t_game *game);
 
 #endif
