@@ -6,7 +6,7 @@
 /*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 15:26:04 by lalwafi           #+#    #+#             */
-/*   Updated: 2025/04/21 04:03:45 by lalwafi          ###   ########.fr       */
+/*   Updated: 2025/04/23 07:53:30 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,14 @@ int key_pressed(int key, t_game *game)
 		// length_of_raycast_H(game, game->player_x, game->player_y, (game->angle * PI/180));
 	}
 	print_everything_for_debug(game);
-	length_of_raycast_H(game, (game->player_x/TILE_SIZE), (game->player_y/TILE_SIZE), game->angle);
-	length_of_raycast_V(game, (game->player_x/TILE_SIZE), (game->player_y/TILE_SIZE), game->angle);
+	int lzh = length_of_raycast_H(game, (game->player_x/TILE_SIZE), (game->player_y/TILE_SIZE), game->angle);
+	int lzv = length_of_raycast_V(game, (game->player_x/TILE_SIZE), (game->player_y/TILE_SIZE), game->angle);
+	if (lzh < 0)
+		lzh *= -1;
+	if (lzv < 0)
+		lzv *= -1;
+	draw_ray_10px(game, lzv*TILE_SIZE, 0xce33ff); // purple
+	draw_ray_10px(game, lzh*TILE_SIZE, 0x33ff8d); // mint
 	// mlx_destroy_image(&game->mlx, &game->img);
 	return (0);
 }
@@ -63,8 +69,6 @@ void	move_player_1px(t_game *game, int steps, float dx, float dy)
         if ((game->player_y + dy) >= WIN_HEIGHT || (game->player_x + dx) >= WIN_WIDTH || \
 			(game->player_y + dy) < 0 || (game->player_x + dx) < 0)
 			return ;
-		my_mlx_pixel_put(&game->img, game->player_x + dx, \
-                game->player_y + dy, 0xFFFF00);
         game->player_x += dx;
         game->player_y += dy;
     }
@@ -102,7 +106,7 @@ float	length_of_raycast_H(t_game *game, float px, float py, int angle) // increm
 	int		i;
 
 	if (angle == 0 || angle == 180 || angle == 360)
-		return (-1);
+		return (0);
 	lz = 0;
 	printf("------------------------lz H\nlz horizontal = %f\npx = %f\npy = %f\nangle = %d\n\n", lz, px, py, angle);
 	if (angle > 180 && angle <= 360)
@@ -135,7 +139,7 @@ float	length_of_raycast_V(t_game *game, float px, float py, int angle) // increm
 	int		i;
 
 	if (angle == 90 || angle == 270)
-		return (-1);
+		return (0);
 	lz = 0;
 	printf("------------------------lz V\nlz vertical = %f\npx = %f\npy = %f\nangle = %d\n\n", lz, px, py, angle);
 	if (angle > 90 && angle < 270)
@@ -150,8 +154,8 @@ float	length_of_raycast_V(t_game *game, float px, float py, int angle) // increm
 	}
 	else if (angle > 270 || angle < 90)
 	{
-		i = (int)px + 1;
-		printf("here??\n");
+		i = (int)px;
+		printf("here??    %d <= %d && %f <= %d && %c != 1\n", i, (WIN_WIDTH/TILE_SIZE), py, (WIN_HEIGHT/TILE_SIZE), game->map[(int)py][i]);
 		while (i <= (WIN_WIDTH/TILE_SIZE) && py <= (WIN_HEIGHT/TILE_SIZE) && game->map[(int)py][i] != '1')
 		{
 			printf("inside PI*1.5-PI/2   i = %d\n", i);

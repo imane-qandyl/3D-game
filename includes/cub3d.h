@@ -6,7 +6,7 @@
 /*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 08:19:31 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/04/20 18:06:56 by lalwafi          ###   ########.fr       */
+/*   Updated: 2025/04/23 07:41:11 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,13 @@ typedef struct s_game
 	float	pdy;
 }	t_game;
 
+typedef struct s_point
+{
+	float	px;
+	float	py;
+	float	length;
+} t_point;
+
 // typedef enum keys
 // {
 // 	W = 13,
@@ -111,7 +118,7 @@ void	move_player_2px(t_game *game, int steps, float dx, float dy);
 int		finish(t_game *game, int i);
 // void	get_end_of_vector(float px, float py, double angle);
 float	change_angle(float angle, float change, int flag);
-void	draw_ray_5px(t_game *game);
+void	draw_ray_10px(t_game *game, int pixels, unsigned int color);
 float	length_of_raycast_H(t_game *game, float px, float py, int angle);
 float	length_of_raycast_V(t_game *game, float px, float py, int angle);
 
