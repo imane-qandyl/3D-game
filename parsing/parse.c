@@ -6,7 +6,7 @@
 /*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 09:03:47 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/04/20 21:43:07 by imqandyl         ###   ########.fr       */
+/*   Updated: 2025/04/24 19:33:06 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ t_error	parse_file(const char *filename, t_game *info)
 	err = ERR_NONE;  // Initialize err to ERR_NONE
 	info->map_height = count_map_lines(file);
 	info->map_width = get_map_width(file);
+
 	while (getline(&line, &len, file) != -1)
 	{
 		if (line[0] == '\n' || is_empty_line(line))
@@ -126,7 +127,7 @@ t_error	parse_file(const char *filename, t_game *info)
 				return (ERR_MALLOC);
 			}
 		
-			// printf("width =%d\n",info->map_width );
+			 printf("width =%d\n",info->map_width );
 			// printf("height =%d",info->map_height );
 
 			if (info->map_width == 0 || info->map_height == 0)

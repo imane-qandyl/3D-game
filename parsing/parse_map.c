@@ -6,7 +6,7 @@
 /*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 11:09:12 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/04/20 21:45:52 by imqandyl         ###   ########.fr       */
+/*   Updated: 2025/04/24 19:40:08 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,13 @@ int	get_map_width(FILE *file)
 		found_map = 1;
 		
 		// Remove newline
-		if (strlen(line) > (size_t)max_width)
-			max_width = strlen(line);
-		if (line[max_width - 1] == '\n')
-			max_width--;
+		if (strlen(line) > (size_t)max_width) {
+			max_width = strlen(line);			
+			if (line[max_width - 1] == '\n')
+				max_width--;
+		}
 	}
+	printf("finished max width: %d\n", max_width);
 	free(line);
 	rewind(file);
 	return (max_width);
@@ -120,11 +122,12 @@ char	**read_map(const char *filename)
 	if (!map)
 		return (NULL);
 	
+	printf("map_lines + 1 is: %d\n", map_lines + 1);
 	line_index = 0;
 	found_map = 0;
 	line = NULL;
 	len = 0;
-	while ((read =getline(&line, &len, file)) != -1)
+	while ((read =getline(&line, &len, file)) != -1 && line_index < map_lines)
 	{
 		if (!found_map)
 		{
@@ -140,6 +143,7 @@ char	**read_map(const char *filename)
 		map[line_index++] = strdup(line);
 	}
 	free(line);
+	printf("line_index is outside this: %d\n", line_index);
 	map[line_index] = NULL;
 	fclose(file);
 	return (map);
@@ -182,7 +186,8 @@ t_error validate_map(t_game *info)
 {
     if (!info->map)
         return (ERR_INVALID_MAP);
-     
+    printf("Debug 1\n");
+
     // Check borders - treat spaces as equivalent to walls for validation Top and bottom rows must be entirely '1' or ' '
     for (int x = 0; x < info->map_width; x++) {
         char top = info->map[0][x];
@@ -191,14 +196,19 @@ t_error validate_map(t_game *info)
             return (ERR_MAP_NOT_CLOSED);
     }
     //Left and right columns must also be '1' or ' '.
+	printf("Debug 2\n");
 
     for (int y = 0; y < info->map_height; y++) {
         char left = info->map[y][0];
         char right = info->map[y][info->map_width-1];
-        if ((left != '1' && left != ' ') || (right != '1' && right != ' '))
-            return (ERR_MAP_NOT_CLOSED);
+        if ((left != '1' && left != ' ') || (right != '1' && right != ' ')) {
+			printf("LOOK IMANE, LOOK! %d\n", info->map_width);
+			printf("left was %c and right was this %c\n", left, right);
+			return (ERR_MAP_NOT_CLOSED);
+		}
     }
-    
+	printf("Debug 3\n");
+
     // Check inner spaces
     for (int y = 1; y < info->map_height - 1; y++) {
         for (int x = 1; x < info->map_width - 1; x++) {
@@ -213,6 +223,7 @@ t_error validate_map(t_game *info)
 				}
         }
     }
-    
+	printf("Debug 4\n");
+
     return (ERR_NONE);
 }
