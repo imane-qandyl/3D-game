@@ -56,9 +56,9 @@ void	move_player_b(t_game *game, float dx, float dy)
 
 void	move_player_1px_a(t_game *game, int steps, float dx, float dy)
 {
-    while (steps-- > 0)
-    {
-        if ((game->player_y + dy) >= WIN_HEIGHT || (game->player_x + dx) >= WIN_WIDTH || \
+	while (steps-- > 0)
+	{
+		if ((game->player_y + dy) >= WIN_HEIGHT || (game->player_x + dx) >= WIN_WIDTH || \
 			(game->player_y + dy) < 0 || (game->player_x + dx) < 0)
 			return ;
 		if (game->map[(int)((game->player_y) / TILE_SIZE)][(int)((game->player_x) / TILE_SIZE)] == '1')
@@ -66,10 +66,10 @@ void	move_player_1px_a(t_game *game, int steps, float dx, float dy)
 		else
 			mlx_pixel_put(game->mlx, game->win, game->player_x, game->player_y, 0xAAAAAA);
 		mlx_pixel_put(game->mlx, game->win, game->player_x + dx, \
-                game->player_y + dx, 0xFFFF00);
-        game->player_x += dx;
-        game->player_y += dy;
-    }
+				game->player_y + dx, 0xFFFF00);
+		game->player_x += dx;
+		game->player_y += dy;
+	}
 }
 
 
@@ -172,3 +172,7 @@ float	length_of_raycast_H(t_game *game, float px, float py, double angle) // inc
 	printf("lz horizontal = %f\npx = %f\npy = %f\nangle = %f\n----------------\n", lz, px, py, angle);
 	return (lz);
 }
+
+
+
+

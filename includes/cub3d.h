@@ -6,7 +6,7 @@
 /*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 08:19:31 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/04/23 07:41:11 by lalwafi          ###   ########.fr       */
+/*   Updated: 2025/04/24 19:11:56 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <unistd.h>
 # include <string.h>
 # include <math.h>
+# include <stdbool.h>
 
 # define TILE_SIZE 32
 # define WIN_WIDTH 1100
@@ -65,29 +66,15 @@ typedef struct	s_data {
 	int		endian;
 }				t_data;
 
-typedef struct s_game
+typedef struct s_keys
 {
-	void	*mlx;
-	void	*win;
-	t_data	img;
-	char	**map;
-	char	*no_texture;
-	char	*so_texture;
-	char	*we_texture;
-	char	*ea_texture;
-	int		tex_width;
-	int		tex_height;
-	int		floor_color[3];
-	int		ceiling_color[3];
-	int		map_width;
-	int		map_height;
-	char	player_dir;
-	float	player_x;
-	float	player_y;
-	float	angle;
-	float	pdx;
-	float	pdy;
-}	t_game;
+	bool	w;
+	bool	a;
+	bool	s;
+	bool	d;
+	bool	left;
+	bool	right;
+} t_keys;
 
 typedef struct s_point
 {
@@ -96,34 +83,54 @@ typedef struct s_point
 	float	length;
 } t_point;
 
-// typedef enum keys
-// {
-// 	W = 13,
-// 	A= 0,
-// 	S = 1,
-// 	D = 2,
-// 	ESC = 53,
-// 	RIGHT = 124,
-// 	LEFT = 123
-// }	t_keys;
-
-char	**read_map(const char *filename);
-void	draw_map(t_game *game);
-void	free_map(char **map);
-void	draw_player(t_game *game);
-int		key_pressed(int key, t_game *game);
-void	move_player(t_game *game, float dx, float dy);
-void	move_player_1px(t_game *game, int steps, float dx, float dy);
-void	move_player_2px(t_game *game, int steps, float dx, float dy);
-int		finish(t_game *game, int i);
-// void	get_end_of_vector(float px, float py, double angle);
-float	change_angle(float angle, float change, int flag);
-void	draw_ray_10px(t_game *game, int pixels, unsigned int color);
-float	length_of_raycast_H(t_game *game, float px, float py, int angle);
-float	length_of_raycast_V(t_game *game, float px, float py, int angle);
+typedef struct s_game
+{
+	void		*mlx;
+	void		*win;
+	t_data		img;
+	char		**map;
+	char		*no_texture;
+	char		*so_texture;
+	char		*we_texture;
+	char		*ea_texture;
+	int			tex_width;
+	int			tex_height;
+	int			floor_color[3];
+	int			ceiling_color[3];
+	int			map_width;
+	int			map_height;
+	char		player_dir;
+	t_point		p;       // player coordinates
+	t_keys		key;
+	float		angle;
+	float		pdx;
+	float		pdy;
+}	t_game;
 
 
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
-void	print_everything_for_debug(t_game *game);
+
+char		**read_map(const char *filename);
+void		draw_map(t_game *game);
+void		free_map(char **map);
+void		draw_player(t_game *game);
+int			key_pressed(int key, t_game *game);
+int 		key_release(int key, t_game *game);
+int			movement(t_game *game);
+void		move_player_1px(t_game *game, int steps, float dx, float dy);
+int			finish(t_game *game, int i);
+// void		get_end_of_vector(float px, float py, double angle);
+float		change_angle(float angle, float change, int flag);
+void		draw_ray_5px(t_game *game);
+t_point		length_of_raycast_H(t_game *game);
+float		length_of_raycast_V(t_game *game, float px, float py, int angle);
+t_point 	horizontal_raycast(t_game *game);
+t_point 	vertical_raycast(t_game *game);
+t_point		which_ray_shorter(t_game *game, t_point ph, t_point pv);
+void		draw_ray(t_game *game, t_point point);
+void		dda_thing(t_game *game);
+
+
+void		my_mlx_pixel_put(t_data *data, int x, int y, int color);
+void		print_everything_for_debug(t_game *game);
 
 #endif

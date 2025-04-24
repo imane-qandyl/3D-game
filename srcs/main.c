@@ -30,14 +30,21 @@ void	temp_init_for_exec(t_game *game)
 		// char *map[7] = {"111111" , "100001" , "1000P1" , "100001" , "100001" , "111111"};
 	// game.map = map;
 	game->player_dir = 'S';
-	game->player_x = 4 * TILE_SIZE + (TILE_SIZE / 2);
-	game->player_y = 2 * TILE_SIZE + (TILE_SIZE / 2);
+	game->p.px = 4 * TILE_SIZE + (TILE_SIZE / 2);
+	game->p.py = 2 * TILE_SIZE + (TILE_SIZE / 2);
 	game->angle = get_angle(game->player_dir);
 	game->pdx = cosf(game->angle * PI/180);
 	game->pdy = sinf(game->angle * PI/180);
 	game->map_height = 6;
 	game->map_width = 6;
 	// printf("dx = %f\n", game->pdx);
+	game->key.w = false;
+	game->key.a = false;
+	game->key.s = false;
+	game->key.d = false;
+	game->key.left = false;
+	game->key.right = false;
+	game->img.img = NULL;
 }
 
 int	main(void)
@@ -58,22 +65,23 @@ int	main(void)
 		write(2, "window init fail\n", 17);
 		exit(1);
 	}
-	// game.img.img = mlx_new_image(game.mlx, WIN_WIDTH, WIN_HEIGHT);
-	// game.img.addr = mlx_get_data_addr(game.img.img, &game.img.bits_per_pixel, &game.img.line_length,
-	// 							&game.img.endian);
 	draw_map(&game);
-	draw_player(&game); // btw u need to draw ray as well when player first spawns
+	draw_player(&game);
 	mlx_hook(game.win, 2, 1L << 0, key_pressed, &game);
-	// mlx_hook(game.win, 3, 0, key_release, &game); // key release
+	mlx_hook(game.win, 3, 1L << 1, key_release, &game); // key release
 	mlx_hook(game.win, 17, 1L << 0, finish, &game);
+	mlx_loop_hook(game.mlx, movement, &game);
 	mlx_loop(game.mlx);
 	return (0);
 }
 
 int	finish(t_game *game, int i)
 {
+	if (game->img.img)
+        mlx_destroy_image(game->mlx, game->img.img);
 	mlx_destroy_window(game->mlx, game->win);
-	free_map(game->map);
+	if (game->map)
+		free_map(game->map);
 	exit(i);
-	// return (i);
+	return (i);
 }

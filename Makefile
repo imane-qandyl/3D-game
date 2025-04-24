@@ -6,7 +6,7 @@
 #    By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/04 07:50:40 by imqandyl          #+#    #+#              #
-#    Updated: 2025/04/18 17:49:48 by lalwafi          ###   ########.fr        #
+#    Updated: 2025/04/24 17:12:30 by lalwafi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ MINILIBX := minilibx/
 
 SRC     = srcs/main.c \
           parsing/parse_map.c \
-          srcs/draw_map.c srcs/movement.c \
+          srcs/draw_map.c execution/movement.c execution/raycasting.c\
 
 
 OS:= ${shell uname}
