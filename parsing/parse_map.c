@@ -6,148 +6,146 @@
 /*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 11:09:12 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/04/24 19:40:08 by imqandyl         ###   ########.fr       */
+/*   Updated: 2025/04/26 18:40:30 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-int count_map_lines(FILE *file)
+int count_map_lines(char **lines)
 {
-    char *line = NULL;
-    size_t len = 0;
+    int i = 0;
     int count = 0;
     int found_map = 0;
-    ssize_t read;
 
-    while ((read = getline(&line, &len, file)) != -1)
+    while (lines[i])
     {
-        // Trim newline
-        if (read > 0 && line[read - 1] == '\n')
-            line[read - 1] = '\0';
+        int len = ft_strlen(lines[i]);
+        if (len > 0 && lines[i][len - 1] == '\n')
+            lines[i][len - 1] = '\0';
 
         if (!found_map)
         {
-            if (line[0] == '1' || line[0] == ' ')
+            if (lines[i][0] == '1' || lines[i][0] == ' ')
                 found_map = 1;
             else
+            {
+                i++;
                 continue;
+            }
         }
 
-        if (!is_map_line(line))
-        {
-            
-            rewind(file);
-			free(line);
+        if (!is_map_line(lines[i]))
             return (-1);
-        }
 
-        if (line[0] != '\0') // Only skip truly empty lines
+        if (lines[i][0] != '\0')
             count++;
-    }
-
-    //printf("count_map_lines: %d\n", count);
-    free(line);
-    rewind(file);
-    return count;
-}
-//returns the width (number of columns)
-int	get_map_width(FILE *file)
-{
-	char	*line;
-	size_t	len; //total number of characters in the line
-	int		max_width;
-	int		found_map;
-
-	max_width = 0;
-	found_map = 0;
-	line = NULL;
-	len = 0;
-	while (getline(&line, &len, file) != -1)
-	{
-
-		// Skip empty lines and texture/color configurations before map
-		if (!found_map && (line[0] == '\n' || line[0] == 'N' || line[0] == 'S'
-				|| line[0] == 'W' || line[0] == 'E' || line[0] == 'F'
-				|| line[0] == 'C' ))
-			continue ;
-		found_map = 1;
-		
-		// Remove newline
-		if (strlen(line) > (size_t)max_width) {
-			max_width = strlen(line);			
-			if (line[max_width - 1] == '\n')
-				max_width--;
-		}
-	}
-	printf("finished max width: %d\n", max_width);
-	free(line);
-	rewind(file);
-	return (max_width);
-}
-int is_map_line(char *line)
-{
-    int i = 0;
-    
-    while (line[i])
-    {
-        if (!ft_strchr("01NSEW \n", line[i]))
-            return (0);
         i++;
     }
-    return (1);
+    return count;
 }
 
-char	**read_map(const char *filename)
+int get_map_width(char **lines)
 {
-	FILE	*file;
-	char	*line;
-	size_t	len;
-	int		line_index;
-	int		found_map;
-	ssize_t	read;
-	char	**map;
+    int max_width = 0;
+    int found_map = 0;
+    int i = 0;
 
-	file = fopen(filename, "r");
-	if (!file)
-		return (NULL);
-	int map_lines = count_map_lines(file);
-	//printf("map_lines = %d\n",map_lines);
-	if (map_lines <= 0)
-	{
-		fclose(file);
-		return (NULL);
-	}
-	map = malloc(sizeof(char *) * (map_lines + 1));
-	if (!map)
-		return (NULL);
-	
-	printf("map_lines + 1 is: %d\n", map_lines + 1);
-	line_index = 0;
-	found_map = 0;
-	line = NULL;
-	len = 0;
-	while ((read =getline(&line, &len, file)) != -1 && line_index < map_lines)
-	{
-		if (!found_map)
-		{
-			if (line[0] == '1' || line[0] == ' ')
-				found_map = 1;
-			else
-				continue;
-		}
-		// Trim newline
-		if (read > 0 && line[read - 1] == '\n')
-			line[read - 1] = '\0';
+    if (!lines)
+        return 0;
 
-		map[line_index++] = strdup(line);
-	}
-	free(line);
-	printf("line_index is outside this: %d\n", line_index);
-	map[line_index] = NULL;
-	fclose(file);
-	return (map);
+    while (lines[i])
+    {
+        if (!found_map && (lines[i][0] == '\n' || lines[i][0] == 'N' || lines[i][0] == 'S'
+            || lines[i][0] == 'W' || lines[i][0] == 'E' || lines[i][0] == 'F' || lines[i][0] == 'C'))
+        {
+            i++;
+            continue;
+        }
+
+        found_map = 1;
+
+        int len = ft_strlen(lines[i]);
+        if (len > 0 && lines[i][len - 1] == '\n')
+            len--;
+
+        if (len > max_width)
+            max_width = len;
+
+        i++;
+    }
+    return max_width;
 }
+
+
+
+int is_map_line(char *line)
+{
+	int i = 0;
+	while (line[i])
+	{
+		if (!ft_strchr("01NSEW \n", line[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+//including texture, floor, ceiling, map lines, empty lines
+char **read_all_lines(int fd)
+{
+	char **lines = malloc(sizeof(char *) * 1024); // or dynamically grow
+	char *line;
+	int i = 0;
+
+	if (!lines)
+		return NULL;
+
+	while ((line = get_next_line(fd)))
+	{
+		lines[i++] = line;
+	}
+	lines[i] = NULL;
+	return lines;
+}
+
+char **read_map(char **lines)
+{
+    int     i = 0, j = 0;
+    int     found_map = 0;
+    int     map_lines = count_map_lines(lines);
+    char    **map;
+
+    if (map_lines <= 0)
+        return NULL;
+
+    map = malloc(sizeof(char *) * (map_lines + 1));
+    if (!map)
+        return NULL;
+
+    while (lines[i] && j < map_lines)
+    {
+        if (!found_map)
+        {
+            if (lines[i][0] == '1' || lines[i][0] == ' ')
+                found_map = 1;
+            else
+            {
+                i++;
+                continue;
+            }
+        }
+
+        int len = ft_strlen(lines[i]);
+        if (len > 0 && lines[i][len - 1] == '\n')
+            lines[i][len - 1] = '\0';
+
+        map[j++] = ft_strdup(lines[i]);
+        i++;
+    }
+    map[j] = NULL;
+    return map;
+}
+
 //padding logic → 1111␣␣
 void pad_map_lines(char **map, int height, int width)
 {
@@ -170,10 +168,10 @@ void pad_map_lines(char **map, int height, int width)
 void	free_map(char **map)
 {
 	int i;
-
+	i = 0;
 	if (!map)
 		return ;
-	i = 0;
+	
 	while (map[i])
 	{
 		free(map[i]);
@@ -181,13 +179,44 @@ void	free_map(char **map)
 	}
 	free(map);
 }
+t_error check_player_count(char **map)
+{
+    int player_count = 0;
+    int i = 0, j;
 
+    if (!map)
+    return (ERR_INVALID_MAP);
+
+    while (map[i])
+    {
+        j = 0;
+        while (map[i][j])
+        {
+            if (map[i][j] == 'N' || map[i][j] == 'S'
+                || map[i][j] == 'E' || map[i][j] == 'W')
+                player_count++;
+            j++;
+        }
+        i++;
+    }
+
+    if (player_count == 0)
+        return (ERR_NO_PLAYER);
+
+    if (player_count > 1)
+        return (ERR_DUPLICATE_PLAYER);
+    return (ERR_NONE);
+}
 t_error validate_map(t_game *info)
 {
+    t_error err;
+
     if (!info->map)
         return (ERR_INVALID_MAP);
     printf("Debug 1\n");
-
+    err = check_player_count(info->map);
+    if (err != ERR_NONE)
+        return (err);
     // Check borders - treat spaces as equivalent to walls for validation Top and bottom rows must be entirely '1' or ' '
     for (int x = 0; x < info->map_width; x++) {
         char top = info->map[0][x];

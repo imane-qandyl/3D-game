@@ -6,7 +6,7 @@
 /*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 08:48:11 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/04/09 19:58:57 by imqandyl         ###   ########.fr       */
+/*   Updated: 2025/04/26 17:25:34 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ char	*extract_path(const char *line)
 	path[i - start] = '\0';
 	return (path);
 }
+
 t_error	parse_textures(char *line, t_game *info)
 {
 	char	*path;
@@ -56,13 +57,41 @@ t_error	parse_textures(char *line, t_game *info)
 		return (ERR_MISSING_TEXTURE);
 
 	if (strncmp(line, "NO ", 3) == 0)
+	{	
+		if (info->no_texture)
+		{
+			free(path);
+			return (ERR_DUPLICATE_TEXTURE);
+		}
 		info->no_texture = path;
+	}
 	else if (strncmp(line, "SO ", 3) == 0)
+	{
+		if (info->so_texture)
+		{
+			free(path);
+			return (ERR_DUPLICATE_TEXTURE);
+		}
 		info->so_texture = path;
+	}
 	else if (strncmp(line, "WE ", 3) == 0)
+	{
+		if (info->we_texture)
+		{
+			free(path);
+			return (ERR_DUPLICATE_TEXTURE);
+		}
 		info->we_texture = path;
+	}
 	else if (strncmp(line, "EA ", 3) == 0)
+	{
+		if (info->ea_texture)
+		{
+			free(path);
+			return (ERR_DUPLICATE_TEXTURE);
+		}
 		info->ea_texture = path;
+	}	
 	else
 	{
 		free(path);

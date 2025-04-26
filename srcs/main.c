@@ -15,57 +15,81 @@
 static void cleanup_and_exit(t_game *game, char *error_msg)
 {
 	if (error_msg)
-		printf("Error\n%s\n", error_msg);
-	if (game->map)
-		free_map(game->map);
-	if (game->mlx && game->win)
-		mlx_destroy_window(game->mlx, game->win);
+		printf("Error : %s\n", error_msg);
+
+	if (game)
+	{
+		if (game->map)
+		{
+			free_map(game->map);
+			game->map = NULL;
+		}
+
+		if (game->mlx && game->win)
+		{
+			mlx_destroy_window(game->mlx, game->win);
+			game->win = NULL;
+		}
+		game->mlx = NULL;
+
+	}
+
 	exit(1);
 }
-void	temp_init_for_exec(t_game *game)
-{
-	FILE *fp;
 
-		// char *map[7] = {"111111" , "100001" , "1000P1" , "100001" , "100001" , "111111"};
-	// game.map = map;
+void temp_init_for_exec(t_game *game)
+{
+	int fd;
+	char **lines;
+
 	game->player_x = 4 * TILE_SIZE + (TILE_SIZE / 2);
 	game->player_y = 2 * TILE_SIZE + (TILE_SIZE / 2);
 	game->player_dx = cos(game->player_x) * 5;
 	game->player_dy = sin(game->player_y) * 5;
-	fp = fopen("./maps/level1.cub", "r+" );
-	if (!fp)
+
+	fd = open("./maps/level1.cub", O_RDONLY);
+	if (fd < 0)
 	{
 		perror("Error opening map file");
-		exit(1);  // or use cleanup_and_exit()
+		exit(1);
 	}
-	game->map_width = get_map_width(fp);
-		game->map_height = count_map_lines(fp);
+
+	lines = read_all_lines(fd); // read once
+	close(fd);
+
+	if (!lines)
+	{
+		perror("Error reading map file");
+		exit(1);
+	}
+
+	game->map_width = get_map_width(lines);
+	game->map_height = count_map_lines(lines);
+
+	free_lines(lines); // don't forget to free memory
 
 	printf("dx = %f\n", game->player_dx);
 }
 
-static int load_textures(t_game *game)
+int load_textures(t_game *game)
 {
 	int width, height;
 
-	// Load north texture
 	game->no_texture = mlx_xpm_file_to_image(game->mlx, game->no_texture, &width, &height);
 	if (!game->no_texture)
 		return (0);
+
 	game->tex_width = width;
 	game->tex_height = height;
 
-	// Load south texture
 	game->so_texture = mlx_xpm_file_to_image(game->mlx, game->so_texture, &width, &height);
 	if (!game->so_texture || width != game->tex_width || height != game->tex_height)
 		return (0);
 
-	// Load west texture
 	game->we_texture = mlx_xpm_file_to_image(game->mlx, game->we_texture, &width, &height);
 	if (!game->we_texture || width != game->tex_width || height != game->tex_height)
 		return (0);
 
-	// Load east texture
 	game->ea_texture = mlx_xpm_file_to_image(game->mlx, game->ea_texture, &width, &height);
 	if (!game->ea_texture || width != game->tex_width || height != game->tex_height)
 		return (0);
@@ -77,6 +101,7 @@ int main(int argc, char **argv)
 {
 	t_game game;
 	t_error err;
+	ft_bzero(&game, sizeof(t_game));
 
 	if (argc != 2)
 	{
@@ -96,17 +121,8 @@ int main(int argc, char **argv)
 	if (err != ERR_NONE)
 	{
 		print_error(err);
-		//free_map_info(&game);
-		exit(EXIT_FAILURE);
+		cleanup_and_exit(&game, "Failed parsing map file");
 	}
-	
-	// Load the map
-	game.map = read_map(argv[1]);
-	if (!game.map)
-		cleanup_and_exit(&game, "Failed to load map");
-
-	
-
 	// Create window
 	game.win = mlx_new_window(game.mlx, WIN_WIDTH, WIN_HEIGHT, "Cub3D");
 	if (!game.win)
@@ -119,24 +135,17 @@ int main(int argc, char **argv)
 	// Draw the map
 	draw_map(&game);
 	draw_player(&game);
+
 	mlx_hook(game.win, 2, 0, key_pressed, &game);
 	mlx_hook(game.win, 17, 0, finish, &game);
 	// Start the game loop
 	mlx_loop(game.mlx);
 
-	// Cleanup (this won't be reached due to mlx_loop)
-	//free_map_info(&game);
-	// draw_player(&game);
-	// mlx_hook(game.win, 2, 0, key_pressed, &game);
-	// mlx_hook(game.win, 17, 0, finish, &game);
-	// mlx_loop(game.mlx);
 	return (0);
 }
 
-int	finish(t_game *game, int i)
+int finish(t_game *game, int i)
 {
-	mlx_destroy_window(game->mlx, game->win);
-	free_map(game->map);
-	exit(i);
+	cleanup_and_exit(game, NULL);
 	return (i);
 }

@@ -6,7 +6,7 @@
 /*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 08:47:42 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/04/18 10:44:54 by imqandyl         ###   ########.fr       */
+/*   Updated: 2025/04/26 18:09:04 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ t_error	parse_color_value(const char *str, int *color)
 	while (str[i] && (str[i] == ' ' || str[i] == '\t'))
 		i++;
 	// Check if we have any non-whitespace characters left
-	if (str[i] && str[i] != ',' && str[i] != '\n')
+	if (str[i] && str[i] != ','&& str[i] != '\0')
 		return (ERR_INVALID_COLOR);
 	*color = value;
 	return (ERR_NONE);
@@ -62,9 +62,19 @@ t_error	parse_colors(char *line, t_game *info)
 	if (!line || !info || (line[0] != 'F' && line[0] != 'C'))
 		return (ERR_INVALID_COLOR);
 	if (line[0] == 'F')
-		target = info->floor_color;
+	{
+		
+		if (info->floor_color[0] != -1 || info->floor_color[1] != -1 || info->floor_color[2] != -1)
+			return (ERR_DUPLICATE_COLOR);
+	target = info->floor_color;
+	}
 	else if (line[0] == 'C')
-		target = info->ceiling_color;
+	{
+		if (info->ceiling_color[0] != -1 || info->ceiling_color[1] != -1 || info->ceiling_color[2] != -1)
+			return (ERR_DUPLICATE_COLOR);
+	target = info->ceiling_color;
+
+	}	
 	else
 		return (ERR_INVALID_COLOR);
 	// Skip identifier and whitespace
@@ -89,6 +99,13 @@ t_error	parse_colors(char *line, t_game *info)
 		}
 		i++;
 	}
+	//After parsing 3 colors, check if anything else left
+	while (*ptr == ' ' || *ptr == '\t')
+		ptr++; // skip any trailing spaces
+
+	if (*ptr != '\0')
+		return (ERR_INVALID_COLOR); // Unexpected garbage after colors
+
 	i = 0;
 	// Validate final values
 	while(i < 3)
