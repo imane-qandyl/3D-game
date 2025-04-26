@@ -175,4 +175,69 @@ float	length_of_raycast_H(t_game *game, float px, float py, double angle) // inc
 
 
 
+// didnt work well but better, innacurate points and over/undershooting 
+t_point horizontal_raycast(t_game *game)
+{
+	t_point	ph;
+	float	tempx;
+	float	tempy;
+
+	ph.px = WIN_WIDTH;
+	ph.py = WIN_HEIGHT;
+	tempx = game->p.px;
+	tempy = game->p.py;
+	if (game->angle == 0 || game->angle == 180 || game->angle == 360)
+		return(ph);
+	while (game->map[(int)(tempy/TILE_SIZE)][(int)(tempx/TILE_SIZE)])
+	{
+		if (((int)tempy % TILE_SIZE) == 0)
+		{
+			ph.px = tempx;
+			ph.py = (int)tempy;
+		}
+		if ((tempy + game->pdy) >= WIN_HEIGHT || (tempx + game->pdx) >= WIN_WIDTH || \
+			(tempy + game->pdy) < 0 || (tempx + game->pdx) < 0 || \
+			(int)((tempy + game->pdy)/TILE_SIZE) >= game->map_height || \
+			(int)((tempx + game->pdx)/TILE_SIZE) >= game->map_width)
+			break ;
+		tempx = (game->pdx + tempx);
+		tempy = (game->pdy + tempy);
+	}
+	printf("----- Horizontal ----- final phpy = %f     phpx = %f\n", ph.py, ph.px);
+	return (ph);
+}
+
+t_point vertical_raycast(t_game *game)
+{
+	t_point	pv;
+	float	tempx;
+	float	tempy;
+
+	pv.px = WIN_WIDTH;
+	pv.py = WIN_HEIGHT;
+	tempx = game->p.px;
+	tempy = game->p.py;
+	if (game->angle == 270 || game->angle == 90)
+		return(pv);
+	while (game->map[(int)(tempy/TILE_SIZE)][(int)(tempx/TILE_SIZE)])
+	{
+		if (((int)tempx % TILE_SIZE) == 0)
+		{
+			pv.px = (int)tempx;
+			pv.py = tempy;
+		}
+		if ((tempy + game->pdy) >= WIN_HEIGHT || (tempx + game->pdx) >= WIN_WIDTH || \
+			(tempy + game->pdy) < 0 || (tempx + game->pdx) < 0 || \
+			(int)((tempy + game->pdy)/TILE_SIZE) >= game->map_height || \
+			(int)((tempx + game->pdx)/TILE_SIZE) >= game->map_width)
+			break ;
+		tempx = (game->pdx + tempx);
+		tempy = (game->pdy + tempy);
+	}
+	printf("------ Vertical ------ final pvpy = %f     pvpx = %f\n", pv.py, pv.px);
+	return (pv);
+}
+
+
+
 

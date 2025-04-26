@@ -6,7 +6,7 @@
 /*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 08:19:31 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/04/24 19:11:56 by lalwafi          ###   ########.fr       */
+/*   Updated: 2025/04/26 17:30:25 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ t_point 	vertical_raycast(t_game *game);
 t_point		which_ray_shorter(t_game *game, t_point ph, t_point pv);
 void		draw_ray(t_game *game, t_point point);
 void		dda_thing(t_game *game);
+void		dda(t_game *game, t_point end, int color);
 
 
 void		my_mlx_pixel_put(t_data *data, int x, int y, int color);

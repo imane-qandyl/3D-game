@@ -6,7 +6,7 @@
 /*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 09:49:10 by lalwafi           #+#    #+#             */
-/*   Updated: 2025/04/24 21:31:22 by lalwafi          ###   ########.fr       */
+/*   Updated: 2025/04/26 17:30:06 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,47 @@ t_point	length_of_raycast_H(t_game *game) // increment Y
 }
 
 
+// t_point horizontal_raycast(t_game *game)
+// {
+// 	t_point	ph;
+// 	float	tempx;
+// 	float	tempy;
+
+// 	ph.px = WIN_WIDTH;
+// 	ph.py = WIN_HEIGHT;
+// 	tempx = game->p.px;
+// 	tempy = game->p.py;
+// 	if (game->angle == 0 || game->angle == 180 || game->angle == 360)
+// 		return(ph);
+// 	if (game->angle < 180) // looking down
+// 	{
+		
+// 	}
+// 	else if (game->angle > 180) // looking up
+// 	{
+		
+// 	}
+// 	printf("----- Horizontal ----- final phpy = %f     phpx = %f\n", ph.py, ph.px);
+// 	return (ph);
+// }
+
+// t_point vertical_raycast(t_game *game)
+// {
+// 	t_point	pv;
+// 	float	tempx;
+// 	float	tempy;
+
+// 	pv.px = WIN_WIDTH;
+// 	pv.py = WIN_HEIGHT;
+// 	tempx = game->p.px;
+// 	tempy = game->p.py;
+// 	if (game->angle == 270 || game->angle == 90)
+// 		return(pv);
+	
+// 	printf("------ Vertical ------ final pvpy = %f     pvpx = %f\n", pv.py, pv.px);
+// 	return (pv);
+// }
+
 t_point horizontal_raycast(t_game *game)
 {
 	t_point	ph;
@@ -77,7 +118,7 @@ t_point horizontal_raycast(t_game *game)
 		if (((int)tempy % TILE_SIZE) == 0)
 		{
 			ph.px = tempx;
-			ph.py = tempy;
+			ph.py = (int)tempy;
 		}
 		if ((tempy + game->pdy) >= WIN_HEIGHT || (tempx + game->pdx) >= WIN_WIDTH || \
 			(tempy + game->pdy) < 0 || (tempx + game->pdx) < 0 || \
@@ -107,7 +148,7 @@ t_point vertical_raycast(t_game *game)
 	{
 		if (((int)tempx % TILE_SIZE) == 0)
 		{
-			pv.px = tempx;
+			pv.px = (int)tempx;
 			pv.py = tempy;
 		}
 		if ((tempy + game->pdy) >= WIN_HEIGHT || (tempx + game->pdx) >= WIN_WIDTH || \
@@ -154,5 +195,24 @@ void	draw_ray(t_game *game, t_point point)
 
 void	dda_thing(t_game *game)
 {
-	draw_ray(game, which_ray_shorter(game, horizontal_raycast(game), vertical_raycast(game)));
+	// draw_ray(game, which_ray_shorter(game, horizontal_raycast(game), vertical_raycast(game)));
+	dda(game, which_ray_shorter(game, horizontal_raycast(game), vertical_raycast(game)), 0x0000FF);
+}
+
+void	dda(t_game *game, t_point end, int color)
+{
+	float	z;
+	float	dy;
+	float	dx;
+	int		i;
+
+	z = sqrtf((end.px * end.px) + (end.py * end.py));
+	dx = (end.px - game->p.px) / z;
+	dy = (end.py - game->p.py) / z;
+	i = -1;
+	while (i++ <= z)
+	{
+		my_mlx_pixel_put(&game->img, game->p.px + ((i - 1)*dx), \
+			game->p.py + ((i - 1)*dy), color);
+	}
 }

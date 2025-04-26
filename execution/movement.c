@@ -6,7 +6,7 @@
 /*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 15:26:04 by lalwafi           #+#    #+#             */
-/*   Updated: 2025/04/24 19:12:33 by lalwafi          ###   ########.fr       */
+/*   Updated: 2025/04/26 17:32:10 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,21 +56,29 @@ int	movement(t_game *game)
 	{
 		move_player_1px(game, 1, game->pdx, game->pdy);
 		print_everything_for_debug(game);
+		draw_map(game);
+		draw_player(game);
 	}
 	if (game->key.a == true)
 	{
 		move_player_1px(game, 1, change_angle(game->angle, 270, 1), change_angle(game->angle, 270, 2));
 		print_everything_for_debug(game);
+		draw_map(game);
+		draw_player(game);
 	}
 	if (game->key.s == true)
 	{
 		move_player_1px(game, 1, change_angle(game->angle, 180, 1), change_angle(game->angle, 180, 2));
 		print_everything_for_debug(game);
+		draw_map(game);
+		draw_player(game);
 	}
 	if (game->key.d == true)
 	{
 		move_player_1px(game, 1, change_angle(game->angle, 90, 1), change_angle(game->angle, 90, 2));
 		print_everything_for_debug(game);
+		draw_map(game);
+		draw_player(game);
 	}
 	if (game->key.left == true)
 	{
@@ -80,6 +88,8 @@ int	movement(t_game *game)
 		game->pdx = cosf(game->angle * PI/180);
 		game->pdy = sinf(game->angle * PI/180);
 		print_everything_for_debug(game);
+		draw_map(game);
+		draw_player(game);
 	}
 	if (game->key.right == true)
 	{
@@ -89,9 +99,9 @@ int	movement(t_game *game)
 		game->pdx = cosf(game->angle * PI/180);
 		game->pdy = sinf(game->angle * PI/180);
 		print_everything_for_debug(game);
+		draw_map(game);
+		draw_player(game);
 	}
-	draw_map(game);
-	draw_player(game);
 	return (0);
 }
 
