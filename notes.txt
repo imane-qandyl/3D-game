@@ -1,7 +1,8 @@
-- fill
-    - p.px && p.py
-    - player_dir
+- needed from parsing
+    - p.px && p.py (player location) on the map 
+    - player_dir (eg; 'N' , 'S' , 'E' , 'W')
 
--problem with walls like 
+-problem with walls for execution
         0001
         111
+        player is able to pass through the crack
