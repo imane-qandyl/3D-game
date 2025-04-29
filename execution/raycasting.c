@@ -6,161 +6,29 @@
 /*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 09:49:10 by lalwafi           #+#    #+#             */
-/*   Updated: 2025/04/26 17:30:06 by lalwafi          ###   ########.fr       */
+/*   Updated: 2025/04/29 14:30:33 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-
-t_point	length_of_raycast_H(t_game *game) // increment Y 
-{
-	float	lx;
-	t_point	ph;
-
-	ph.px = WIN_WIDTH;
-	ph.py = WIN_HEIGHT;
-	if (game->angle == 0 || game->angle == 180 || game->angle == 360)
-		return(ph);
-	lx = 0;
-	printf("------------------------ H\npx = %f\npy = %f\nangle = %f\n\n", game->p.px, game->p.py, game->angle);
-	if (game->angle > 180 && game->angle <= 360)
-	{
-		ph.py = (int)(game->p.py/TILE_SIZE) * TILE_SIZE;
-		lx = fabsf(ph.py - game->p.py) / (tanf(game->angle * PI/180)) * -1;
-		ph.px = fabsf(lx - game->p.px);
-		printf("ph.px = %f\nph.py = %f\nlx = %f\n\n", ph.px, ph.py, lx);
-		while (ph.py > 0 && ph.px > 0 \
-			&& ph.py < WIN_HEIGHT && ph.px < WIN_WIDTH \
-			&& (int)((ph.py + TILE_SIZE)/TILE_SIZE) < game->map_height && (int)(ph.px/TILE_SIZE) < game->map_width \
-			&& game->map[(int)((ph.py + TILE_SIZE)/TILE_SIZE)][((int)(ph.px/TILE_SIZE))] != '1')
-		{
-			ph.py -= TILE_SIZE;
-			lx = fabsf(ph.py - game->p.py) / (tanf(game->angle * PI/180)) * -1;
-			ph.px = fabsf(lx - game->p.px);
-			printf("ph.px = %f\nph.py = %f\nlx = %f\n\n", ph.px, ph.py, lx);
-		}
-	}
-	else if (game->angle > 0 && game->angle < 180)
-	{
-		ph.py = (int)(game->p.py/TILE_SIZE) * TILE_SIZE + 1;
-		lx = fabsf(ph.py - game->p.py) / (tanf(game->angle * PI/180)) * -1;
-		ph.px = fabsf(lx - game->p.px);
-		while (ph.py > 0 && ph.px > 0 \
-			&& ph.py < WIN_HEIGHT && ph.px < WIN_WIDTH \
-			&& game->map[(int)((ph.py - TILE_SIZE)/TILE_SIZE)][((int)(ph.px/TILE_SIZE))] != '1')
-		{
-			ph.py += TILE_SIZE;
-			lx = fabsf(ph.py - game->p.py) / (tanf(game->angle * PI/180)) * -1;
-			ph.px = fabsf(lx - game->p.px);
-		}
-	}
-	printf("------------------------ H\npx = %f\npy = %f\n new_x = %f\n new_y = %f\nangle = %f\n\n", game->p.px, game->p.py, ph.px, ph.py, game->angle);
-	return (ph);
-}
-
-
-// t_point horizontal_raycast(t_game *game)
-// {
-// 	t_point	ph;
-// 	float	tempx;
-// 	float	tempy;
-
-// 	ph.px = WIN_WIDTH;
-// 	ph.py = WIN_HEIGHT;
-// 	tempx = game->p.px;
-// 	tempy = game->p.py;
-// 	if (game->angle == 0 || game->angle == 180 || game->angle == 360)
-// 		return(ph);
-// 	if (game->angle < 180) // looking down
-// 	{
-		
-// 	}
-// 	else if (game->angle > 180) // looking up
-// 	{
-		
-// 	}
-// 	printf("----- Horizontal ----- final phpy = %f     phpx = %f\n", ph.py, ph.px);
-// 	return (ph);
-// }
-
-// t_point vertical_raycast(t_game *game)
-// {
-// 	t_point	pv;
-// 	float	tempx;
-// 	float	tempy;
-
-// 	pv.px = WIN_WIDTH;
-// 	pv.py = WIN_HEIGHT;
-// 	tempx = game->p.px;
-// 	tempy = game->p.py;
-// 	if (game->angle == 270 || game->angle == 90)
-// 		return(pv);
-	
-// 	printf("------ Vertical ------ final pvpy = %f     pvpx = %f\n", pv.py, pv.px);
-// 	return (pv);
-// }
-
-t_point horizontal_raycast(t_game *game)
+t_point just_raycast(t_game *game)
 {
 	t_point	ph;
-	float	tempx;
-	float	tempy;
+	// float	tempx;
+	// float	tempy;
 
-	ph.px = WIN_WIDTH;
-	ph.py = WIN_HEIGHT;
-	tempx = game->p.px;
-	tempy = game->p.py;
-	if (game->angle == 0 || game->angle == 180 || game->angle == 360)
-		return(ph);
-	while (game->map[(int)(tempy/TILE_SIZE)][(int)(tempx/TILE_SIZE)])
+	// ph.px = WIN_WIDTH;
+	// ph.py = WIN_HEIGHT;
+	ph.px = game->p.px;
+	ph.py = game->p.py;
+	while (game->map[(int)((game->pdy + ph.py)/TILE_SIZE)][(int)((game->pdx + ph.px)/TILE_SIZE)] != '1')
 	{
-		if (((int)tempy % TILE_SIZE) == 0)
-		{
-			ph.px = tempx;
-			ph.py = (int)tempy;
-		}
-		if ((tempy + game->pdy) >= WIN_HEIGHT || (tempx + game->pdx) >= WIN_WIDTH || \
-			(tempy + game->pdy) < 0 || (tempx + game->pdx) < 0 || \
-			(int)((tempy + game->pdy)/TILE_SIZE) >= game->map_height || \
-			(int)((tempx + game->pdx)/TILE_SIZE) >= game->map_width)
-			break ;
-		tempx = (game->pdx + tempx);
-		tempy = (game->pdy + tempy);
+		ph.px = (game->pdx + ph.px);
+		ph.py = (game->pdy + ph.py);
 	}
-	printf("----- Horizontal ----- final phpy = %f     phpx = %f\n", ph.py, ph.px);
+	printf("----- just raycast ----- final phpy = %f     phpx = %f\n", ph.py, ph.px);
 	return (ph);
-}
-
-t_point vertical_raycast(t_game *game)
-{
-	t_point	pv;
-	float	tempx;
-	float	tempy;
-
-	pv.px = WIN_WIDTH;
-	pv.py = WIN_HEIGHT;
-	tempx = game->p.px;
-	tempy = game->p.py;
-	if (game->angle == 270 || game->angle == 90)
-		return(pv);
-	while (game->map[(int)(tempy/TILE_SIZE)][(int)(tempx/TILE_SIZE)])
-	{
-		if (((int)tempx % TILE_SIZE) == 0)
-		{
-			pv.px = (int)tempx;
-			pv.py = tempy;
-		}
-		if ((tempy + game->pdy) >= WIN_HEIGHT || (tempx + game->pdx) >= WIN_WIDTH || \
-			(tempy + game->pdy) < 0 || (tempx + game->pdx) < 0 || \
-			(int)((tempy + game->pdy)/TILE_SIZE) >= game->map_height || \
-			(int)((tempx + game->pdx)/TILE_SIZE) >= game->map_width)
-			break ;
-		tempx = (game->pdx + tempx);
-		tempy = (game->pdy + tempy);
-	}
-	printf("------ Vertical ------ final pvpy = %f     pvpx = %f\n", pv.py, pv.px);
-	return (pv);
 }
 
 t_point	which_ray_shorter(t_game *game, t_point ph, t_point pv)
@@ -175,7 +43,7 @@ t_point	which_ray_shorter(t_game *game, t_point ph, t_point pv)
 	return (pv);
 }
 
-void	draw_ray(t_game *game, t_point point)
+void	draw_ray(t_game *game, t_point point, int color)
 {
 	float	dx;
 	float	dy;
@@ -183,20 +51,77 @@ void	draw_ray(t_game *game, t_point point)
 	dx = game->pdx + game->p.px;
 	dy = game->pdy + game->p.py;
 	
-	while ((int)dx != (int)point.px && (int)dx != (int)point.px)
+	while ((int)dx != (int)point.px || (int)dy != (int)point.py)
 	{
-		printf("----------ray---------\ndx = %f\ndy = %f\npointx = %f\npointy = %f\n----------ray---------\n", dx, dy, point.px, point.py);
-		my_mlx_pixel_put(&game->img, dx, \
-			dy, 0x0000FF);
+		if (dy > WIN_HEIGHT || dx > WIN_WIDTH || dy < 0 || dx < 0 || \
+			(int)((dy)/TILE_SIZE) >= game->map_height || \
+			(int)((dx)/TILE_SIZE) >= game->map_width)
+			break ;
+		// printf("----------ray---------\ndx = %f\ndy = %f\npointx = %f\npointy = %f\n----------ray---------\n", dx, dy, point.px, point.py);
+		my_mlx_pixel_put(&game->img, dx, dy, color);
 		dx += game->pdx;
 		dy += game->pdy;
 	}
 }
 
+void	draw_ray_custom_angle(t_game *game, t_point point, int angle, int color)
+{
+	float	dx;
+	float	dy;
+	float	x;
+	float	y;
+
+	dx = cosf(angle * PI/180);
+	dy = sinf(angle * PI/180);
+	x = game->p.px;
+	y = game->p.py;
+	
+	while ((int)x != (int)point.px || (int)y != (int)point.py)
+	{
+		if (y > WIN_HEIGHT || x > WIN_WIDTH || y < 0 || x < 0 || \
+			(int)((y)/TILE_SIZE) >= game->map_height || \
+			(int)((x)/TILE_SIZE) >= game->map_width)
+			break ;
+		// printf("----------ray---------\ndx = %f\ndy = %f\npointx = %f\npointy = %f\n----------ray---------\n", x, y, point.px, point.py);
+		my_mlx_pixel_put(&game->img, x, y, color);
+		x += dx;
+		y += dy;
+	}
+}
+
+t_point	just_raycast_custom_angle(t_game *game, int angle)
+{
+	float	dx;
+	float	dy;
+	t_point	ph;
+
+	dx = cosf(angle * PI/180);
+	dy = sinf(angle * PI/180);
+	ph.px = game->p.px;
+	ph.py = game->p.py;
+	
+	while (game->map[(int)((dy + ph.py)/TILE_SIZE)][(int)((dx + ph.px)/TILE_SIZE)] != '1')
+	{
+		ph.px = (dx + ph.px);
+		ph.py = (dy + ph.py);
+	}
+	printf("----- just raycast ----- final phpy = %f     phpx = %f\n", ph.py, ph.px);
+	return (ph);
+}
+
 void	dda_thing(t_game *game)
 {
-	// draw_ray(game, which_ray_shorter(game, horizontal_raycast(game), vertical_raycast(game)));
-	dda(game, which_ray_shorter(game, horizontal_raycast(game), vertical_raycast(game)), 0x0000FF);
+	// draw_ray(game, which_ray_shorter(game, horizontal_raycast(game), vertical_raycast(game)), 0x0000FF);
+	// dda(game, which_ray_shorter(game, horizontal_raycast(game), vertical_raycast(game)), 0x0000FF);
+	// draw_ray(game, horizontal_raycast(game), 0x0000FF);
+	// draw_ray(game, vertical_raycast(game), 0x00FFFF);
+	int	i;
+	i = 30;
+	while (i >= -30)
+	{
+		draw_ray_custom_angle(game, just_raycast_custom_angle(game, (game->angle + i)),(game->angle + i), 0x00FFFF);
+		i--;
+	}
 }
 
 void	dda(t_game *game, t_point end, int color)

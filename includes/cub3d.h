@@ -6,7 +6,7 @@
 /*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 08:19:31 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/04/26 17:30:25 by lalwafi          ###   ########.fr       */
+/*   Updated: 2025/04/29 14:30:49 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <math.h>
 # include <stdbool.h>
 
-# define TILE_SIZE 32
+# define TILE_SIZE 64
 # define WIN_WIDTH 1100
 # define WIN_HEIGHT 500
 # define PI 3.141592653589
@@ -121,12 +121,11 @@ int			finish(t_game *game, int i);
 // void		get_end_of_vector(float px, float py, double angle);
 float		change_angle(float angle, float change, int flag);
 void		draw_ray_5px(t_game *game);
-t_point		length_of_raycast_H(t_game *game);
-float		length_of_raycast_V(t_game *game, float px, float py, int angle);
-t_point 	horizontal_raycast(t_game *game);
-t_point 	vertical_raycast(t_game *game);
 t_point		which_ray_shorter(t_game *game, t_point ph, t_point pv);
-void		draw_ray(t_game *game, t_point point);
+void		draw_ray(t_game *game, t_point point, int color);
+void		draw_ray_custom_angle(t_game *game, t_point point, int angle, int color);
+t_point		just_raycast(t_game *game);
+t_point		just_raycast_custom_angle(t_game *game, int angle);
 void		dda_thing(t_game *game);
 void		dda(t_game *game, t_point end, int color);
 
