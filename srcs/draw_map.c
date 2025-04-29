@@ -6,44 +6,35 @@
 /*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 08:32:20 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/04/08 10:19:45 by imqandyl         ###   ########.fr       */
-/*   Updated: 2025/04/09 20:05:38 by lalwafi          ###   ########.fr       */
+/*   Updated: 2025/04/24 19:12:47 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
+{
+	char	*dst;
+
+	if ((y) >= WIN_HEIGHT || (x) >= WIN_WIDTH || \
+		(y) < 0 || (x) < 0)
+		return ;
+	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+	*(unsigned int*)dst = color;
+}
+
 void	draw_square(t_game *game, int x, int y, int color)
 {
 	int	i;
 	int	j;
-	void *texture;
 
-	// If it's a wall (color is red), determine which texture to use based on position
-	if (color == 0xFF0000)
-	{
-		// Default to north texture
-		texture = game->no_texture;
-		
-		// Check surrounding cells to determine wall orientation
-		if (y/TILE_SIZE + 1 < game->map_height && game->map[y/TILE_SIZE + 1][x/TILE_SIZE] == '0')
-			texture = game->so_texture;
-		else if (x/TILE_SIZE + 1 < game->map_width && game->map[y/TILE_SIZE][x/TILE_SIZE + 1] == '0')
-			texture = game->ea_texture;
-		else if (x/TILE_SIZE > 0 && game->map[y/TILE_SIZE][x/TILE_SIZE - 1] == '0')
-			texture = game->we_texture;
-
-		mlx_put_image_to_window(game->mlx, game->win, texture, x, y);
-		return;
-	}
-
-	i = 0;
+	i = 0; // change back to 0, i just want the lines on the map for now
 	while (i < TILE_SIZE)
 	{
-		j = 0;
+		j = 0; // change back to 0 also
 		while (j < TILE_SIZE)
 		{
-			mlx_pixel_put(game->mlx, game->win, x + j, y + i, color);
+			my_mlx_pixel_put(&game->img, x + j, y + i, color);
 			j++;
 		}
 		i++;
@@ -54,7 +45,12 @@ void	draw_map(t_game *game)
 {
 	int	y;
 	int	x;
-
+	
+	if (game->img.img)
+		mlx_destroy_image(game->mlx, game->img.img);
+	game->img.img = mlx_new_image(game->mlx, WIN_WIDTH, WIN_HEIGHT);
+	game->img.addr = mlx_get_data_addr(game->img.img, &game->img.bits_per_pixel, &game->img.line_length,
+								&game->img.endian);
 	y = 0;
 	while (game->map[y])
 	{
@@ -73,19 +69,34 @@ void	draw_map(t_game *game)
 
 void	draw_player(t_game *game)
 {
-	int	x;
-	int	y;
+	my_mlx_pixel_put(&game->img, game->p.px, \
+		game->p.py, 0xFFFF00);
+	my_mlx_pixel_put(&game->img, game->p.px + 1, \
+		game->p.py, 0xFFFF00);
+	my_mlx_pixel_put(&game->img, game->p.px, \
+		game->p.py + 1, 0xFFFF00);
+	my_mlx_pixel_put(&game->img, game->p.px + 1, \
+		game->p.py + 1, 0xFFFF00);
+	// draw_ray_5px(game);
+	dda_thing(game);
+	mlx_put_image_to_window(game->mlx, game->win, game->img.img, 0, 0);
+}
+
+void	draw_ray_5px(t_game *game)
+{
+	float	dx;
+	float	dy;
+	int		i;
+
+	dx = game->pdx;
+	dy = game->pdy;
 	
-	x = -1;
-	y = -1;
-	while (++y < 4)
+	i = 10;
+	while (i-- > 0)
 	{
-		while (++x < 4)
-		{
-			mlx_pixel_put(game->mlx, game->win,\
-						game->player_x + x,\
-						game->player_y + y, 0xFFFF00);
-		}
-		x = -1;
+		my_mlx_pixel_put(&game->img, game->p.px + dx, \
+			game->p.py + dy, 0x0000FF);
+		dx += game->pdx;
+		dy += game->pdy;
 	}
 }

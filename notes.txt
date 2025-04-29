@@ -1,0 +1,7 @@
+- fill
+    - p.px && p.py
+    - player_dir
+
+-problem with walls like 
+        0001
+        111
