@@ -6,7 +6,7 @@
 /*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 15:26:04 by lalwafi           #+#    #+#             */
-/*   Updated: 2025/04/29 10:09:27 by lalwafi          ###   ########.fr       */
+/*   Updated: 2025/04/29 14:36:34 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	movement(t_game *game)
 	}
 	if (game->key.left == true)
 	{
-		game->angle -= 1;
+		game->angle -= 3;
 		if (game->angle < 0)
 			game->angle += 360;
 		game->pdx = cosf(game->angle * PI/180);
@@ -93,7 +93,7 @@ int	movement(t_game *game)
 	}
 	if (game->key.right == true)
 	{
-		game->angle += 1;
+		game->angle += 3;
 		if (game->angle >= 360)
 			game->angle -= 360;
 		game->pdx = cosf(game->angle * PI/180);
