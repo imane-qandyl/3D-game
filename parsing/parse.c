@@ -6,7 +6,7 @@
 /*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 09:03:47 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/04/26 18:24:17 by imqandyl         ###   ########.fr       */
+/*   Updated: 2025/05/03 12:23:30 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,8 @@ t_error parse_file(const char *filename, t_game *info)
 	// Get map dimensions
 	info->map_height = count_map_lines(lines);
 	info->map_width = get_map_width(lines);
-
+	printf("height:%d\n",info->map_height);
+	printf("width:%d\n",info->map_width);
 	if (info->map_height <= 0 || info->map_width <= 0)
 	{
 		free_lines(lines);

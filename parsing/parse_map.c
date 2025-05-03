@@ -6,7 +6,7 @@
 /*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 11:09:12 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/04/26 18:40:30 by imqandyl         ###   ########.fr       */
+/*   Updated: 2025/05/03 13:09:10 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int count_map_lines(char **lines)
     int i = 0;
     int count = 0;
     int found_map = 0;
-
     while (lines[i])
     {
         int len = ft_strlen(lines[i]);
@@ -56,9 +55,15 @@ int get_map_width(char **lines)
 
     while (lines[i])
     {
-        if (!found_map && (lines[i][0] == '\n' || lines[i][0] == 'N' || lines[i][0] == 'S'
-            || lines[i][0] == 'W' || lines[i][0] == 'E' || lines[i][0] == 'F' || lines[i][0] == 'C'))
-        {
+        if (!found_map && (
+            lines[i][0] == '\0' ||
+            ft_strncmp(lines[i], "NO ", 3) == 0 ||
+            ft_strncmp(lines[i], "SO ", 3) == 0 ||
+            ft_strncmp(lines[i], "WE ", 3) == 0 ||
+            ft_strncmp(lines[i], "EA ", 3) == 0 ||
+            ft_strncmp(lines[i], "F ", 2) == 0 ||
+            ft_strncmp(lines[i], "C ", 2) == 0))
+    {
             i++;
             continue;
         }
@@ -66,13 +71,14 @@ int get_map_width(char **lines)
         found_map = 1;
 
         int len = ft_strlen(lines[i]);
-        if (len > 0 && lines[i][len - 1] == '\n')
+        if (len > 0 && lines[i][len - 1] == '\n') //removes trailing characters 
             len--;
+            //printf("Line %d: '%s' (length %zu)\n", i, lines[i], ft_strlen(lines[i]));
 
         if (len > max_width)
             max_width = len;
-
         i++;
+
     }
     return max_width;
 }
@@ -136,8 +142,11 @@ char **read_map(char **lines)
         }
 
         int len = ft_strlen(lines[i]);
-        if (len > 0 && lines[i][len - 1] == '\n')
-            lines[i][len - 1] = '\0';
+        while (len > 0 && (lines[i][len - 1] == '\n' || lines[i][len - 1] == ' '))
+        len--;
+        // if (len > 0 && lines[i][len - 1] == '\n')
+        //     lines[i][len - 1] = '\0';
+        printf("DEBUG: calling ft_strdup with lines[%d] = %s\n", i, lines[i]);
 
         map[j++] = ft_strdup(lines[i]);
         i++;
