@@ -24,8 +24,8 @@ void	init_map_info(t_game *info)
 	info->player_dir = '\0';
 	info->p.px = -1;
 	info->p.py = -1;
-	memset(info->floor_color, -1, sizeof(info->floor_color));
-	memset(info->ceiling_color, -1, sizeof(info->ceiling_color));
+	ft_memset(info->floor_color, -1, sizeof(info->floor_color));
+	ft_memset(info->ceiling_color, -1, sizeof(info->ceiling_color));
 
 	}
 
@@ -84,6 +84,7 @@ t_error parse_file(const char *filename, t_game *info)
 		return (ERR_INVALID_FILE);
 
 	fd = open(filename, O_RDONLY);
+
 	if (fd < 0)
 		return (ERR_INVALID_FILE);
 
@@ -98,6 +99,7 @@ t_error parse_file(const char *filename, t_game *info)
 	// Get map dimensions
 	info->map_height = count_map_lines(lines);
 	info->map_width = get_map_width(lines);
+	
 	printf("height:%d\n",info->map_height);
 	printf("width:%d\n",info->map_width);
 	if (info->map_height <= 0 || info->map_width <= 0)

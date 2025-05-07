@@ -28,6 +28,7 @@ SRC     = srcs/main.c \
 		  parsing/parse.c \
           parsing/parse_textures.c \
           parsing/parse_colors.c \
+		  parsing/parse_player.c \
 		  get_next_line/get_next_line.c\
 		  get_next_line/get_next_line_utils.c
 

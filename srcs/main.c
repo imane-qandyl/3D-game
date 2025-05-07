@@ -52,13 +52,9 @@ static void cleanup_and_exit(t_game *game, char *error_msg)
 
 void temp_init_for_exec(t_game *game)
 {
-	int fd;
-	char **lines;
-
-	game->player_dir = 'N';
+	game->player_dir = get_player_direction(game);
 	game->angle = get_angle(game->player_dir);
-	game->p.px = 5 * TILE_SIZE + (TILE_SIZE / 2);
-	game->p.py = 4 * TILE_SIZE + (TILE_SIZE / 2);
+	get_player_position(game);  // Use local variables
 	game->pdx = cos(game->p.px) * 5;
 	game->pdy = sin(game->p.py) * 5;
 	game->key.w = false;
@@ -69,26 +65,6 @@ void temp_init_for_exec(t_game *game)
 	game->key.right = false;
 	game->img.img = NULL;
 
-	fd = open("./maps/level1.cub", O_RDONLY);
-	if (fd < 0)
-	{
-		perror("Error opening map file");
-		exit(1);
-	}
-
-	lines = read_all_lines(fd); // read once
-	close(fd);
-
-	if (!lines)
-	{
-		perror("Error reading map file");
-		exit(1);
-	}
-
-	game->map_width = get_map_width(lines);
-	game->map_height = count_map_lines(lines);
-
-	free_lines(lines); // don't forget to free memory
 
 	printf("dx = %f\n", game->pdx);
 }
@@ -131,21 +107,20 @@ int main(int argc, char **argv)
 		printf("Usage: %s <map_file.cub>\n", argv[0]);
 		return (1);
 	}
-	// Initialize MLX
-	temp_init_for_exec(&game);
-	game.mlx = mlx_init();
-	if (!game.mlx)
-		cleanup_and_exit(&game, "Failed to initialize MLX");
 	// Initialize game structure
 	init_map_info(&game);
-
-	// Parse the map file
 	err = parse_file(argv[1], &game);
 	if (err != ERR_NONE)
 	{
 		print_error(err);
 		cleanup_and_exit(&game, "Failed parsing map file");
 	}
+	// Initialize MLX
+	temp_init_for_exec(&game);
+	game.mlx = mlx_init();
+	if (!game.mlx)
+		cleanup_and_exit(&game, "Failed to initialize MLX");
+
 	// Create window
 	game.win = mlx_new_window(game.mlx, WIN_WIDTH, WIN_HEIGHT, "Cub3D");
 	if (!game.win)
@@ -154,10 +129,6 @@ int main(int argc, char **argv)
 	// Load textures
 	if (!load_textures(&game))
 		cleanup_and_exit(&game, "Failed to load textures");
-
-	// temporarily setting player positions
-	game.p.px = 22 * TILE_SIZE + (TILE_SIZE / 2);
-	game.p.py = 2 * TILE_SIZE + (TILE_SIZE / 2);
 
 	int j = -1;
 	while (game.map[++j])

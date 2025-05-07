@@ -132,6 +132,8 @@ char	*extract_path(const char *line);
 int	is_valid_color(int value);
 t_error	parse_color_value(const char *str, int *color);
 t_error check_player_count(char **map);
+char get_player_direction(t_game *game);
+void get_player_position(t_game *game);
 
 // t_error validate_map(char **map_lines, t_game *info);
 t_error validate_map(t_game *info);

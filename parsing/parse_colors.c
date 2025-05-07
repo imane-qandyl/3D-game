@@ -26,7 +26,6 @@ t_error	parse_color_value(const char *str, int *color)
 	value = 0;
 
 	// Skip leading whitespace
-	// printf("%d\n", *color);
 	while (str[i] && (str[i] == ' ' || str[i] == '\t'))
 	i++;
 
@@ -59,24 +58,24 @@ t_error	parse_colors(char *line, t_game *info)
 	int i;
 	i = 0;
 
-	if (!line || !info || (line[0] != 'F' && line[0] != 'C'))
+	if (!line || !info || (line[0] != 'F' && line[0] != 'C')) {
 		return (ERR_INVALID_COLOR);
+	}
 	if (line[0] == 'F')
 	{
-		
 		if (info->floor_color[0] != -1 || info->floor_color[1] != -1 || info->floor_color[2] != -1)
 			return (ERR_DUPLICATE_COLOR);
-	target = info->floor_color;
+		target = info->floor_color;
 	}
 	else if (line[0] == 'C')
 	{
 		if (info->ceiling_color[0] != -1 || info->ceiling_color[1] != -1 || info->ceiling_color[2] != -1)
 			return (ERR_DUPLICATE_COLOR);
-	target = info->ceiling_color;
-
+		target = info->ceiling_color;
 	}	
-	else
+	else {
 		return (ERR_INVALID_COLOR);
+	}
 	// Skip identifier and whitespace
 	ptr = line + 1;
 	while (*ptr && (*ptr == ' ' || *ptr == '\t'))
@@ -85,9 +84,10 @@ t_error	parse_colors(char *line, t_game *info)
 	while(i < 3) //rgb
 	{
 		// printf("%s\n",ptr);
-		if ((err = parse_color_value(ptr,&target[i])) != ERR_NONE)
-			//printf("Hello");
+		if ((err = parse_color_value(ptr, &target[i])) != ERR_NONE) {
+			printf("Hello");
 			return (err);		
+		}
 	// Skip to next component
 		while (*ptr && *ptr != ',')
 		ptr++;
@@ -105,7 +105,6 @@ t_error	parse_colors(char *line, t_game *info)
 
 	if (*ptr != '\0')
 		return (ERR_INVALID_COLOR); // Unexpected garbage after colors
-
 	i = 0;
 	// Validate final values
 	while(i < 3)

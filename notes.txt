@@ -6,3 +6,12 @@
         0001
         111
         player is able to pass through the crack
+
+
+Needed from executor
+    When I attempted to make the player pass through the crack, he actually wasn't going through. 
+    But the main issue is that the raycaster keeps going and it does not know when to stop because 
+    there is no wall along the crack. So, probably the dda enters an infinte loop since there technically 
+    is no end to the map in that case. So maybe, you can try to put a cap on the size of the ray line so 
+    that if it reaches a certain limit, it stops so that the dda algorithm doesn't segfault at function 
+    just_raycast_custom_angle in line raycasting.c:103
