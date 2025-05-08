@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   draw_map.c                                         :+:      :+:    :+:   */
+/*   draw_2d.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 08:32:20 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/04/24 19:12:47 by lalwafi          ###   ########.fr       */
+/*   Updated: 2025/05/07 05:12:00 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	draw_square(t_game *game, int x, int y, int color)
 	}
 }
 
-void	draw_map(t_game *game)
+void	draw_2d(t_game *game)
 {
 	int	y;
 	int	x;
@@ -65,6 +65,8 @@ void	draw_map(t_game *game)
 		}
 		y++;
 	}
+	draw_player(game);
+	mlx_put_image_to_window(game->mlx, game->win, game->img.img, 0, 0);
 }
 
 void	draw_player(t_game *game)
@@ -79,9 +81,19 @@ void	draw_player(t_game *game)
 		game->p.py + 1, 0xFFFF00);
 	// draw_ray_5px(game);
 	dda_thing(game);
-	mlx_put_image_to_window(game->mlx, game->win, game->img.img, 0, 0);
 }
 
+void	draw_3d(t_game *game)
+{
+	if (game->img.img)
+		mlx_destroy_image(game->mlx, game->img.img);
+	game->img.img = mlx_new_image(game->mlx, WIN_WIDTH, WIN_HEIGHT);
+	game->img.addr = mlx_get_data_addr(game->img.img, &game->img.bits_per_pixel, &game->img.line_length,
+								&game->img.endian);
+	draw_background(game, 0x84c8d1, 0x1f5c2c);
+	dda_only_3d(game);
+	mlx_put_image_to_window(game->mlx, game->win, game->img.img, 0, 0);
+}
 void	draw_ray_5px(t_game *game)
 {
 	float	dx;

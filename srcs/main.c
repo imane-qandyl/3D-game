@@ -13,11 +13,11 @@
 
 int	get_angle(char c)
 {
-	if (c == 'N')
+	if (c == 'S')
 		return (90);
 	if (c == 'W')
 		return (180);
-	if (c == 'S')
+	if (c == 'N')
 		return (270);
 	if (c == 'E')
 		return (0);
@@ -87,12 +87,12 @@ int load_textures(t_game *game)
 	game->we_texture = mlx_xpm_file_to_image(game->mlx, game->we_texture, &width, &height);
 	if (!game->we_texture || width != game->tex_width || height != game->tex_height)
 		return (0);
-		
-		game->ea_texture = mlx_xpm_file_to_image(game->mlx, game->ea_texture, &width, &height);
-		if (!game->ea_texture || width != game->tex_width || height != game->tex_height)
-		return (0);
-		
-		return (1);
+	
+	game->ea_texture = mlx_xpm_file_to_image(game->mlx, game->ea_texture, &width, &height);
+	if (!game->ea_texture || width != game->tex_width || height != game->tex_height)
+	return (0);
+	
+	return (1);
 }
 	
 
@@ -136,8 +136,9 @@ int main(int argc, char **argv)
 
 
 	// Draw the map
-	draw_map(&game);
-	draw_player(&game);
+	draw_3d(&game);
+	// draw_2d(&game);
+
 	mlx_hook(game.win, 2, 1L << 0, key_pressed, &game);
 	mlx_hook(game.win, 3, 1L << 1, key_release, &game); // key release
 	mlx_hook(game.win, 17, 1L << 0, finish, &game);

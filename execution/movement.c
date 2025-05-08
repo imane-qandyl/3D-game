@@ -6,7 +6,7 @@
 /*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 15:26:04 by lalwafi           #+#    #+#             */
-/*   Updated: 2025/04/29 14:36:34 by lalwafi          ###   ########.fr       */
+/*   Updated: 2025/05/08 15:35:06 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int key_pressed(int key, t_game *game)
 {
-	write(1, "key press\n", 4);
+	// write(1, "key press\n", 4);
 	if (key == ESC)
 		return (finish(game, 0));
 	if (key == W)
@@ -34,7 +34,7 @@ int key_pressed(int key, t_game *game)
 
 int key_release(int key, t_game *game)
 {
-	write(1, "key release\n", 4);
+	// write(1, "key release\n", 4);
 	if (key == W)
 		game->key.w = false;
 	if (key == A)
@@ -56,31 +56,31 @@ int	movement(t_game *game)
 	{
 		move_player_1px(game, 1, game->pdx, game->pdy);
 		print_everything_for_debug(game);
-		draw_map(game);
-		draw_player(game);
+		draw_3d(game);
+		// draw_2d(game);
 	}
 	if (game->key.a == true)
 	{
 		move_player_1px(game, 1, change_angle(game->angle, 270, 1), change_angle(game->angle, 270, 2));
 		print_everything_for_debug(game);
-		draw_map(game);
-		draw_player(game);
+		draw_3d(game);
+		// draw_2d(game);
 	}
 	if (game->key.s == true)
 	{
 		move_player_1px(game, 1, change_angle(game->angle, 180, 1), change_angle(game->angle, 180, 2));
 		print_everything_for_debug(game);
-		draw_map(game);
-		draw_player(game);
+		draw_3d(game);
+		// draw_2d(game);
 	}
 	if (game->key.d == true)
 	{
 		move_player_1px(game, 1, change_angle(game->angle, 90, 1), change_angle(game->angle, 90, 2));
 		print_everything_for_debug(game);
-		draw_map(game);
-		draw_player(game);
+		draw_3d(game);
+		// draw_2d(game);
 	}
-	if (game->key.left == true)
+	if (game->key.right == true) // inverted left and right for 3d to work for now
 	{
 		game->angle -= 3;
 		if (game->angle < 0)
@@ -88,10 +88,10 @@ int	movement(t_game *game)
 		game->pdx = cosf(game->angle * PI/180);
 		game->pdy = sinf(game->angle * PI/180);
 		print_everything_for_debug(game);
-		draw_map(game);
-		draw_player(game);
+		draw_3d(game);
+		// draw_2d(game);
 	}
-	if (game->key.right == true)
+	if (game->key.left == true)
 	{
 		game->angle += 3;
 		if (game->angle >= 360)
@@ -99,8 +99,8 @@ int	movement(t_game *game)
 		game->pdx = cosf(game->angle * PI/180);
 		game->pdy = sinf(game->angle * PI/180);
 		print_everything_for_debug(game);
-		draw_map(game);
-		draw_player(game);
+		draw_3d(game);
+		// draw_2d(game);
 	}
 	return (0);
 }

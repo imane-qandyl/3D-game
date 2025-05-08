@@ -3,14 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   parse_colors.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 08:47:42 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/04/26 18:09:04 by imqandyl         ###   ########.fr       */
+/*   Updated: 2025/05/08 15:38:51 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
 
 int	is_valid_color(int value)
 {
@@ -61,22 +60,22 @@ t_error	parse_colors(char *line, t_game *info)
 	if (!line || !info || (line[0] != 'F' && line[0] != 'C')) {
 		return (ERR_INVALID_COLOR);
 	}
-	if (line[0] == 'F')
+		if (line[0] == 'F')
 	{
 		if (info->floor_color[0] != -1 || info->floor_color[1] != -1 || info->floor_color[2] != -1)
 			return (ERR_DUPLICATE_COLOR);
-		target = info->floor_color;
+	target = info->floor_color;
 	}
 	else if (line[0] == 'C')
 	{
 		if (info->ceiling_color[0] != -1 || info->ceiling_color[1] != -1 || info->ceiling_color[2] != -1)
 			return (ERR_DUPLICATE_COLOR);
-		target = info->ceiling_color;
+	target = info->ceiling_color;
 	}	
 	else {
 		return (ERR_INVALID_COLOR);
 	}
-	// Skip identifier and whitespace
+		// Skip identifier and whitespace
 	ptr = line + 1;
 	while (*ptr && (*ptr == ' ' || *ptr == '\t'))
 		ptr++;

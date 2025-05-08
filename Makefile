@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+         #
+#    By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/04 07:50:40 by imqandyl          #+#    #+#              #
-#    Updated: 2025/05/03 12:35:57 by imqandyl         ###   ########.fr        #
+#    Updated: 2025/05/08 15:34:11 by lalwafi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,11 +24,12 @@ SRC     = srcs/main.c \
           srcs/draw_map.c\
           execution/movement.c\
 		  execution/raycasting.c\
+		  execution/rendering.c\
           parsing/parse_map.c \
 		  parsing/parse.c \
           parsing/parse_textures.c \
           parsing/parse_colors.c \
-		  parsing/parse_player.c \
+		   parsing/parse_player.c \
 		  get_next_line/get_next_line.c\
 		  get_next_line/get_next_line_utils.c
 

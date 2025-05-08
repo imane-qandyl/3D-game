@@ -6,7 +6,7 @@
 /*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 08:19:31 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/04/29 14:30:49 by lalwafi          ###   ########.fr       */
+/*   Updated: 2025/05/08 15:35:36 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@
 #include "../get_next_line/get_next_line.h"
 
 # define TILE_SIZE 32
-# define WIN_WIDTH 1100
-# define WIN_HEIGHT 500
+# define WIN_WIDTH 960
+# define WIN_HEIGHT 480
 # define PI 3.141592653589
 
 # ifdef OSX
@@ -154,7 +154,8 @@ char **read_map(char **lines);
 void    free_map(char **map);
 void pad_map_lines(char **map, int height, int width);
 
-void    	draw_map(t_game *game);
+// Execution functions
+void    	draw_2d(t_game *game);
 void    	free_map(char **map);
 void    	draw_player(t_game *game);
 int			key_pressed(int key, t_game *game);
@@ -162,7 +163,6 @@ int 		key_release(int key, t_game *game);
 int			movement(t_game *game);
 void		move_player_1px(t_game *game, int steps, float dx, float dy);
 int			finish(t_game *game, int i);
-// void		get_end_of_vector(float px, float py, double angle);
 float		change_angle(float angle, float change, int flag);
 void		draw_ray_5px(t_game *game);
 t_point		which_ray_shorter(t_game *game, t_point ph, t_point pv);
@@ -171,10 +171,12 @@ void		draw_ray_custom_angle(t_game *game, t_point point, int angle, int color);
 t_point		just_raycast(t_game *game);
 t_point		just_raycast_custom_angle(t_game *game, int angle);
 void		dda_thing(t_game *game);
-void		dda(t_game *game, t_point end, int color);
-
-
+// void		dda(t_game *game, t_point end, int color);
+void		draw_background(t_game *game, int sky, int floor);
 void		my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void		print_everything_for_debug(t_game *game);
+void	draw_line(t_game *game, t_point end, int location, int color);
+void	dda_only_3d(t_game *game);
+void	draw_3d(t_game *game);
 
 #endif
