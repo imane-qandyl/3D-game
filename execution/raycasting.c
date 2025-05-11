@@ -18,7 +18,7 @@ static t_point	round_endpoint(t_point ph, int angle)
 		ph.py = ceilf(ph.py);
 	else
 		ph.py = floorf(ph.py);
-	if (angle > 270 && angle < 90)
+	if (angle > 270 || angle < 90)
 		ph.px = ceilf(ph.px);
 	else
 		ph.px = floorf(ph.px);
