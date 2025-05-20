@@ -3,72 +3,87 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/27 10:35:39 by lalwafi           #+#    #+#             */
-/*   Updated: 2025/04/29 09:07:26 by lalwafi          ###   ########.fr       */
+/*   Created: 2024/07/22 11:02:24 by imqandyl          #+#    #+#             */
+/*   Updated: 2025/04/25 11:41:17 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_strchr(char *line, int c)
+size_t	ft_strlen1(char *s)
 {
-	int	i;
+	size_t	len;
 
-	i = 0;
-	if (!line)
-		return (0);
-	if (c == 0)
-		return (0);
-	while (line[i])
+	len = 0;
+	if (s)
 	{
-		if (line[i] == (char)c)
-			return (&line[i]);
-		i++;
+		while (s[len])
+			len++;
+	}
+	return (len);
+}
+
+int	ft_strchr1(char *s)
+{
+	if (!s)
+		return (0);
+	while (*s)
+	{
+		if (*s == '\n')
+			return (1);
+		s++;
 	}
 	return (0);
 }
 
-char	*ft_strjoin(char *buffer, char *line)
+char	*ft_strdup1(char *s1)
 {
+	char	*dup;
+	size_t	len;
 	size_t	i;
-	size_t	j;
-	char	*new;
 
-	i = 0;
-	j = 0;
-	if (!buffer)
-	{
-		buffer = malloc(sizeof(char) * 1);
-		buffer[0] = '\0';
-	}
-	if (!buffer && !line)
+	if (s1 == NULL)
 		return (NULL);
-	new = (char *)malloc(sizeof(char) * (ft_strlen(buffer) + ft_strlen(line) + 1));
-	if (!new)
-		return (0);
-	while (buffer[i])
+	len = ft_strlen1(s1);
+	dup = malloc(len + 1);
+	if (!dup)
+		return (NULL);
+	i = 0;
+	while (i < len)
 	{
-		new[i] = buffer[i];
+		dup[i] = s1[i];
 		i++;
 	}
-	while (line[j])
-		new[i++] = line[j++];
-	new[i] = '\0';
-	if (buffer)
-		free(buffer); //isnt supposed to free??
-	return (new);
+	dup[i] = '\0';
+	return (dup);
 }
 
-int	ft_strlen(const char *s)
+char	*ft_strjoin1(char *s1, char *s2)
 {
-	int	i;
+	char	*join;
+	int		i;
+	int		j;
 
-	i = 0;
-	if (!s)
-		return (0);
-	while (s[i])
-		i++;
-	return (i);
+	if (!s1)
+	{
+		s1 = malloc(sizeof(char));
+		if (!s1)
+			return (NULL);
+		s1[0] = '\0';
+	}
+	if (!s2)
+		return (NULL);
+	join = malloc(ft_strlen1(s1) + ft_strlen1(s2) + 1);
+	if (!join)
+		return (free(s1), s1 = NULL, NULL);
+	i = -1;
+	while (s1[++i])
+		join[i] = s1[i];
+	j = 0;
+	while (s2[j])
+		join[i++] = s2[j++];
+	join[i] = '\0';
+	return (free(s1), s1 = NULL, join);
 }

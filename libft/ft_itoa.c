@@ -3,70 +3,58 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/24 18:36:02 by lalwafi           #+#    #+#             */
-/*   Updated: 2024/01/24 21:31:32 by lalwafi          ###   ########.fr       */
+/*   Created: 2024/07/03 11:31:45 by imqandyl          #+#    #+#             */
+/*   Updated: 2024/07/03 12:54:08 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static	int	count_numbers(int ncopy)
+static size_t	ft_intlen(int nb)
 {
-	int	count;
+	size_t	i;
 
-	count = 0;
-	if (ncopy < 0)
+	i = 0;
+	if (nb == 0)
+		return (1);
+	if (nb < 0)
 	{
-		count++;
-		ncopy *= -1;
+		nb *= -1;
+		i++;
 	}
-	if (ncopy < 9)
-		count++;
-	else
+	while (nb)
 	{
-		while (ncopy)
-		{
-			count++;
-			ncopy = ncopy / 10;
-		}
+		nb = nb / 10;
+		i++;
 	}
-	return (count);
+	return (i);
 }
 
 char	*ft_itoa(int n)
 {
-	char	*result;
-	int		i;
-	int		ncopy;
+	char	*str;
+	size_t	length;
 
-	ncopy = n;
-	if (ncopy == -2147483648)
+	if (n == -2147483648)
 		return (ft_strdup("-2147483648"));
-	i = count_numbers(ncopy);
-	result = (char *)malloc(sizeof(char) * (i + 1));
-	if (!result)
+	length = ft_intlen(n);
+	str = malloc(length + 1);
+	if (!str)
 		return (NULL);
-	result[i--] = '\0';
-	if (ncopy < 0)
+	str[length] = '\0';
+	if (n == 0)
+		return (free(str), ft_strdup("0"));
+	if (n < 0)
 	{
-		result[0] = '-';
-		ncopy *= -1;
+		str[0] = '-';
+		n *= -1;
 	}
-	if (ncopy == 0)
-		result[i] = '0';
-	while (ncopy != 0)
+	while (n)
 	{
-		result[i--] = (ncopy % 10) + '0';
-		ncopy /= 10;
+		str[--length] = (n % 10) + 48;
+		n /= 10;
 	}
-	return (result);
+	return (str);
 }
-
-// #include <stdio.h>
-// int	main(void)
-// {
-// 	int	n = 0;
-// 	printf("%s\n", ft_itoa(n));
-// }

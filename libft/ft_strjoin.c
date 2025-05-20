@@ -3,55 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/16 18:26:31 by lalwafi           #+#    #+#             */
-/*   Updated: 2024/01/16 20:58:51 by lalwafi          ###   ########.fr       */
+/*   Created: 2024/07/03 11:34:09 by imqandyl          #+#    #+#             */
+/*   Updated: 2024/07/04 18:17:18 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-// size_t	ft_strlen(const char *s)
-// {
-// 	size_t	i;
-
-// 	i = 0;
-// 	while (s[i])
-// 		i++;
-// 	return (i);
-// }
-
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	size_t	i;
 	size_t	j;
-	char	*new;
+	char	*result;
+	size_t	result_len;
 
 	i = 0;
 	j = 0;
-	new = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
-	if (!new)
-		return (0);
-	while (s1[i])
+	if (!s1 && !s2)
+		return (NULL);
+	result_len = ft_strlen(s1) + ft_strlen(s2);
+	result = (char *)malloc(result_len + 1);
+	if (result == NULL)
+		return (NULL);
+	while (s1[i] != '\0')
 	{
-		new[i] = s1[i];
+		result[i] = s1[i];
 		i++;
 	}
-	while (s2[j])
+	while (s2[j] != '\0')
 	{
-		new[i] = s2[j];
-		i++;
+		result[i + j] = s2[j];
 		j++;
 	}
-	new[i] = '\0';
-	return (new);
+	result[i + j] = '\0';
+	return (result);
 }
-
-// #include <stdio.h>
-// int	main(void)
-// {
-// 	char	*s1 = "";
-// 	char	*s2 = "world!";
-// 	printf("%s\n", ft_strjoin(s1, s2));
-// }

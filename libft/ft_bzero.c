@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/24 18:11:37 by lalwafi           #+#    #+#             */
-/*   Updated: 2024/01/12 12:22:22 by lalwafi          ###   ########.fr       */
+/*   Created: 2024/07/03 11:31:07 by imqandyl          #+#    #+#             */
+/*   Updated: 2024/07/03 11:31:07 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,5 @@
 
 void	ft_bzero(void *s, size_t n)
 {
-	size_t	i;
-
-	i = 0;
-	while (n > i)
-	{
-		((unsigned char *)s)[i] = 0;
-		i++;
-	}
+	ft_memset(s, 0, n);
 }
-
-// int	main(void)
-// {
-// 	char	a[5] = "12345";
-// 	char	z[] = "+=";
-// 	printf("%s\n", z);
-// 	printf("%c\n", a[0]);
-// 	printf("%c\n", a[1]);
-// 	printf("%c\n", a[2]);
-// 	printf("%c\n", a[3]);
-// 	printf("%c\n", a[4]);
-// 	printf("%s\n", z);
-// 	bzero(a, sizeof(char) * 5);
-// 	printf("%s\n", z);
-// 	printf("%c\n", a[0]);
-// 	printf("%c\n", a[1]);
-// 	printf("%c\n", a[2]);
-// 	printf("%c\n", a[3]);
-// 	printf("%c\n", a[4]);
-// 	printf("%s\n", z);
-// }

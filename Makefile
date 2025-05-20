@@ -6,7 +6,7 @@
 #    By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/04 07:50:40 by imqandyl          #+#    #+#              #
-#    Updated: 2025/04/24 17:12:30 by lalwafi          ###   ########.fr        #
+#    Updated: 2025/05/08 15:34:11 by lalwafi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,10 +17,21 @@ CFLAGS	+= -fsanitize=address -g3
 LIBRARY := -L./minilibx -lmlx -lm -march=native -framework OpenGL AppKit -framework
 
 MINILIBX := minilibx/
+get_next_line := get_next_line
+LIBFT = libft
 
 SRC     = srcs/main.c \
+          srcs/draw_map.c\
+          execution/movement.c\
+		  execution/raycasting.c\
+		  execution/rendering.c\
           parsing/parse_map.c \
-          srcs/draw_map.c execution/movement.c execution/raycasting.c\
+		  parsing/parse.c \
+          parsing/parse_textures.c \
+          parsing/parse_colors.c \
+		   parsing/parse_player.c \
+		  get_next_line/get_next_line.c\
+		  get_next_line/get_next_line_utils.c
 
 
 OS:= ${shell uname}
@@ -38,20 +49,27 @@ else
 OBJS    = $(SRC:.c=.o)
 
 all: $(NAME)
+$(LIBFT):
+	@$(MAKE) -C ./libft
 
 $(NAME): $(OBJS)
 	make -C $(MINILIBX)
-	$(CC) $(OBJS) $(CFLAGS) -L$(MINILIBX) -lmlx -lm -march=native $(MLXFLG) -o $(NAME)
-#$(CC) $(CFLAGS) $(OBJS) $(LIBRARY) -o $(NAME) $(MLXFLG)
+	@make -C $(LIBFT)
+
+	$(CC) $(OBJS) $(CFLAGS) -L$(MINILIBX) $(LIBFT)/libft.a -lmlx -lm -march=native $(MLXFLG) -o $(NAME)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
+	@make clean -C $(LIBFT)
 	make clean -C $(MINILIBX)
 	rm -f $(OBJS)
 	
 fclean: clean
 	rm -f $(NAME)
+	@make fclean -C $(LIBFT)
 
 re: fclean all
+
+.PHONY: all clean fclean re

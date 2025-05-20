@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/13 20:30:51 by lalwafi           #+#    #+#             */
-/*   Updated: 2024/01/15 17:37:47 by lalwafi          ###   ########.fr       */
+/*   Created: 2024/07/03 11:34:50 by imqandyl          #+#    #+#             */
+/*   Updated: 2024/07/03 12:46:11 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,29 +17,25 @@ char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 	size_t	i;
 	size_t	j;
 
-	i = 0;
 	j = 0;
-	if (!needle[i])
+	i = 0;
+	if (!*needle)
 		return ((char *)haystack);
-	while (i < len && haystack[i] != '\0')
+	while (haystack[i] && i < len)
 	{
-		while (needle[j] == haystack[i + j] && (i + j) < len)
+		if (needle[j] == haystack[i])
 		{
-			if (needle[j + 1] == '\0')
-				return ((char *)&haystack[i]);
-			j++;
+			while (haystack[i + j] == needle[j] && i + j < len)
+			{
+				if (needle[j + 1] == '\0')
+				{
+					return ((char *)haystack + i);
+				}
+				j++;
+			}
+			j = 0;
 		}
 		i++;
-		j = 0;
 	}
 	return (NULL);
 }
-
-// #include <stdio.h>
-// int	main(void)
-// {
-// 	char	*a = "aaa11a1234aaaaaa";
-// 	char	*b = "1234";
-// 	printf("%s\n", ft_strnstr(a, b, 17));
-// 	printf("%s\n", strnstr(a, b, 17));
-// }

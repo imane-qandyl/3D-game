@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/29 13:00:45 by lalwafi           #+#    #+#             */
-/*   Updated: 2024/01/29 13:10:57 by lalwafi          ###   ########.fr       */
+/*   Created: 2024/07/03 11:33:43 by imqandyl          #+#    #+#             */
+/*   Updated: 2024/07/03 11:33:43 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,8 @@ void	ft_putstr_fd(char *s, int fd)
 
 	i = 0;
 	while (s[i])
-		write(fd, &s[i++], 1);
+	{
+		write(fd, &s[i], 1);
+		i++;
+	}
 }
-
-// int	main(void)
-// {
-// 	ft_putstr_fd("abcde", 1);
-// }

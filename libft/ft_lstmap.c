@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/05 20:01:56 by lalwafi           #+#    #+#             */
-/*   Updated: 2024/02/05 21:05:45 by lalwafi          ###   ########.fr       */
+/*   Created: 2024/07/03 11:32:22 by imqandyl          #+#    #+#             */
+/*   Updated: 2024/07/03 11:32:22 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,24 @@
 
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 {
-	t_list	*result;
-	t_list	*head;
-	t_list	*a;
+	t_list	*new;
+	t_list	*node;
 
-	if (!lst || !del || !f)
+	if (!lst || !f)
 		return (NULL);
-	result = ft_lstnew(f(lst->content));
-	if (!result)
-		return (NULL);
-	lst = lst->next;
-	head = result;
+	new = NULL;
 	while (lst)
 	{
-		a = ft_lstnew(f(lst->content));
-		if (!a)
+		node = malloc(sizeof(t_list));
+		if (!node)
 		{
-			ft_lstclear(&result, del);
+			ft_lstclear(&new, (*del));
 			return (NULL);
 		}
-		ft_lstadd_back(&result, a);
+		node->content = f(lst->content);
+		node->next = NULL;
+		ft_lstadd_back(&new, node);
 		lst = lst->next;
 	}
-	return (head);
+	return (new);
 }

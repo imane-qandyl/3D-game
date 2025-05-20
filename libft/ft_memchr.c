@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/13 18:50:55 by lalwafi           #+#    #+#             */
-/*   Updated: 2024/01/13 19:30:42 by lalwafi          ###   ########.fr       */
+/*   Created: 2024/07/03 11:32:38 by imqandyl          #+#    #+#             */
+/*   Updated: 2024/07/03 12:27:46 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,20 @@
 
 void	*ft_memchr(const void *s, int c, size_t n)
 {
-	size_t	i;
+	size_t				i;
+	const unsigned char	*src;
+	unsigned char		car;
 
 	i = 0;
+	src = s;
+	car = c;
 	while (i < n)
 	{
-		if (((unsigned char *)s)[i] == (unsigned char)c)
-			return ((void *)&s[i]);
+		if (src[i] == car)
+		{
+			return ((void *)(src + i));
+		}
 		i++;
 	}
-	return (0);
+	return (NULL);
 }
-
-// #include <stdio.h>
-// #include <string.h>
-
-// int	main(void)
-// {
-// 	const char	*a = "bonjour";
-// 	int	c = 'o';
-// 	printf("%s\n", ft_memchr(a, c, 7));
-// 	printf("%s\n", memchr(a, c, 7));
-// }

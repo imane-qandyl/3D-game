@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/15 17:47:38 by lalwafi           #+#    #+#             */
-/*   Updated: 2024/01/16 21:22:09 by lalwafi          ###   ########.fr       */
+/*   Created: 2024/07/03 11:31:13 by imqandyl          #+#    #+#             */
+/*   Updated: 2024/07/04 19:36:18 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,13 @@
 
 void	*ft_calloc(size_t count, size_t size)
 {
-	void	*a;
+	void	*array;
 
-	if (count && size && ((count * size) > 214743648))
+	if (size && count > 0 && count > SIZE_MAX / size)
 		return (NULL);
-	a = malloc(size * count);
-	if (a == NULL)
+	array = malloc(count * size);
+	if (!array)
 		return (NULL);
-	ft_bzero(a, (size * count));
-	return (a);
+	ft_bzero(array, count * size);
+	return (array);
 }
-
-// int	main(void)
-// {
-// 	void *str = ft_calloc(0, 0);
-
-// 	if (str == ((void *)0))
-// 		printf("%s", "failed");
-// 	else
-// 		printf("%s", "yesssss");
-// 	free(str);
-// }

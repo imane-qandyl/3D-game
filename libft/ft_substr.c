@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/16 17:02:51 by lalwafi           #+#    #+#             */
-/*   Updated: 2024/01/24 17:46:36 by lalwafi          ###   ########.fr       */
+/*   Created: 2024/07/03 11:35:07 by imqandyl          #+#    #+#             */
+/*   Updated: 2024/07/03 11:35:07 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,29 @@
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char	*substring;
+	char	*array;
 	size_t	i;
-	size_t	slen;
+	size_t	str_len;
 
 	i = 0;
-	slen = ft_strlen(s);
-	if (start > slen)
-		return (ft_strdup(""));
-	if (len > (slen - start))
-		len = slen - start;
-	substring = (char *)malloc((len + 1) * sizeof(char));
-	if (!substring)
+	if (!s)
 		return (NULL);
-	i = 0;
-	while (i < len)
+	str_len = ft_strlen(s);
+	if (start > str_len)
+		len = 0;
+	if (len > str_len - start)
 	{
-		substring[i] = s[start + i];
+		len = str_len - start;
+	}
+	array = (char *)malloc(len + 1);
+	if (!array)
+		return (NULL);
+	while (start < str_len && i < len)
+	{
+		array[i] = s[start];
+		start++;
 		i++;
 	}
-	substring[i] = '\0';
-	return (substring);
+	array[i] = '\0';
+	return (array);
 }
-
-// #include <stdio.h>
-// int	main(void)
-// {
-// 	char	*s = "hello world!";
-// 	printf("%s\n", ft_substr(s, 0, 100));
-// }

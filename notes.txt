@@ -1,0 +1,20 @@
+- needed from parsing
+    - p.px && p.py (player location) on the map 
+    - player_dir (eg; 'N' , 'S' , 'E' , 'W')
+
+-problem with walls for execution
+        0001
+        111
+        player is able to pass through the crack
+
+
+Needed from executor
+    When I attempted to make the player pass through the crack, he actually wasn't going through. 
+    But the main issue is that the raycaster keeps going and it does not know when to stop because 
+    there is no wall along the crack. So, probably the dda enters an infinte loop since there technically 
+    is no end to the map in that case. So maybe, you can try to put a cap on the size of the ray line so 
+    that if it reaches a certain limit, it stops so that the dda algorithm doesn't segfault at function 
+    raycast_custom_angle in line raycasting.c:103
+
+- we need to change the textures to 32x32
+- parse the textures as if its a map, but instead of 0 and 1 we put the hex code of the colors of the pixels

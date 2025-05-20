@@ -3,50 +3,52 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/20 20:33:14 by lalwafi           #+#    #+#             */
-/*   Updated: 2023/12/20 21:01:24 by lalwafi          ###   ########.fr       */
+/*   Created: 2024/07/03 11:39:17 by imqandyl          #+#    #+#             */
+/*   Updated: 2024/07/06 08:31:39 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_atoi(const char *str)
+static void	check_sign(int *i, const char *str, int *sign)
 {
-	int	sign;
-	int	n;
-
-	n = 0;
-	sign = 1;
-	while (*str == 32 || (*str >= 9 && *str <= 13))
-		str++;
-	if (*str == '-')
+	while (str[*i] == 32 || (str[*i] >= 9 && str[*i] <= 13))
+		(*i)++;
+	if (str[*i] == '+' || str[*i] == '-')
 	{
-		sign *= -1;
-		str++;
+		if (str[*i] == '-')
+			*sign = -1;
+		(*i)++;
 	}
-	else if (*str == '+')
-		str++;
-	if ((*str >= '0') && (*str <= '9'))
-	{
-		while ((*str >= '0') && (*str <= '9'))
-		{
-			n = n * 10 + (*str - '0');
-			str++;
-		}
-	}
-	return (sign * n);
+	while (str[*i] == '0')
+		(*i)++;
 }
 
-// #include <stdio.h>
-// #include <stdlib.h>
-// #include <unistd.h>
-// int	main(void)
-// {
-// 	char	*str;
+int	ft_atoi(const char *str)
+{
+	int					i;
+	unsigned long long	res;
+	int					sign;
+	int					digit;
 
-// 	str = " \t\n 22316ab567";
-// 	printf("%d\n", ft_atoi(str));
-// 	printf("%d\n", atoi(str));
-// }
+	i = 0;
+	res = 0;
+	digit = 0;
+	sign = 1;
+	check_sign(&i, str, &sign);
+	while (str[i] && (str[i] >= '0' && str[i] <= '9'))
+	{
+		res = (res * 10) + (str[i] - '0');
+		i++;
+		digit++;
+		if (((res > LONG_MAX) && (sign > 0))
+			|| (((digit > 19) && (sign > 0))))
+			return (-1);
+		else if ((res > (LONG_MAX) && (sign < 0))
+			|| (((digit > 19) && (sign < 0))))
+			return (0);
+	}
+	return (sign * res);
+}

@@ -13,11 +13,11 @@
 
 int	get_angle(char c)
 {
-	if (c == 'N')
+	if (c == 'S')
 		return (90);
 	if (c == 'W')
 		return (180);
-	if (c == 'S')
+	if (c == 'N')
 		return (270);
 	if (c == 'E')
 		return (0);
@@ -25,19 +25,40 @@ int	get_angle(char c)
 	return (0);
 }
 
-void	temp_init_for_exec(t_game *game)
+static void cleanup_and_exit(t_game *game, char *error_msg)
 {
-		// char *map[7] = {"111111" , "100001" , "1000P1" , "100001" , "100001" , "111111"};
-	// game.map = map;
-	game->player_dir = 'S';
-	game->p.px = 4 * TILE_SIZE + (TILE_SIZE / 2);
-	game->p.py = 2 * TILE_SIZE + (TILE_SIZE / 2);
+	if (error_msg)
+		printf("Error : %s\n", error_msg);
+
+	if (game)
+	{
+		if (game->map)
+		{
+			free_map(game->map);
+			game->map = NULL;
+		}
+
+		if (game->mlx && game->win)
+		{
+			mlx_destroy_window(game->mlx, game->win);
+			game->win = NULL;
+		}
+		game->mlx = NULL;
+
+	}
+
+	exit(1);
+}
+
+void temp_init_for_exec(t_game *game)
+{
+	game->player_dir = get_player_direction(game);
 	game->angle = get_angle(game->player_dir);
+	get_player_position(game);  // Use local variables
+	// game->pdx = cos(game->p.px) * 5;
+	// game->pdy = sin(game->p.py) * 5;
 	game->pdx = cosf(game->angle * PI/180);
 	game->pdy = sinf(game->angle * PI/180);
-	game->map_height = 6;
-	game->map_width = 6;
-	// printf("dx = %f\n", game->pdx);
 	game->key.w = false;
 	game->key.a = false;
 	game->key.s = false;
@@ -47,26 +68,76 @@ void	temp_init_for_exec(t_game *game)
 	game->img.img = NULL;
 }
 
-int	main(void)
+int load_textures(t_game *game)
 {
-	t_game	game;
+	int width, height;
 
-	game.map = read_map("maps/level1.cub");
-	if (!game.map)
+	game->no_texture = mlx_xpm_file_to_image(game->mlx, game->no_texture, &width, &height);
+	if (!game->no_texture)
+		return (0);
+
+	game->tex_width = width;
+	game->tex_height = height;
+
+	game->so_texture = mlx_xpm_file_to_image(game->mlx, game->so_texture, &width, &height);
+	if (!game->so_texture || width != game->tex_width || height != game->tex_height)
+		return (0);
+
+	game->we_texture = mlx_xpm_file_to_image(game->mlx, game->we_texture, &width, &height);
+	if (!game->we_texture || width != game->tex_width || height != game->tex_height)
+		return (0);
+	
+	game->ea_texture = mlx_xpm_file_to_image(game->mlx, game->ea_texture, &width, &height);
+	if (!game->ea_texture || width != game->tex_width || height != game->tex_height)
+	return (0);
+	
+	return (1);
+}
+	
+
+int main(int argc, char **argv)
+{
+	t_game game;
+	t_error err;
+	ft_bzero(&game, sizeof(t_game));
+
+	if (argc != 2)
 	{
-		printf("Failed to load map.\n");
+		printf("Usage: %s <map_file.cub>\n", argv[0]);
 		return (1);
 	}
+	// Initialize game structure
+	init_map_info(&game);
+	err = parse_file(argv[1], &game);
+	if (err != ERR_NONE)
+	{
+		print_error(err);
+		cleanup_and_exit(&game, "Failed parsing map file");
+	}
+	// Initialize MLX
 	temp_init_for_exec(&game);
 	game.mlx = mlx_init();
+	if (!game.mlx)
+		cleanup_and_exit(&game, "Failed to initialize MLX");
+
+	// Create window
 	game.win = mlx_new_window(game.mlx, WIN_WIDTH, WIN_HEIGHT, "Cub3D");
 	if (!game.win)
-	{
-		write(2, "window init fail\n", 17);
-		exit(1);
-	}
-	draw_map(&game);
-	draw_player(&game);
+	cleanup_and_exit(&game, "Failed to create window");
+
+	// Load textures
+	if (!load_textures(&game))
+		cleanup_and_exit(&game, "Failed to load textures");
+
+	int j = -1;
+	while (game.map[++j])
+		printf("(%s)\n", game.map[j]);
+
+
+	// Draw the map
+	draw_3d(&game);
+	// draw_2d(&game);
+
 	mlx_hook(game.win, 2, 1L << 0, key_pressed, &game);
 	mlx_hook(game.win, 3, 1L << 1, key_release, &game); // key release
 	mlx_hook(game.win, 17, 1L << 0, finish, &game);
@@ -75,13 +146,8 @@ int	main(void)
 	return (0);
 }
 
-int	finish(t_game *game, int i)
+int finish(t_game *game, int i)
 {
-	if (game->img.img)
-        mlx_destroy_image(game->mlx, game->img.img);
-	mlx_destroy_window(game->mlx, game->win);
-	if (game->map)
-		free_map(game->map);
-	exit(i);
+	cleanup_and_exit(game, NULL);
 	return (i);
 }

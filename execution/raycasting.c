@@ -3,141 +3,130 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cafriem <cafriem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 09:49:10 by lalwafi           #+#    #+#             */
-/*   Updated: 2025/04/29 14:30:33 by lalwafi          ###   ########.fr       */
+/*   Updated: 2025/05/19 21:27:08 by cafriem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-t_point just_raycast(t_game *game)
+t_point	round_endpoint(t_point end, int angle)
 {
-	t_point	ph;
-	// float	tempx;
-	// float	tempy;
-
-	// ph.px = WIN_WIDTH;
-	// ph.py = WIN_HEIGHT;
-	ph.px = game->p.px;
-	ph.py = game->p.py;
-	while (game->map[(int)((game->pdy + ph.py)/TILE_SIZE)][(int)((game->pdx + ph.px)/TILE_SIZE)] != '1')
-	{
-		ph.px = (game->pdx + ph.px);
-		ph.py = (game->pdy + ph.py);
-	}
-	printf("----- just raycast ----- final phpy = %f     phpx = %f\n", ph.py, ph.px);
-	return (ph);
+	if (angle > 0 && angle < 180)
+	end.py = ceilf(end.py);
+	else
+	end.py = floorf(end.py);
+	if (angle > 270 || angle < 90)
+	end.px = ceilf(end.px);
+	else
+	end.px = floorf(end.px);
+	return (end);
 }
 
-t_point	which_ray_shorter(t_game *game, t_point ph, t_point pv)
+float	get_length_of_ray(t_point game, t_point end)
 {
-	float	lh;
-	float	lv;
+	float	length_x;
+	float	length_y;
 
-	lh = fabsf(game->p.px - ph.px) + fabsf(game->p.py - ph.py);
-	lv = fabsf(game->p.px - pv.px) + fabsf(game->p.py - pv.py);
-	if (lh <= lv)
-		return (ph);
-	return (pv);
+	length_x = fabsf((end.px - game.px)/end.dx);
+	length_y = fabsf((end.py - game.py)/end.dy);
+	if (length_x < length_y)
+		return (length_x);
+	return (length_y);
 }
 
-void	draw_ray(t_game *game, t_point point, int color)
+t_point	raycast_custom_angle(t_game *game, float angle)
 {
 	float	dx;
 	float	dy;
-
-	dx = game->pdx + game->p.px;
-	dy = game->pdy + game->p.py;
-	
-	while ((int)dx != (int)point.px || (int)dy != (int)point.py)
-	{
-		if (dy > WIN_HEIGHT || dx > WIN_WIDTH || dy < 0 || dx < 0 || \
-			(int)((dy)/TILE_SIZE) >= game->map_height || \
-			(int)((dx)/TILE_SIZE) >= game->map_width)
-			break ;
-		// printf("----------ray---------\ndx = %f\ndy = %f\npointx = %f\npointy = %f\n----------ray---------\n", dx, dy, point.px, point.py);
-		my_mlx_pixel_put(&game->img, dx, dy, color);
-		dx += game->pdx;
-		dy += game->pdy;
-	}
-}
-
-void	draw_ray_custom_angle(t_game *game, t_point point, int angle, int color)
-{
-	float	dx;
-	float	dy;
-	float	x;
-	float	y;
+	t_point	end;
+	float	dist_x;
+	float	dist_y;
 
 	dx = cosf(angle * PI/180);
 	dy = sinf(angle * PI/180);
-	x = game->p.px;
-	y = game->p.py;
-	
-	while ((int)x != (int)point.px || (int)y != (int)point.py)
+	end.px = game->p.px;
+	end.py = game->p.py;
+	end.dx = dx;
+	end.dy = dy;
+	end.angle = angle;
+	dist_x = 0;
+	dist_y = 0;
+	while ((dy + end.py) >= 0.000001f && (dx + end.px) >= 0.000001f)
 	{
-		if (y > WIN_HEIGHT || x > WIN_WIDTH || y < 0 || x < 0 || \
-			(int)((y)/TILE_SIZE) >= game->map_height || \
-			(int)((x)/TILE_SIZE) >= game->map_width)
+		if (game->map[(int)((end.py + dy)/TILE_SIZE)][(int)((end.px)/TILE_SIZE)] == '1' && 
+		game->map[(int)((end.py)/TILE_SIZE)][(int)((end.px + dx)/TILE_SIZE)] == '1')
+		{
+			dist_x += dx;
+			dist_y += dy;
+			if (dist_x <= dist_y)
+			{
+				if (dx > 0.000001f)
+					end.face = 'W';
+				else
+					end.face = 'E';
+			}
+			else
+			{
+				if (dy > 0.000001f)
+					end.face = 'N';
+				else
+					end.face = 'S';
+			}
 			break ;
-		// printf("----------ray---------\ndx = %f\ndy = %f\npointx = %f\npointy = %f\n----------ray---------\n", x, y, point.px, point.py);
-		my_mlx_pixel_put(&game->img, x, y, color);
-		x += dx;
-		y += dy;
+		}
+		else if (game->map[(int)((end.py + dy)/TILE_SIZE)][(int)((end.px)/TILE_SIZE)] == '1')
+		{
+			dist_x += dx;
+			dist_y += dy;
+			if (dy > 0.000001f)
+				end.face = 'N';
+			else
+				end.face = 'S';
+			break ;
+		}
+		else if (game->map[(int)((end.py)/TILE_SIZE)][(int)((end.px + dx)/TILE_SIZE)] == '1')
+		{
+			dist_y += dy;
+			dist_x += dx;
+			if (dx > 0.000001f)
+				end.face = 'W';
+			else
+				end.face = 'E';
+			break ;
+		}
+		// if (game->map[(int)((dy + end.py)/TILE_SIZE)][(int)((dx + end.px)/TILE_SIZE)] == '1')
+		// 	break ;
+		dist_x += dx;
+		dist_y += dy;
+		end.px = (end.px + dx);
+		end.py = (end.py + dy);
 	}
-}
-
-t_point	just_raycast_custom_angle(t_game *game, int angle)
-{
-	float	dx;
-	float	dy;
-	t_point	ph;
-
-	dx = cosf(angle * PI/180);
-	dy = sinf(angle * PI/180);
-	ph.px = game->p.px;
-	ph.py = game->p.py;
+	// end = round_endpoint(end, angle);
+	end.length = sqrtf(((dist_x) * (dist_x)) + 
+				((dist_y) * (dist_y)));
+	// end.length = get_length_of_ray(game->p, end);
+	// end.length = end.length * cosf((game->angle - angle) * PI/180);
 	
-	while (game->map[(int)((dy + ph.py)/TILE_SIZE)][(int)((dx + ph.px)/TILE_SIZE)] != '1')
-	{
-		ph.px = (dx + ph.px);
-		ph.py = (dy + ph.py);
-	}
-	printf("----- just raycast ----- final phpy = %f     phpx = %f\n", ph.py, ph.px);
-	return (ph);
-}
-
-void	dda_thing(t_game *game)
-{
-	// draw_ray(game, which_ray_shorter(game, horizontal_raycast(game), vertical_raycast(game)), 0x0000FF);
-	// dda(game, which_ray_shorter(game, horizontal_raycast(game), vertical_raycast(game)), 0x0000FF);
-	// draw_ray(game, horizontal_raycast(game), 0x0000FF);
-	// draw_ray(game, vertical_raycast(game), 0x00FFFF);
-	int	i;
-	i = 30;
-	while (i >= -30)
-	{
-		draw_ray_custom_angle(game, just_raycast_custom_angle(game, (game->angle + i)),(game->angle + i), 0x00FFFF);
-		i--;
-	}
-}
-
-void	dda(t_game *game, t_point end, int color)
-{
-	float	z;
-	float	dy;
-	float	dx;
-	int		i;
-
-	z = sqrtf((end.px * end.px) + (end.py * end.py));
-	dx = (end.px - game->p.px) / z;
-	dy = (end.py - game->p.py) / z;
-	i = -1;
-	while (i++ <= z)
-	{
-		my_mlx_pixel_put(&game->img, game->p.px + ((i - 1)*dx), \
-			game->p.py + ((i - 1)*dy), color);
-	}
+	// printf("----- just raycast -----     %f\n", angle);
+	// printf("px         = %f\n", game->p.px);
+	// printf("py         = %f\n", game->p.py);
+	// printf("end.px     = %f\n", end.px);
+	// printf("end.py     = %f\n", end.py);
+	// printf("x          = %d\n", (int)((end.px)/TILE_SIZE));
+	// printf("y  	       = %d\n", (int)((end.py)/TILE_SIZE));
+	printf("distx      = %f\n", dist_x);
+	printf("disty      = %f\n", dist_y);
+	// printf("dx         = %f\n", dx);
+	// printf("dy         = %f\n", dy);
+	// printf("game angle = %f\n", game->angle);
+	// printf("angle      = %f\n", end.angle);
+	printf("length     = %f\n", end.length);
+	// printf("face       = %c\n", end.face);
+	// printf("map_height = %d\n", game->map_height);
+	// printf("map_width  = %d\n", game->map_width);
+	// printf("----- just raycast -----\n");
+	return (end);
 }

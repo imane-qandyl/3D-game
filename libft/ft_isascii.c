@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_isascii.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/18 15:21:09 by lalwafi           #+#    #+#             */
-/*   Updated: 2023/12/20 16:30:07 by lalwafi          ###   ########.fr       */
+/*   Created: 2024/07/03 11:31:32 by imqandyl          #+#    #+#             */
+/*   Updated: 2024/07/03 11:31:32 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,5 @@ int	ft_isascii(int c)
 {
 	if (c >= 0 && c <= 127)
 		return (1);
-	else
-		return (0);
+	return (0);
 }
-
-// #include <stdio.h>
-// int	main(void)
-// {
-// 	int	c = 128;
-// 	printf("%d", ft_isascii(c));
-// }

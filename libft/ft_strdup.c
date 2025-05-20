@@ -3,48 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/15 20:15:01 by lalwafi           #+#    #+#             */
-/*   Updated: 2024/01/17 20:16:12 by lalwafi          ###   ########.fr       */
+/*   Created: 2024/07/03 11:33:58 by imqandyl          #+#    #+#             */
+/*   Updated: 2025/05/03 13:07:29 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-// size_t	ft_strlen(const char *s)
-// {
-// 	size_t	i;
-
-// 	i = 0;
-// 	while (s[i])
-// 		i++;
-// 	return (i);
-// }
-
-char	*ft_strdup(const char *s1)
+char	*ft_strdup(const char *s)
 {
-	size_t	i;
-	char	*copy;
+	char	*array;
+	int		i;
 
 	i = 0;
-	copy = (char *)malloc(sizeof(char) * ft_strlen(s1) + 1);
-	if (!copy)
+	array = malloc(ft_strlen(s) + 1);
+	if (!array)
 		return (NULL);
-	while (s1[i] != '\0')
+	while (s[i])
 	{
-		copy[i] = s1[i];
+		array[i] = s[i];
 		i++;
 	}
-	copy[i] = '\0';
-	return (copy);
+	array[i] = '\0';
+	return (array);
 }
-
-// #include <stdio.h>
-// int	main(void)
-// {
-// 	char	*a = "\0";
-// 	char	*b;
-// 	printf("%s", b = ft_strdup(a));
-// 	free (b);
-// }

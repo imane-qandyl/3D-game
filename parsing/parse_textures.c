@@ -6,13 +6,13 @@
 /*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 08:48:11 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/04/09 19:58:57 by imqandyl         ###   ########.fr       */
+/*   Updated: 2025/04/26 17:25:34 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-static int	validate_texture_file(const char *path)
+int	validate_texture_file(const char *path)
 {
 	FILE	*file;
 
@@ -25,7 +25,7 @@ static int	validate_texture_file(const char *path)
 	return (1);
 }
 
-static char	*extract_path(const char *line)
+char	*extract_path(const char *line)
 {
 	char	*path;
 	int		i;
@@ -50,47 +50,52 @@ static char	*extract_path(const char *line)
 
 t_error	parse_textures(char *line, t_game *info)
 {
-	char *path;
+	char	*path;
 
-	if (!line || !info)
-		return (ERR_INVALID_FILE);
 	path = extract_path(line);
-	if (!path)
-		return (ERR_MALLOC);
-	if (!validate_texture_file(path))
-	{
-		free(path);
+	if (!path || !validate_texture_file(path))
 		return (ERR_MISSING_TEXTURE);
-	}
-	// Assign texture path based on identifier
+
 	if (strncmp(line, "NO ", 3) == 0)
-	{
+	{	
 		if (info->no_texture)
-			free(info->no_texture);
+		{
+			free(path);
+			return (ERR_DUPLICATE_TEXTURE);
+		}
 		info->no_texture = path;
 	}
 	else if (strncmp(line, "SO ", 3) == 0)
 	{
 		if (info->so_texture)
-			free(info->so_texture);
+		{
+			free(path);
+			return (ERR_DUPLICATE_TEXTURE);
+		}
 		info->so_texture = path;
 	}
 	else if (strncmp(line, "WE ", 3) == 0)
 	{
 		if (info->we_texture)
-			free(info->we_texture);
+		{
+			free(path);
+			return (ERR_DUPLICATE_TEXTURE);
+		}
 		info->we_texture = path;
 	}
 	else if (strncmp(line, "EA ", 3) == 0)
 	{
 		if (info->ea_texture)
-			free(info->ea_texture);
+		{
+			free(path);
+			return (ERR_DUPLICATE_TEXTURE);
+		}
 		info->ea_texture = path;
-	}
+	}	
 	else
 	{
 		free(path);
-		return (ERR_INVALID_FILE);
+		return (ERR_MISSING_TEXTURE);
 	}
 	return (ERR_NONE);
 }

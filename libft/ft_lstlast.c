@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstlast.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/29 17:27:56 by lalwafi           #+#    #+#             */
-/*   Updated: 2024/02/05 20:00:04 by lalwafi          ###   ########.fr       */
+/*   Created: 2024/07/03 11:32:18 by imqandyl          #+#    #+#             */
+/*   Updated: 2024/07/03 11:32:18 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,11 @@
 
 t_list	*ft_lstlast(t_list *lst)
 {
-	int	i;
-
 	if (!lst)
 		return (NULL);
-	i = ft_lstsize(lst);
-	while (i > 1)
+	while ((*lst).next)
 	{
-		lst = lst -> next;
-		i--;
+		lst = (*lst).next;
 	}
 	return (lst);
 }

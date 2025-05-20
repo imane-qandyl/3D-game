@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/26 20:04:00 by lalwafi           #+#    #+#             */
-/*   Updated: 2024/01/26 20:33:05 by lalwafi          ###   ########.fr       */
+/*   Created: 2024/07/03 11:34:39 by imqandyl          #+#    #+#             */
+/*   Updated: 2024/07/04 18:28:07 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,24 @@
 
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
-	char			*result;
+	char			*str;
+	unsigned int	len;
 	unsigned int	i;
 
-	i = 0;
-	if (!s)
-		return (NULL);
-	result = (char *)malloc((ft_strlen(s) + 1) * sizeof(char));
-	if (!result)
-		return (NULL);
-	while (s[i])
+	if (s && f)
 	{
-		result[i] = f(i, s[i]);
-		i++;
+		i = 0;
+		len = ft_strlen(s);
+		str = malloc(len + 1);
+		if (!str)
+			return (NULL);
+		while (len > i)
+		{
+			str[i] = f(i, s[i]);
+			i++;
+		}
+		str[i] = '\0';
+		return (str);
 	}
-	result[i] = '\0';
-	return (result);
+	return (0);
 }
-
-// static	char	function(unsigned int a, char b)
-// {
-// 	(void)a;
-// 	return (ft_tolower(b));
-// }
-
-// #include <stdio.h>
-// int	main(void)
-// {
-// 	printf("%s", ft_strmapi(NULL, function));
-// }

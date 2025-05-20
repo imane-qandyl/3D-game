@@ -3,34 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/20 16:51:01 by lalwafi           #+#    #+#             */
-/*   Updated: 2024/01/17 20:16:32 by lalwafi          ###   ########.fr       */
+/*   Created: 2024/07/03 11:33:53 by imqandyl          #+#    #+#             */
+/*   Updated: 2024/07/03 12:48:41 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <unistd.h> 
 
 char	*ft_strchr(const char *s, int c)
 {
-	while (*s != (char)c)
+	size_t	i;
+
+	i = 0;
+	while (s[i])
 	{
-		if (*s == '\0')
-			return (NULL);
-		s++;
+		if (s[i] == (char)c)
+			return ((char *)&s[i]);
+		i++;
 	}
-	return ((char *)s);
+	if ((char)c == '\0')
+		return ((char *)&s[i]);
+	else
+		return (NULL);
 }
-
-// #include <stdio.h>
-// #include <string.h>
-
-// int	main(void)
-// {
-// 	const char	*a = "Hello everybody";
-// 	int	c = 'r';
-// 	printf("%s\n", ft_strchr(a, c));
-// 	printf("%s\n", strchr(a, c));
-// }

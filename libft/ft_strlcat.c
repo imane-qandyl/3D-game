@@ -3,43 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/13 16:54:05 by lalwafi           #+#    #+#             */
-/*   Updated: 2024/01/13 18:49:02 by lalwafi          ###   ########.fr       */
+/*   Created: 2024/07/03 11:34:21 by imqandyl          #+#    #+#             */
+/*   Updated: 2024/07/06 08:32:38 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_strlcat(char *dst, const char *src, size_t size)
+size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 {
+	size_t	lendst;
+	size_t	lensrc;
 	size_t	i;
-	size_t	dstlen;
-	size_t	srclen;
+	size_t	j;
 
-	srclen = ft_strlen(src);
-	dstlen = ft_strlen(dst);
+	lensrc = ft_strlen(src);
 	i = 0;
-	if (size <= dstlen)
-		return (srclen + size);
-	while (src[i] != '\0' && i < (size - dstlen - 1))
-	{
-		dst[i + dstlen] = src[i];
+	j = 0;
+	if (dstsize == 0)
+		return (lensrc);
+	while (dst[i] && i < dstsize)
 		i++;
+	lendst = i;
+	while (src[j] && i < dstsize - 1)
+	{
+		dst[i] = src[i - lendst];
+		i++;
+		j++;
 	}
-	dst[i + dstlen] = '\0';
-	return (srclen + dstlen);
+	if (lendst < dstsize)
+		dst[i] = '\0';
+	return (lendst + lensrc);
 }
-
-// ---------------------------------------------------- main function
-// #include <string.h>
-// int	main(void)
-// {
-// 	// char	*src = "world!";
-// 	// char	*dst = "hello ";
-
-// 	printf("%zu\n", ft_strlcat("pqrs", "abcdefghi", 10));
-// 	printf("%zu\n", strlcat("pqrs", "abcdefghi", 10));
-// 	// printf("%s\n", dst);
-// }

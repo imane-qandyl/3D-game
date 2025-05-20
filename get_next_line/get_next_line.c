@@ -3,120 +3,104 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/27 10:25:24 by lalwafi           #+#    #+#             */
-/*   Updated: 2025/04/29 09:07:22 by lalwafi          ###   ########.fr       */
+/*   Created: 2024/07/22 09:24:35 by imqandyl          #+#    #+#             */
+/*   Updated: 2025/04/25 13:01:48 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_save(char *buffer)
+char	*strdup_to_newline(char *str)
 {
-	char	*new_buffer;
-	int		i;
-	int		j;
+	size_t	i;
+	char	*n_str;
 
 	i = 0;
-	j = 0;
-	while (buffer[i] && buffer[i] != '\n')
+	if (!str || ft_strlen1(str) == 0)
+		return (NULL);
+	while (str[i] && str[i] != '\n')
 		i++;
-	if (!buffer[i])
-	{
-		free(buffer);
-		return (NULL);
-	}
-	new_buffer = (char *)malloc(sizeof(char) * (ft_strlen(buffer) - i + 1));
-	if (!new_buffer)
-		return (NULL);
-	while (buffer[++i])
-		new_buffer[j++] = buffer[i];
-	new_buffer[j] = 0;
-	free(buffer);
-	return (new_buffer);
-}
-
-char	*ft_thing_to_print(char *buffer)
-{
-	char	*thing_to_print;
-	int		i;
-
-	i = 0;
-	if (!buffer[i])
-		return (NULL);
-	while (buffer[i] && buffer[i] != '\n')
+	if (str[i] == '\n')
 		i++;
-	thing_to_print = (char *)malloc(sizeof(char) * (i + 1 + (buffer[i] == '\n')));
-	if (!thing_to_print)
+	n_str = (char *)malloc(i + 1);
+	if (!n_str)
 		return (NULL);
+	n_str[i] = '\0';
 	i = 0;
-	while (buffer[i] && buffer[i] != '\n')
+	while (str[i] && str[i] != '\n')
 	{
-		thing_to_print[i] = buffer[i];
+		n_str[i] = str[i];
 		i++;
 	}
-	if (buffer[i] == '\n')
-		thing_to_print[i++] = '\n';
-	thing_to_print[i] = '\0';
-	return (thing_to_print);
+	if (str[i] == '\n')
+		n_str[i] = '\n';
+	return (n_str);
 }
 
-char	*ft_read_it(char *buffer, int fd)
+char	*read_chunks(int fd, char *str)
 {
-	int		read_return;
-	char	*line;
+	char	buffer[BUFFER_SIZE + 1];
+	int		byte_read;
 
-	line = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if (!line)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	read_return = 1;
-	while (read_return != 0 && ft_strchr(buffer, '\n') == 0)
+	byte_read = 1;
+	while (!ft_strchr1(str) && byte_read > 0)
 	{
-		read_return = read(fd, line, BUFFER_SIZE);
-		if (read_return == -1)
+		byte_read = read(fd, buffer, BUFFER_SIZE);
+		if (byte_read < 0)
 		{
-			if (buffer != NULL)
-				free(buffer);
-			free(line);
+			free(str);
 			return (NULL);
 		}
-		line[read_return] = '\0';
-		buffer = ft_strjoin(buffer, line);
+		buffer[byte_read] = '\0';
+		str = ft_strjoin1(str, buffer);
 	}
-	free(line);
-	return (buffer);
+	return (str);
+}
+
+char	*remove_first_line(char *str)
+{
+	size_t	i;
+	char	*n_str;
+
+	i = 0;
+	while (str[i] && str[i] != '\n')
+		i++;
+	if (str[i] == '\n')
+		i++;
+	if (!str[i])
+	{
+		free(str);
+		return (NULL);
+	}
+	n_str = ft_strdup1(str + i);
+	free(str);
+	str = NULL;
+	if (!n_str)
+		return (NULL);
+	return (n_str);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer;
-	char		*thing_to_print;
+	static char	*str;
+	char		*n_str;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || BUFFER_SIZE >= INT_MAX)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	if (!buffer)
-		buffer = NULL;
-	buffer = ft_read_it(buffer, fd);
-	if (!buffer)
+	str = read_chunks(fd, str);
+	if (!str)
 		return (NULL);
-	thing_to_print = ft_thing_to_print(buffer);
-	buffer = ft_save(buffer);
-	return (thing_to_print);
+	n_str = strdup_to_newline(str);
+	if (!n_str)
+	{
+		free(str);
+		str = NULL;
+		return (NULL);
+	}
+	str = remove_first_line(str);
+	return (n_str);
 }
-
-// #include <fcntl.h>
-// int	main(void)
-// {
-// 	int		fd;
-// 	char	*line;
-// 	int		number;
-
-// 	number = 0;
-// 	fd = open("idk.txt", O_RDONLY);
-// 	if (fd == -1)
-// 		printf("lmao nah -1");
-// 	while ((line = get_next_line(fd)))
-// 		printf("%s", line);
-// 	close(fd);
-// }
