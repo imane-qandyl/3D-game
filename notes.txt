@@ -14,4 +14,7 @@ Needed from executor
     there is no wall along the crack. So, probably the dda enters an infinte loop since there technically 
     is no end to the map in that case. So maybe, you can try to put a cap on the size of the ray line so 
     that if it reaches a certain limit, it stops so that the dda algorithm doesn't segfault at function 
-    just_raycast_custom_angle in line raycasting.c:103
+    raycast_custom_angle in line raycasting.c:103
+
+- we need to change the textures to 32x32
+- parse the textures as if its a map, but instead of 0 and 1 we put the hex code of the colors of the pixels

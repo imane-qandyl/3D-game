@@ -55,8 +55,10 @@ void temp_init_for_exec(t_game *game)
 	game->player_dir = get_player_direction(game);
 	game->angle = get_angle(game->player_dir);
 	get_player_position(game);  // Use local variables
-	game->pdx = cos(game->p.px) * 5;
-	game->pdy = sin(game->p.py) * 5;
+	// game->pdx = cos(game->p.px) * 5;
+	// game->pdy = sin(game->p.py) * 5;
+	game->pdx = cosf(game->angle * PI/180);
+	game->pdy = sinf(game->angle * PI/180);
 	game->key.w = false;
 	game->key.a = false;
 	game->key.s = false;
@@ -64,9 +66,6 @@ void temp_init_for_exec(t_game *game)
 	game->key.left = false;
 	game->key.right = false;
 	game->img.img = NULL;
-
-
-	printf("dx = %f\n", game->pdx);
 }
 
 int load_textures(t_game *game)

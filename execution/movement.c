@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   movement.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cafriem <cafriem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 15:26:04 by lalwafi           #+#    #+#             */
-/*   Updated: 2025/05/08 15:35:06 by lalwafi          ###   ########.fr       */
+/*   Updated: 2025/05/19 21:22:15 by cafriem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int key_pressed(int key, t_game *game)
 {
-	// write(1, "key press\n", 4);
 	if (key == ESC)
 		return (finish(game, 0));
 	if (key == W)
@@ -34,7 +33,6 @@ int key_pressed(int key, t_game *game)
 
 int key_release(int key, t_game *game)
 {
-	// write(1, "key release\n", 4);
 	if (key == W)
 		game->key.w = false;
 	if (key == A)
@@ -54,29 +52,29 @@ int	movement(t_game *game)
 {
 	if (game->key.w == true)
 	{
-		move_player_1px(game, 1, game->pdx, game->pdy);
-		print_everything_for_debug(game);
+		move_player(game, 1, game->pdx, game->pdy);
+		// print_everything_for_debug(game);
 		draw_3d(game);
 		// draw_2d(game);
 	}
-	if (game->key.a == true)
+	if (game->key.d == true) // inversed A and D buttons
 	{
-		move_player_1px(game, 1, change_angle(game->angle, 270, 1), change_angle(game->angle, 270, 2));
-		print_everything_for_debug(game);
+		move_player(game, 1, change_angle(game->angle, 270, 1), change_angle(game->angle, 270, 2));
+		// print_everything_for_debug(game);
 		draw_3d(game);
 		// draw_2d(game);
 	}
 	if (game->key.s == true)
 	{
-		move_player_1px(game, 1, change_angle(game->angle, 180, 1), change_angle(game->angle, 180, 2));
-		print_everything_for_debug(game);
+		move_player(game, 1, change_angle(game->angle, 180, 1), change_angle(game->angle, 180, 2));
+		// print_everything_for_debug(game);
 		draw_3d(game);
 		// draw_2d(game);
 	}
-	if (game->key.d == true)
+	if (game->key.a == true)
 	{
-		move_player_1px(game, 1, change_angle(game->angle, 90, 1), change_angle(game->angle, 90, 2));
-		print_everything_for_debug(game);
+		move_player(game, 1, change_angle(game->angle, 90, 1), change_angle(game->angle, 90, 2));
+		// print_everything_for_debug(game);
 		draw_3d(game);
 		// draw_2d(game);
 	}
@@ -87,7 +85,7 @@ int	movement(t_game *game)
 			game->angle += 360;
 		game->pdx = cosf(game->angle * PI/180);
 		game->pdy = sinf(game->angle * PI/180);
-		print_everything_for_debug(game);
+		// print_everything_for_debug(game);
 		draw_3d(game);
 		// draw_2d(game);
 	}
@@ -98,25 +96,25 @@ int	movement(t_game *game)
 			game->angle -= 360;
 		game->pdx = cosf(game->angle * PI/180);
 		game->pdy = sinf(game->angle * PI/180);
-		print_everything_for_debug(game);
+		// print_everything_for_debug(game);
 		draw_3d(game);
 		// draw_2d(game);
 	}
 	return (0);
 }
 
-void	move_player_1px(t_game *game, int steps, float dx, float dy)
+void	move_player(t_game *game, int steps, float dx, float dy)
 {
 	while (steps-- > 0)
 	{
 		if ((game->p.py + dy) >= WIN_HEIGHT || (game->p.px + dx) >= WIN_WIDTH || \
 			(game->p.py + dy) < 0 || (game->p.px + dx) < 0 || \
-			game->map[(int)((game->p.py + dy)/TILE_SIZE)][(int)((game->p.px + dx)/TILE_SIZE)] == '1')
+			game->map[(int)((game->p.py + (dy*10))/TILE_SIZE)][(int)((game->p.px + (dx*10))/TILE_SIZE)] == '1')
 			return ;
 		game->p.px += dx;
 		game->p.py += dy;
 	}
-	printf("== x=%f == y=%f ==\n", game->p.px, game->p.py);
+	// printf("== x=%f == y=%f ==\n", game->p.px, game->p.py);
 }
 
 float	change_angle(float angle, float change, int flag) // 0 angle change only, 1 dx change , 2 dy change

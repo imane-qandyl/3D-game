@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cafriem <cafriem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 08:19:31 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/05/08 15:35:36 by lalwafi          ###   ########.fr       */
+/*   Updated: 2025/05/19 21:23:35 by cafriem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@
 #include "../get_next_line/get_next_line.h"
 
 # define TILE_SIZE 32
-# define WIN_WIDTH 960
-# define WIN_HEIGHT 480
+# define WIN_WIDTH 1280
+# define WIN_HEIGHT 720
 # define PI 3.141592653589
 
 # ifdef OSX
@@ -90,7 +90,12 @@ typedef struct s_point
 {
 	float	px;
 	float	py;
+	float	dx;
+	float	dy;
 	float	length;
+	char	face; // N,S,E,W
+	float	angle;
+	int		ray_num; // number of the ray
 } t_point;
 
 typedef struct s_game
@@ -161,22 +166,19 @@ void    	draw_player(t_game *game);
 int			key_pressed(int key, t_game *game);
 int 		key_release(int key, t_game *game);
 int			movement(t_game *game);
-void		move_player_1px(t_game *game, int steps, float dx, float dy);
+void		move_player(t_game *game, int steps, float dx, float dy);
 int			finish(t_game *game, int i);
 float		change_angle(float angle, float change, int flag);
-void		draw_ray_5px(t_game *game);
-t_point		which_ray_shorter(t_game *game, t_point ph, t_point pv);
-void		draw_ray(t_game *game, t_point point, int color);
-void		draw_ray_custom_angle(t_game *game, t_point point, int angle, int color);
-t_point		just_raycast(t_game *game);
-t_point		just_raycast_custom_angle(t_game *game, int angle);
-void		dda_thing(t_game *game);
-// void		dda(t_game *game, t_point end, int color);
-void		draw_background(t_game *game, int sky, int floor);
+void		draw_ray_custom_angle(t_game *game, t_point end, float angle, int color);
+t_point		raycast_custom_angle(t_game *game, float angle);
+void		rendering_2d(t_game *game);
+void		draw_background_3d(t_game *game, int sky, int floor);
 void		my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void		print_everything_for_debug(t_game *game);
-void	draw_line(t_game *game, t_point end, int location, int color);
-void	dda_only_3d(t_game *game);
-void	draw_3d(t_game *game);
+void		draw_line(t_game *game, t_point end, int location, int color);
+void		rendering_3d(t_game *game);
+void		draw_3d(t_game *game);
+t_point		round_endpoint(t_point ph, int angle);
+float		get_length_of_ray(t_point game, t_point end);
 
 #endif
