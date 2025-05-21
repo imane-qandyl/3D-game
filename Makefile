@@ -6,7 +6,7 @@
 #    By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/04 07:50:40 by imqandyl          #+#    #+#              #
-#    Updated: 2025/05/08 15:34:11 by lalwafi          ###   ########.fr        #
+#    Updated: 2025/05/21 16:06:39 by lalwafi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,10 +21,13 @@ get_next_line := get_next_line
 LIBFT = libft
 
 SRC     = srcs/main.c \
-          srcs/draw_map.c\
-          execution/movement.c\
-		  execution/raycasting.c\
-		  execution/rendering.c\
+          srcs/draw_2d.c\
+          srcs/movement_1.c \
+          srcs/movement_2.c \
+          srcs/raycasting.c \
+          srcs/rendering_2d.c \
+          srcs/rendering_3d.c \
+          srcs/raycast_v_h.c \
           parsing/parse_map.c \
 		  parsing/parse.c \
           parsing/parse_textures.c \
