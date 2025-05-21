@@ -52,13 +52,14 @@ static void cleanup_and_exit(t_game *game, char *error_msg)
 
 void temp_init_for_exec(t_game *game)
 {
+	init_point(&game->p);
 	game->player_dir = get_player_direction(game);
 	game->angle = get_angle(game->player_dir);
 	get_player_position(game);  // Use local variables
-	// game->pdx = cos(game->p.px) * 5;
-	// game->pdy = sin(game->p.py) * 5;
-	game->pdx = cosf(game->angle * PI/180);
-	game->pdy = sinf(game->angle * PI/180);
+	// game->dx = cos(game->p.x) * 5;
+	// game->dy = sin(game->p.y) * 5;
+	game->dx = cos(game->angle * PI/180);
+	game->dy = sin(game->angle * PI/180);
 	game->key.w = false;
 	game->key.a = false;
 	game->key.s = false;

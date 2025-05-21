@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cafriem <cafriem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 08:19:31 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/05/19 21:23:35 by cafriem          ###   ########.fr       */
+/*   Updated: 2025/05/21 17:31:56 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,13 +88,13 @@ typedef struct s_keys
 
 typedef struct s_point
 {
-	float	px;
-	float	py;
-	float	dx;
-	float	dy;
-	float	length;
+	double	x;
+	double	y;
+	double	dx;
+	double	dy;
+	double	length;
 	char	face; // N,S,E,W
-	float	angle;
+	double	angle;
 	int		ray_num; // number of the ray
 } t_point;
 
@@ -117,9 +117,9 @@ typedef struct s_game
 	char		player_dir;
 	t_point		p;       // player coordinates
 	t_keys		key;
-	float		angle;
-	float		pdx;
-	float		pdy;
+	double		angle;
+	double		dx;
+	double		dy;
 }	t_game;
 
 /* Function prototypes */
@@ -166,19 +166,32 @@ void    	draw_player(t_game *game);
 int			key_pressed(int key, t_game *game);
 int 		key_release(int key, t_game *game);
 int			movement(t_game *game);
-void		move_player(t_game *game, int steps, float dx, float dy);
 int			finish(t_game *game, int i);
-float		change_angle(float angle, float change, int flag);
-void		draw_ray_custom_angle(t_game *game, t_point end, float angle, int color);
-t_point		raycast_custom_angle(t_game *game, float angle);
 void		rendering_2d(t_game *game);
 void		draw_background_3d(t_game *game, int sky, int floor);
 void		my_mlx_pixel_put(t_data *data, int x, int y, int color);
-void		print_everything_for_debug(t_game *game);
-void		draw_line(t_game *game, t_point end, int location, int color);
 void		rendering_3d(t_game *game);
 void		draw_3d(t_game *game);
+
+// try 2
+int			movement(t_game *game);
+void		move_player(t_game *game, double dx, double dy);
+void		rotate_player(t_game *game, int	angle_change);
+int			key_pressed(int key, t_game *game);
+int			key_release(int key, t_game *game);
+double		change_angle(double angle, double change, int flag);
 t_point		round_endpoint(t_point ph, int angle);
-float		get_length_of_ray(t_point game, t_point end);
+t_point		raycast(t_game *game, double ray_angle);
+void		rendering_2d(t_game *game);
+void		dda(t_game *game, t_point end);
+void		draw_background_3d(t_game *game, int sky, int floor);
+void		init_point(t_point *point);
+void		rendering_3d(t_game *game);
+void		draw_3d(t_game *game);
+
+t_point	raycast_horizontal(t_game *game, double ray_angle);
+t_point	raycast_vertical(t_game *game, double ray_angle);
+t_point	raycast_v_h(t_game *game, double ray_angle);
+void	draw_wall_line(t_game *game, t_point end, int location);
 
 #endif

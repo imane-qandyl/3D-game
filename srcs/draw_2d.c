@@ -71,59 +71,22 @@ void	draw_2d(t_game *game)
 
 void	draw_player(t_game *game)
 {
-	my_mlx_pixel_put(&game->img, game->p.px, \
-		game->p.py, 0xFFFF00);
-	my_mlx_pixel_put(&game->img, game->p.px + 1, \
-		game->p.py, 0xFFFF00);
-	my_mlx_pixel_put(&game->img, game->p.px, \
-		game->p.py + 1, 0xFFFF00);
-	my_mlx_pixel_put(&game->img, game->p.px + 1, \
-		game->p.py + 1, 0xFFFF00);
+	my_mlx_pixel_put(&game->img, game->p.x, \
+		game->p.y, 0xFFFF00);
+	my_mlx_pixel_put(&game->img, game->p.x + 1, \
+		game->p.y, 0xFFFF00);
+	my_mlx_pixel_put(&game->img, game->p.x, \
+		game->p.y + 1, 0xFFFF00);
+	my_mlx_pixel_put(&game->img, game->p.x + 1, \
+		game->p.y + 1, 0xFFFF00);
 	rendering_2d(game);
-}
 
-void	rendering_2d(t_game *game)
-{
-	int		i;
-	t_point	end;
-	float	angle;
-	float	dif;
+	// printf("\ngame->p.x = %f\n", game->p.x);
+	// printf("game->p.y = %f\n\n", game->p.y);
 	
-	i = 0;
-	angle = game->angle + 30;
-	dif = 60.0f / WIN_WIDTH;
-	while (i <= WIN_WIDTH)
-	{
-		end = raycast_custom_angle(game, angle);
-		draw_ray_custom_angle(game, end, angle, 0x00FFFF);
-		if ((angle - dif) < 0.000001)
-			angle = 360;
-		angle = fabsf(angle - dif);
-		i++;
-	}
-}
-
-void	draw_ray_custom_angle(t_game *game, t_point point, float angle, int color)
-{
-	float	dx;
-	float	dy;
-	t_point	temp;
-	t_point	comp;
 	
-	dx = cosf(angle * PI/180);
-	dy = sinf(angle * PI/180);
-	temp.px = game->p.px;
-	temp.py = game->p.py;
-	comp = round_endpoint(temp, angle);
-	while (comp.px != point.px || comp.py != point.py)
-	{
-		if (temp.py > WIN_HEIGHT || temp.px > WIN_WIDTH || temp.py < 0.000001 || temp.px < 0.000001 || \
-			(int)((temp.py)/TILE_SIZE) >= game->map_height || \
-			(int)((temp.px)/TILE_SIZE) >= game->map_width)
-			break ;
-		my_mlx_pixel_put(&game->img, temp.px, temp.py, color);
-		temp.px += dx;
-		temp.py += dy;
-		comp = round_endpoint(temp, angle);
-	}
+	// t_point end = raycast_v_h(game, game->angle);
+	// if (end.length != 999999)
+	// 	dda(game, end);
+	// dda(game, raycast(game, game->angle));
 }

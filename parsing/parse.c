@@ -6,7 +6,7 @@
 /*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 09:03:47 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/05/08 15:39:16 by lalwafi          ###   ########.fr       */
+/*   Updated: 2025/05/20 02:07:54 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ void	init_map_info(t_game *info)
 	info->map_width = 0;
 	info->map_height = 0;
 	info->player_dir = '\0';
-	info->p.px = -1;
-	info->p.py = -1;
+	info->p.x = -1;
+	info->p.y = -1;
 	ft_memset(info->floor_color, -1, sizeof(info->floor_color));
 	ft_memset(info->ceiling_color, -1, sizeof(info->ceiling_color));
 
