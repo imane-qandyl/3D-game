@@ -6,7 +6,7 @@
 /*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 09:49:10 by lalwafi           #+#    #+#             */
-/*   Updated: 2025/05/21 17:30:16 by lalwafi          ###   ########.fr       */
+/*   Updated: 2025/05/22 16:34:42 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,29 +111,30 @@ t_point	raycast(t_game *game, double ray_angle)
 	return (end);
 }
 
-void	draw_wall_line(t_game *game, t_point end, int location)
-{
-	double	line_height;
-	int		line_location;
+// void	draw_wall_line(t_game *game, t_point end, int location)
+// {
+// 	double	line_height;
+// 	int		line_location;
 
-	if(end.length < 5.0f)
-		line_height = WIN_WIDTH;
-	else
-		line_height = ((WIN_WIDTH*TILE_SIZE)/end.length);
-	if (line_height > WIN_WIDTH)
-		line_height = WIN_WIDTH;
-	line_location = -line_height + (line_height/2);
-	while (line_height-- > 0)
-	{
-		if (end.face == 'N')
-			my_mlx_pixel_put(&game->img, location, (WIN_HEIGHT/2) + line_location++, 0xec8df8);
-		else if (end.face == 'S')
-			my_mlx_pixel_put(&game->img, location, (WIN_HEIGHT/2) + line_location++, 0x62106d);
-		else if (end.face == 'E')
-			my_mlx_pixel_put(&game->img, location, (WIN_HEIGHT/2) + line_location++, 0xda20f1);
-		else if (end.face == 'W')
-			my_mlx_pixel_put(&game->img, location, (WIN_HEIGHT/2) + line_location++, 0x69516c);
-		else
-			my_mlx_pixel_put(&game->img, location, (WIN_HEIGHT/2) + line_location++, 0x000000);
-	}
-}
+// 	if(end.length < 5.0f)
+// 		line_height = WIN_WIDTH;
+// 	else
+// 		line_height = ((WIN_WIDTH*TILE_SIZE)/end.length);
+// 	if (line_height > WIN_WIDTH)
+// 		line_height = WIN_WIDTH;
+// 	line_location = -line_height + (line_height/2);
+
+// 	while (line_height-- > 0)
+// 	{
+// 		if (end.face == 'N')
+// 			my_mlx_pixel_put(&game->img, location, (WIN_HEIGHT/2) + line_location++, 0xec8df8);
+// 		else if (end.face == 'S')
+// 			my_mlx_pixel_put(&game->img, location, (WIN_HEIGHT/2) + line_location++, 0x62106d);
+// 		else if (end.face == 'E')
+// 			my_mlx_pixel_put(&game->img, location, (WIN_HEIGHT/2) + line_location++, 0xda20f1);
+// 		else if (end.face == 'W')
+// 			my_mlx_pixel_put(&game->img, location, (WIN_HEIGHT/2) + line_location++, 0x69516c);
+// 		else
+// 			my_mlx_pixel_put(&game->img, location, (WIN_HEIGHT/2) + line_location++, 0x000000);
+// 	}
+// }

@@ -45,16 +45,14 @@ int	movement(t_game *game)
 
 void	move_player(t_game *game, double dx, double dy)
 {
-	if (game->map[(int)((game->p.y + dy + 5)/TILE_SIZE)][(int)((game->p.x + dx)/TILE_SIZE)] != '1' && 
-		game->map[(int)((game->p.y + dy - 5)/TILE_SIZE)][(int)((game->p.x + dx)/TILE_SIZE)] != '1' && 
-		game->map[(int)((game->p.y + dy)/TILE_SIZE)][(int)((game->p.x + dx + 5)/TILE_SIZE)] != '1' && 
-		game->map[(int)((game->p.y + dy)/TILE_SIZE)][(int)((game->p.x + dx - 5)/TILE_SIZE)] != '1')
+	if (game->map[(int)((game->p.y + (dy*5) + 5)/TILE_SIZE)][(int)((game->p.x + (dx*5))/TILE_SIZE)] != '1' && 
+		game->map[(int)((game->p.y + (dy*5) - 5)/TILE_SIZE)][(int)((game->p.x + (dx*5))/TILE_SIZE)] != '1' && 
+		game->map[(int)((game->p.y + (dy*5))/TILE_SIZE)][(int)((game->p.x + (dx*5) + 5)/TILE_SIZE)] != '1' && 
+		game->map[(int)((game->p.y + (dy*5))/TILE_SIZE)][(int)((game->p.x + (dx*5) - 5)/TILE_SIZE)] != '1')
 	{
-		game->p.x += dx;
-		game->p.y += dy;
+		game->p.x += (dx*5);
+		game->p.y += (dy*5);
 	}
-	// draw_3d(game);
-	// draw_2d(game);
 }
 
 void	rotate_player(t_game *game, int	angle_change)
@@ -66,6 +64,4 @@ void	rotate_player(t_game *game, int	angle_change)
 		game->angle -= 360;
 	game->dx = cos(game->angle * PI/180);
 	game->dy = sin(game->angle * PI/180);
-	// draw_3d(game);
-	// draw_2d(game);
 }

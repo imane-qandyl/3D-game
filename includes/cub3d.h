@@ -6,7 +6,7 @@
 /*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 08:19:31 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/05/21 17:31:56 by lalwafi          ###   ########.fr       */
+/*   Updated: 2025/05/22 16:36:15 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 #include "../libft/libft.h"
 #include "../get_next_line/get_next_line.h"
 
-# define TILE_SIZE 32
+# define TILE_SIZE 64
 # define WIN_WIDTH 1280
 # define WIN_HEIGHT 720
 # define PI 3.141592653589
@@ -108,6 +108,7 @@ typedef struct s_game
 	char		*so_texture;
 	char		*we_texture;
 	char		*ea_texture;
+	int			texture_map_test[64][64];
 	int			tex_width;
 	int			tex_height;
 	int			floor_color[3];

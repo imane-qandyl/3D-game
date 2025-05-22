@@ -90,11 +90,34 @@ int load_textures(t_game *game)
 	
 	game->ea_texture = mlx_xpm_file_to_image(game->mlx, game->ea_texture, &width, &height);
 	if (!game->ea_texture || width != game->tex_width || height != game->tex_height)
-	return (0);
+		return (0);
 	
 	return (1);
 }
-	
+
+static void	texture_test(t_game *game)
+{
+	int		bits_per_ppixel;
+	int		size_line;
+	int		endian;
+	char	*pixels;
+	int		y;
+	int		x;
+	int		color;
+
+	pixels = mlx_get_data_addr(game->no_texture, &bits_per_ppixel, &size_line, &endian);
+	y = -1;
+	while (++y < game->tex_height)
+	{
+		x = -1;
+		while (++x < game->tex_width)
+		{
+			color = (*(int *)(pixels + (y * size_line) + (x * (bits_per_ppixel / 8)))) & 0x00FFFFFF;
+			game->texture_map_test[y][x] = color;
+		}
+	}
+}
+
 
 int main(int argc, char **argv)
 {
@@ -135,10 +158,17 @@ int main(int argc, char **argv)
 		printf("(%s)\n", game.map[j]);
 
 
+
+	texture_test(&game);
+	// game.p.x = 655.292893;
+	// game.p.y = 99.452273;
+	// game.angle = 225.000000;
+
+
 	// Draw the map
 	draw_3d(&game);
 	// draw_2d(&game);
-
+	
 	mlx_hook(game.win, 2, 1L << 0, key_pressed, &game);
 	mlx_hook(game.win, 3, 1L << 1, key_release, &game); // key release
 	mlx_hook(game.win, 17, 1L << 0, finish, &game);
