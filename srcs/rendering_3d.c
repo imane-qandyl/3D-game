@@ -6,13 +6,18 @@
 /*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 20:51:27 by lalwafi           #+#    #+#             */
-/*   Updated: 2025/05/23 17:29:17 by lalwafi          ###   ########.fr       */
+/*   Updated: 2025/05/23 22:03:01 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-void	draw_background_3d(t_game *game, int sky, int floor)
+static int	rgb_to_hex(int red, int green, int blue)
+{
+	return (((red & 0xff) << 16) | ((green & 0xff) << 8) | (blue & 0xff));
+}
+
+void	draw_background_3d(t_game *game, int ceiling, int floor)
 {
 	int	x;
 	int	y;
@@ -24,7 +29,7 @@ void	draw_background_3d(t_game *game, int sky, int floor)
 		while (++x < WIN_WIDTH)
 		{
 			if (y < (WIN_HEIGHT/2))
-				my_mlx_pixel_put(&game->img, x, y, sky);
+				my_mlx_pixel_put(&game->img, x, y, ceiling);
 			else
 				my_mlx_pixel_put(&game->img, x, y, floor);
 		}
@@ -124,7 +129,9 @@ void	draw_3d(t_game *game)
 	game->img.addr = mlx_get_data_addr(game->img.img, &game->img.bits_per_pixel, 
 							&game->img.line_length, &game->img.endian);
 								
-	draw_background_3d(game, 0x84c8d1, 0x1f5c2c);
+	draw_background_3d(game, 
+		rgb_to_hex(game->ceiling_color[0], game->ceiling_color[1], game->ceiling_color[2]),
+		rgb_to_hex(game->floor_color[0], game->floor_color[1], game->floor_color[2]));
 	rendering_3d(game);
 	
 	mlx_put_image_to_window(game->mlx, game->win, game->img.img, 0, 0);

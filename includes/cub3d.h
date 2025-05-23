@@ -6,7 +6,7 @@
 /*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 08:19:31 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/05/23 17:27:27 by lalwafi          ###   ########.fr       */
+/*   Updated: 2025/05/23 18:05:15 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,7 +172,7 @@ int 		key_release(int key, t_game *game);
 int			movement(t_game *game);
 int			finish(t_game *game, int i);
 void		rendering_2d(t_game *game);
-void		draw_background_3d(t_game *game, int sky, int floor);
+void		draw_background_3d(t_game *game, int ceiling, int floor);
 void		my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void		rendering_3d(t_game *game);
 void		draw_3d(t_game *game);
@@ -188,7 +188,7 @@ t_point		round_endpoint(t_point ph, int angle);
 t_point		raycast(t_game *game, double ray_angle);
 void		rendering_2d(t_game *game);
 void		dda(t_game *game, t_point end);
-void		draw_background_3d(t_game *game, int sky, int floor);
+void		draw_background_3d(t_game *game, int ceiling, int floor);
 void		init_point(t_point *point);
 void		rendering_3d(t_game *game);
 void		draw_3d(t_game *game);
