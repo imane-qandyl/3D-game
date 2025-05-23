@@ -1,9 +1,6 @@
 NO ./textures/NO.xpm
-
-SO ./textures/EA.xpm
-
-WE ./textures/EA.xpm
-
+SO ./textures/SO.xpm
+WE ./textures/WE.xpm
 EA ./textures/EA.xpm
 
 F 100,100,0

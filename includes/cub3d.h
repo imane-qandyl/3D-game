@@ -6,7 +6,7 @@
 /*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 08:19:31 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/05/22 16:36:15 by lalwafi          ###   ########.fr       */
+/*   Updated: 2025/05/23 17:27:27 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,10 @@ typedef struct s_game
 	char		*so_texture;
 	char		*we_texture;
 	char		*ea_texture;
-	int			texture_map_test[64][64];
+	int			no_tex_map[64][64];
+	int			so_tex_map[64][64];
+	int			ea_tex_map[64][64];
+	int			we_tex_map[64][64];
 	int			tex_width;
 	int			tex_height;
 	int			floor_color[3];

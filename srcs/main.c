@@ -113,7 +113,40 @@ static void	texture_test(t_game *game)
 		while (++x < game->tex_width)
 		{
 			color = (*(int *)(pixels + (y * size_line) + (x * (bits_per_ppixel / 8)))) & 0x00FFFFFF;
-			game->texture_map_test[y][x] = color;
+			game->no_tex_map[y][x] = color;
+		}
+	}
+	pixels = mlx_get_data_addr(game->so_texture, &bits_per_ppixel, &size_line, &endian);
+	y = -1;
+	while (++y < game->tex_height)
+	{
+		x = -1;
+		while (++x < game->tex_width)
+		{
+			color = (*(int *)(pixels + (y * size_line) + (x * (bits_per_ppixel / 8)))) & 0x00FFFFFF;
+			game->so_tex_map[y][x] = color;
+		}
+	}
+	pixels = mlx_get_data_addr(game->ea_texture, &bits_per_ppixel, &size_line, &endian);
+	y = -1;
+	while (++y < game->tex_height)
+	{
+		x = -1;
+		while (++x < game->tex_width)
+		{
+			color = (*(int *)(pixels + (y * size_line) + (x * (bits_per_ppixel / 8)))) & 0x00FFFFFF;
+			game->ea_tex_map[y][x] = color;
+		}
+	}
+	pixels = mlx_get_data_addr(game->we_texture, &bits_per_ppixel, &size_line, &endian);
+	y = -1;
+	while (++y < game->tex_height)
+	{
+		x = -1;
+		while (++x < game->tex_width)
+		{
+			color = (*(int *)(pixels + (y * size_line) + (x * (bits_per_ppixel / 8)))) & 0x00FFFFFF;
+			game->we_tex_map[y][x] = color;
 		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 20:51:27 by lalwafi           #+#    #+#             */
-/*   Updated: 2025/05/22 16:34:36 by lalwafi          ###   ########.fr       */
+/*   Updated: 2025/05/23 17:29:17 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,16 @@ void	draw_wall_line(t_game *game, t_point end, int location)
 	// printf("texture\n x = %d\ny = %f\nincrement = %f\n\n", texture_x, texture_y, text_increment_y);
 	while (line_height-- > 0)
 	{
-		color = game->texture_map_test[(int)(texture_y)][texture_x];
+		// color = game->no_tex_map[(int)(texture_y)][texture_x];
+
+		if (end.face == 'N')
+			color = game->no_tex_map[(int)(texture_y)][texture_x];
+		else if (end.face == 'S')
+			color = game->so_tex_map[(int)(texture_y)][texture_x];
+		else if (end.face == 'E')
+			color = game->ea_tex_map[(int)(texture_y)][texture_x];
+		else if (end.face == 'W')
+			color = game->we_tex_map[(int)(texture_y)][texture_x];
 		my_mlx_pixel_put(&game->img, location, (WIN_HEIGHT/2) + line_location++, 
 							color);
 		texture_y += text_increment_y;
