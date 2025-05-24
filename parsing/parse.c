@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 09:03:47 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/05/20 02:07:54 by lalwafi          ###   ########.fr       */
+/*   Updated: 2025/05/24 18:04:58 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,12 @@ void	init_map_info(t_game *info)
 	info->p.y = -1;
 	ft_memset(info->floor_color, -1, sizeof(info->floor_color));
 	ft_memset(info->ceiling_color, -1, sizeof(info->ceiling_color));
-
-	}
+}
 
 void	free_map_info(t_game *info)
 {
-	int i;
+	int	i;
+
 	if (info->no_texture)
 		free(info->no_texture);
 	if (info->so_texture)
@@ -61,70 +61,75 @@ void	free_map_info(t_game *info)
 	}
 	init_map_info(info);
 }
-void free_lines(char **lines)
+
+void	free_lines(char **lines)
 {
-	int i = 0;
+	int	i;
+
+	i = 0;
 	if (!lines)
-		return;
+		return ;
 	while (lines[i])
 		free(lines[i++]);
 	free(lines);
 }
 
-t_error parse_file(const char *filename, t_game *info)
+t_error	parse_file(const char *filename, t_game *info)
 {
 	int		fd;
-	char	**lines = NULL;
-	t_error	err = ERR_NONE;
+	char	**lines;
+	t_error	err;
+	char	*line;
+	int		i;
 
+	lines = NULL;
+	err = ERR_NONE;
 	if (!filename || !info)
 		return (ERR_INVALID_FILE);
-
-	if (ft_strlen(filename) < 4 || ft_strncmp(filename + ft_strlen(filename) - 4, ".cub", 4) != 0)
+	if (ft_strlen(filename) < 4
+		|| ft_strncmp(filename + ft_strlen(filename) - 4, ".cub", 4) != 0)
 		return (ERR_INVALID_FILE);
-
 	fd = open(filename, O_RDONLY);
-
 	if (fd < 0)
 		return (ERR_INVALID_FILE);
-
 	lines = read_all_lines(fd);
 	if (!lines)
 	{
 		close(fd);
 		return (ERR_MALLOC);
 	}
-	close(fd); //
-
-	// Get map dimensions
+	close(fd);
 	info->map_height = count_map_lines(lines);
 	info->map_width = get_map_width(lines);
-	
-	printf("height:%d\n",info->map_height);
-	printf("width:%d\n",info->map_width);
+	printf("height:%d\n", info->map_height);
+	printf("width:%d\n", info->map_width);
 	if (info->map_height <= 0 || info->map_width <= 0)
 	{
 		free_lines(lines);
 		return (ERR_INVALID_MAP);
 	}
-
-	for (int i = 0; lines[i]; i++)
+	i = 0;
+	while (lines[i])
 	{
-		char *line = lines[i];
+		line = lines[i];
 		if (line[0] == '\n' || is_empty_line(line))
-			continue;
-
-		if (strncmp(line, "NO ", 3) == 0 || strncmp(line, "SO ", 3) == 0
-			|| strncmp(line, "WE ", 3) == 0 || strncmp(line, "EA ", 3) == 0)
+		{
+			i++;
+			continue ;
+		}
+		if (ft_strncmp(line, "NO ", 3) == 0 || ft_strncmp(line, "SO ", 3) == 0
+			|| ft_strncmp(line, "WE ", 3) == 0
+			|| ft_strncmp(line, "EA ", 3) == 0)
 		{
 			err = parse_textures(line, info);
 			if (err != ERR_NONE)
 			{
 				free_lines(lines);
-				return err;
+				return (err);
 			}
 		}
-		else if (strncmp(line, "F ", 2) == 0 || strncmp(line, "C ", 2) == 0)
+		else if (ft_strncmp(line, "F ", 2) == 0
+			|| ft_strncmp(line, "C ", 2) == 0)
 		{
 			err = parse_colors(line, info);
 			if (err != ERR_NONE)
@@ -135,36 +140,32 @@ t_error parse_file(const char *filename, t_game *info)
 		}
 		else if (line[0] == '1' || line[0] == ' ')
 		{
-			info->map = read_map(lines); 
+			info->map = read_map(lines);
 			if (!info->map)
 			{
 				free_lines(lines);
 				return (ERR_MALLOC);
 			}
-
 			pad_map_lines(info->map, info->map_height, info->map_width);
-
 			if (info->map_width == 0 || info->map_height == 0)
 			{
 				free_lines(lines);
 				return (ERR_INVALID_MAP);
 			}
-
 			err = validate_map(info);
 			free_lines(lines);
-			return err;
+			return (err);
 		}
 		else
 		{
 			free_lines(lines);
 			return (ERR_INVALID_MAP);
 		}
+		i++;
 	}
-
 	free_lines(lines);
-	return (ERR_INVALID_MAP); // No map found
+	return (ERR_INVALID_MAP);
 }
-
 
 int	is_empty_line(const char *line)
 {
@@ -179,20 +180,11 @@ int	is_empty_line(const char *line)
 
 void	print_error(t_error error)
 {
-	const char *error_messages[] = {
-		"No error",
-		"Memory allocation error",
-		"Invalid file",
-		"Missing texture",
-		"Invalid color format",
-		"Invalid map format",
-		"Invalid player count",
-		"Map not properly closed",
-		"Duplicate texture",
-		"Duplicate colors",
-		"Duplicate player",
-		"No player"
-	};
+	const char	*error_messages[] = {"No error", "Memory allocation error",
+		"Invalid file", "Missing texture", "Invalid color format",
+		"Invalid map format", "Invalid player count", "Map not properly closed",
+		"Duplicate texture", "Duplicate colors", "Duplicate player",
+		"No player"};
 
 	printf("Error : %s\n", error_messages[error]);
 }

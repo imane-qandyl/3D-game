@@ -6,7 +6,7 @@
 /*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 08:48:11 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/04/26 17:25:34 by imqandyl         ###   ########.fr       */
+/*   Updated: 2025/05/24 18:03:59 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,21 +31,29 @@ char	*extract_path(const char *line)
 	int		i;
 	int		start;
 
-	// Skip identifier and whitespace
 	i = 2;
 	while (line[i] && (line[i] == ' ' || line[i] == '\t'))
 		i++;
 	start = i;
-	// Find end of path
 	while (line[i] && line[i] != ' ' && line[i] != '\t' && line[i] != '\n')
 		i++;
-	// Allocate and copy path
 	path = (char *)malloc(sizeof(char) * (i - start + 1));
 	if (!path)
 		return (NULL);
 	strncpy(path, line + start, i - start);
 	path[i - start] = '\0';
 	return (path);
+}
+
+static t_error	assign_texture(char **target, char *path)
+{
+	if (*target)
+	{
+		free(path);
+		return (ERR_DUPLICATE_TEXTURE);
+	}
+	*target = path;
+	return (ERR_NONE);
 }
 
 t_error	parse_textures(char *line, t_game *info)
@@ -55,47 +63,14 @@ t_error	parse_textures(char *line, t_game *info)
 	path = extract_path(line);
 	if (!path || !validate_texture_file(path))
 		return (ERR_MISSING_TEXTURE);
-
-	if (strncmp(line, "NO ", 3) == 0)
-	{	
-		if (info->no_texture)
-		{
-			free(path);
-			return (ERR_DUPLICATE_TEXTURE);
-		}
-		info->no_texture = path;
-	}
-	else if (strncmp(line, "SO ", 3) == 0)
-	{
-		if (info->so_texture)
-		{
-			free(path);
-			return (ERR_DUPLICATE_TEXTURE);
-		}
-		info->so_texture = path;
-	}
-	else if (strncmp(line, "WE ", 3) == 0)
-	{
-		if (info->we_texture)
-		{
-			free(path);
-			return (ERR_DUPLICATE_TEXTURE);
-		}
-		info->we_texture = path;
-	}
-	else if (strncmp(line, "EA ", 3) == 0)
-	{
-		if (info->ea_texture)
-		{
-			free(path);
-			return (ERR_DUPLICATE_TEXTURE);
-		}
-		info->ea_texture = path;
-	}	
-	else
-	{
-		free(path);
-		return (ERR_MISSING_TEXTURE);
-	}
-	return (ERR_NONE);
+	if (ft_strncmp(line, "NO ", 3) == 0)
+		return (assign_texture(&info->no_texture, path));
+	else if (ft_strncmp(line, "SO ", 3) == 0)
+		return (assign_texture(&info->so_texture, path));
+	else if (ft_strncmp(line, "WE ", 3) == 0)
+		return (assign_texture(&info->we_texture, path));
+	else if (ft_strncmp(line, "EA ", 3) == 0)
+		return (assign_texture(&info->ea_texture, path));
+	free(path);
+	return (ERR_MISSING_TEXTURE);
 }
