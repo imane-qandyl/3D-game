@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 08:19:31 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/05/24 18:22:04 by imqandyl         ###   ########.fr       */
+/*   Updated: 2025/05/26 03:40:07 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,15 @@ typedef struct s_point
 	int		ray_num; // number of the ray
 }			t_point;
 
+typedef struct s_draw
+{
+	double	line_height;
+	int		line_location;
+	int		texture_x;
+	double	texture_y;
+	double	text_increment_y;
+}			t_draw;
+
 typedef struct s_game
 {
 	void	*mlx;
@@ -133,6 +142,7 @@ void		free_map_info(t_game *info);
 
 // Parsing functions
 t_error		parse_file(const char *filename, t_game *info);
+int			load_textures(t_game *game);
 t_error		parse_textures(char *line, t_game *info);
 t_error		parse_colors(char *line, t_game *info);
 int			is_valid_color(int value);
@@ -167,6 +177,9 @@ void		free_map(char **map);
 void		pad_map_lines(char **map, int height, int width);
 
 // Execution functions
+void		exec_init(t_game *game);
+void		make_texture_maps(t_game *game);
+int			get_angle(char c);
 void		draw_2d(t_game *game);
 void		free_map(char **map);
 void		draw_player(t_game *game);
@@ -199,6 +212,7 @@ void		draw_3d(t_game *game);
 t_point		raycast_horizontal(t_game *game, double ray_angle);
 t_point		raycast_vertical(t_game *game, double ray_angle);
 t_point		raycast_v_h(t_game *game, double ray_angle);
-void		draw_wall_line(t_game *game, t_point end, int location);
+void		draw_wall_line(t_game *game, t_point end, int x);
+int			rgb_to_hex(int red, int green, int blue);
 
 #endif

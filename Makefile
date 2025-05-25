@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+         #
+#    By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/04 07:50:40 by imqandyl          #+#    #+#              #
-#    Updated: 2025/05/24 18:27:38 by imqandyl         ###   ########.fr        #
+#    Updated: 2025/05/26 03:41:33 by lalwafi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,12 +21,14 @@ get_next_line := get_next_line
 LIBFT = libft
 
 SRC     = srcs/main.c \
+		srcs/init.c\
+		srcs/make_texture_maps.c\
 		srcs/draw_2d.c\
 		srcs/movement_1.c \
 		srcs/movement_2.c \
-		srcs/raycasting.c \
 		srcs/rendering_2d.c \
 		srcs/rendering_3d.c \
+		srcs/rendering_3d_2.c\
 		srcs/raycast_v_h.c \
 		parsing/parse_map.c \
 		parsing/parse.c \

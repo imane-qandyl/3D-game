@@ -20,7 +20,7 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 		(y) < 0.000001 || (x) < 0.000001)
 		return ;
 	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-	*(unsigned int*)dst = color;
+	*(unsigned int *)dst = color;
 }
 
 void	draw_square(t_game *game, int x, int y, int color)
@@ -28,10 +28,10 @@ void	draw_square(t_game *game, int x, int y, int color)
 	int	i;
 	int	j;
 
-	i = 0; 
+	i = 0;
 	while (i < TILE_SIZE)
 	{
-		j = 0; // change to 1 if you want a grid like map
+		j = 0;
 		while (j < TILE_SIZE)
 		{
 			my_mlx_pixel_put(&game->img, x + j, y + i, color);
@@ -45,12 +45,13 @@ void	draw_2d(t_game *game)
 {
 	int	y;
 	int	x;
-	
+
 	if (game->img.img)
 		mlx_destroy_image(game->mlx, game->img.img);
 	game->img.img = mlx_new_image(game->mlx, WIN_WIDTH, WIN_HEIGHT);
-	game->img.addr = mlx_get_data_addr(game->img.img, &game->img.bits_per_pixel, &game->img.line_length,
-								&game->img.endian);
+	game->img.addr = mlx_get_data_addr(game->img.img,
+			&game->img.bits_per_pixel, &game->img.line_length,
+			&game->img.endian);
 	y = 0;
 	while (game->map[y])
 	{
@@ -58,9 +59,9 @@ void	draw_2d(t_game *game)
 		while (game->map[y][x])
 		{
 			if (game->map[y][x] == '1')
-				draw_square(game, x * TILE_SIZE, y * TILE_SIZE, 0xFF0000); // Red wall
+				draw_square(game, x * TILE_SIZE, y * TILE_SIZE, 0xFF0000);
 			else
-				draw_square(game, x * TILE_SIZE, y * TILE_SIZE, 0xAAAAAA); // Grey floor
+				draw_square(game, x * TILE_SIZE, y * TILE_SIZE, 0xAAAAAA);
 			x++;
 		}
 		y++;
@@ -80,13 +81,4 @@ void	draw_player(t_game *game)
 	my_mlx_pixel_put(&game->img, game->p.x + 1, \
 		game->p.y + 1, 0xFFFF00);
 	rendering_2d(game);
-
-	// printf("\ngame->p.x = %f\n", game->p.x);
-	// printf("game->p.y = %f\n\n", game->p.y);
-	
-	
-	// t_point end = raycast_v_h(game, game->angle);
-	// if (end.length != 999999)
-	// 	dda(game, end);
-	// dda(game, raycast(game, game->angle));
 }
