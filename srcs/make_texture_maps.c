@@ -6,7 +6,7 @@
 /*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 01:46:20 by lalwafi           #+#    #+#             */
-/*   Updated: 2025/05/26 02:55:31 by lalwafi          ###   ########.fr       */
+/*   Updated: 2025/05/28 19:34:58 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ static void	make_no_texture_map(t_game *game, int x, int y)
 		x = -1;
 		while (++x < game->tex_width)
 		{
-			game->no_tex_map[y][x] = (*(int *)(pixels + \
-				(y * size_line) + (x * (bbp / 8)))) & 0x00FFFFFF;
+			game->no_tex_map[y][x] = (*(int *)(pixels
+						+ (y * size_line) + (x * (bbp / 8)))) & 0x00FFFFFF;
 		}
 	}
 }
@@ -46,8 +46,8 @@ static void	make_so_texture_map(t_game *game, int x, int y)
 		x = -1;
 		while (++x < game->tex_width)
 		{
-			game->so_tex_map[y][x] = (*(int *)(pixels + \
-				(y * size_line) + (x * (bbp / 8)))) & 0x00FFFFFF;
+			game->so_tex_map[y][x] = (*(int *)(pixels
+						+ (y * size_line) + (x * (bbp / 8)))) & 0x00FFFFFF;
 		}
 	}
 }
@@ -66,8 +66,8 @@ static void	make_ea_texture_map(t_game *game, int x, int y)
 		x = -1;
 		while (++x < game->tex_width)
 		{
-			game->ea_tex_map[y][x] = (*(int *)(pixels + \
-				(y * size_line) + (x * (bbp / 8)))) & 0x00FFFFFF;
+			game->ea_tex_map[y][x] = (*(int *)(pixels
+						+ (y * size_line) + (x * (bbp / 8)))) & 0x00FFFFFF;
 		}
 	}
 }
@@ -86,8 +86,8 @@ static void	make_we_texture_map(t_game *game, int x, int y)
 		x = -1;
 		while (++x < game->tex_width)
 		{
-			game->we_tex_map[y][x] = (*(int *)(pixels + \
-				(y * size_line) + (x * (bbp / 8)))) & 0x00FFFFFF;
+			game->we_tex_map[y][x] = (*(int *)(pixels
+						+ (y * size_line) + (x * (bbp / 8)))) & 0x00FFFFFF;
 		}
 	}
 }

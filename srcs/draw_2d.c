@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   draw_2d.c                                         :+:      :+:    :+:   */
+/*   draw_2d.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/04 08:32:20 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/05/07 05:12:00 by lalwafi          ###   ########.fr       */
+/*   Created: 2025/05/28 19:31:21 by lalwafi           #+#    #+#             */
+/*   Updated: 2025/05/28 19:33:49 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
 	char	*dst;
 
-	if ((y) >= WIN_HEIGHT || (x) >= WIN_WIDTH || \
-		(y) < 0.000001 || (x) < 0.000001)
+	if ((y) >= WIN_HEIGHT || (x) >= WIN_WIDTH || (y) < 0.000001
+		|| (x) < 0.000001)
 		return ;
 	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
 	*(unsigned int *)dst = color;
@@ -72,13 +72,13 @@ void	draw_2d(t_game *game)
 
 void	draw_player(t_game *game)
 {
-	my_mlx_pixel_put(&game->img, game->p.x, \
+	my_mlx_pixel_put(&game->img, game->p.x,
 		game->p.y, 0xFFFF00);
-	my_mlx_pixel_put(&game->img, game->p.x + 1, \
+	my_mlx_pixel_put(&game->img, game->p.x + 1,
 		game->p.y, 0xFFFF00);
-	my_mlx_pixel_put(&game->img, game->p.x, \
+	my_mlx_pixel_put(&game->img, game->p.x,
 		game->p.y + 1, 0xFFFF00);
-	my_mlx_pixel_put(&game->img, game->p.x + 1, \
+	my_mlx_pixel_put(&game->img, game->p.x + 1,
 		game->p.y + 1, 0xFFFF00);
 	rendering_2d(game);
 }
