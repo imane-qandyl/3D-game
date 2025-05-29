@@ -6,7 +6,7 @@
 /*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 08:19:31 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/05/29 19:16:35 by lalwafi          ###   ########.fr       */
+/*   Updated: 2025/05/29 19:42:34 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,7 @@ typedef struct s_game
 	double	angle;
 	double	dx;
 	double	dy;
+	int		minimap_tile_size;
 }			t_game;
 
 void		init_map_info(t_game *info);
@@ -224,5 +225,11 @@ t_point		raycast_vertical(t_game *game, double ray_angle);
 t_point		raycast_v_h(t_game *game, double ray_angle);
 void		draw_wall_line(t_game *game, t_point end, int x);
 int			rgb_to_hex(int red, int green, int blue);
+
+// minimap
+void    get_minimap_tile_size(t_game *game);
+void	draw_minimap(t_game *game);
+void	draw_minimap_square(t_game *game, int x, int y, int color);
+void	draw_minimap_player(t_game *game);
 
 #endif

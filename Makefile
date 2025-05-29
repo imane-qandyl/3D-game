@@ -6,7 +6,7 @@
 #    By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/04 07:50:40 by imqandyl          #+#    #+#              #
-#    Updated: 2025/05/29 19:15:39 by lalwafi          ###   ########.fr        #
+#    Updated: 2025/05/29 19:39:38 by lalwafi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,26 +21,27 @@ get_next_line := get_next_line
 LIBFT = libft
 
 SRC     = srcs/main.c \
-		srcs/init.c\
-		srcs/make_texture_maps.c\
-		srcs/draw_2d.c\
+		srcs/init.c \
+		srcs/minimap.c \
+		srcs/make_texture_maps.c \
+		srcs/draw_2d.c \
 		srcs/movement_1.c \
 		srcs/movement_2.c \
 		srcs/rendering_2d.c \
 		srcs/rendering_3d.c \
-		srcs/rendering_3d_2.c\
+		srcs/rendering_3d_2.c \
 		srcs/raycast_v_h.c \
 		parsing/parse_map.c \
-		parsing/parse_map_utils.c\
-		parsing/parse_map_utils1.c\
+		parsing/parse_map_utils.c \
+		parsing/parse_map_utils1.c \
 		parsing/parse.c \
-		parsing/parse_utils.c\
-		parsing/parse_utils1.c\
+		parsing/parse_utils.c \
+		parsing/parse_utils1.c \
 		parsing/parse_textures.c \
 		parsing/parse_colors.c \
 		parsing/parse_colors_utils.c \
 		parsing/parse_player.c \
-		get_next_line/get_next_line.c\
+		get_next_line/get_next_line.c \
 		get_next_line/get_next_line_utils.c
 
 

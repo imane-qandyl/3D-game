@@ -6,7 +6,7 @@
 /*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 08:48:11 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/05/26 02:31:22 by lalwafi          ###   ########.fr       */
+/*   Updated: 2025/05/29 19:30:57 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	exec_init(t_game *game)
 	game->key.left = false;
 	game->key.right = false;
 	game->img.img = NULL;
+	game->minimap_tile_size = 0;
 }
 
 int	load_textures(t_game *game)
