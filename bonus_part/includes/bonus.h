@@ -1,21 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cub3d.h                                            :+:      :+:    :+:   */
+/*   bonus.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 08:19:31 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/05/29 19:42:34 by lalwafi          ###   ########.fr       */
+/*   Updated: 2025/05/29 21:08:03 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUB3D_H
-# define CUB3D_H
+#ifndef BONUS_H
+# define BONUS_H
 
-# include "../get_next_line/get_next_line.h"
-# include "../includes/mlx.h"
-# include "../libft/libft.h"
+# include "../../get_next_line/get_next_line.h"
+# include "../../includes/mlx.h"
+# include "../../libft/libft.h"
 # include <ctype.h>
 # include <fcntl.h>
 # include <fcntl.h> // for open()
@@ -227,9 +227,9 @@ void		draw_wall_line(t_game *game, t_point end, int x);
 int			rgb_to_hex(int red, int green, int blue);
 
 // minimap
-void    get_minimap_tile_size(t_game *game);
-void	draw_minimap(t_game *game);
-void	draw_minimap_square(t_game *game, int x, int y, int color);
-void	draw_minimap_player(t_game *game);
+void		get_minimap_tile_size(t_game *game);
+void		draw_minimap(t_game *game);
+void		draw_minimap_square(t_game *game, int x, int y, int color);
+void		draw_minimap_player(t_game *game);
 
 #endif

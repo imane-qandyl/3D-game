@@ -3,22 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 19:27:43 by lalwafi           #+#    #+#             */
-/*   Updated: 2025/05/29 19:51:11 by lalwafi          ###   ########.fr       */
+/*   Updated: 2025/05/29 21:15:38 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../includes/bonus.h"
 
-void    get_minimap_tile_size(t_game *game)
+void	get_minimap_tile_size(t_game *game)
 {
 	if (game->map_height > game->map_width)
-		game->minimap_tile_size = (WIN_HEIGHT / 4)/(game->map_height);
+		game->minimap_tile_size = (WIN_HEIGHT / 4) / (game->map_height);
 	else
-		game->minimap_tile_size = (WIN_WIDTH / 4)/(game->map_width);
-	// printf("tile size = %d\nmap height = %d\nmap width = %d\nminimap tile size = %d\n", TILE_SIZE, game->map_height, game->map_width, game->minimap_tile_size);
+		game->minimap_tile_size = (WIN_WIDTH / 4) / (game->map_width);
 }
 
 void	draw_minimap_square(t_game *game, int x, int y, int color)
@@ -51,9 +50,11 @@ void	draw_minimap(t_game *game)
 		while (game->map[y][x])
 		{
 			if (game->map[y][x] == '1')
-				draw_minimap_square(game, x * game->minimap_tile_size, y * game->minimap_tile_size, 0x8c2eff);
+				draw_minimap_square(game, x * game->minimap_tile_size,
+					y * game->minimap_tile_size, 0x8c2eff);
 			else
-				draw_minimap_square(game, x * game->minimap_tile_size, y * game->minimap_tile_size, 0xAAAAAA);
+				draw_minimap_square(game, x * game->minimap_tile_size,
+					y * game->minimap_tile_size, 0xAAAAAA);
 			x++;
 		}
 		y++;
@@ -76,5 +77,4 @@ void	draw_minimap_player(t_game *game)
 		y + 1, 0xFFFF00);
 	my_mlx_pixel_put(&game->img, x + 1,
 		y + 1, 0xFFFF00);
-	// rendering_2d(game);
 }

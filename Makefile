@@ -3,65 +3,98 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+         #
+#    By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/04 07:50:40 by imqandyl          #+#    #+#              #
-#    Updated: 2025/05/29 19:39:38 by lalwafi          ###   ########.fr        #
+#    Updated: 2025/05/29 22:11:02 by imqandyl         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME    = cub3d
-CC      = gcc
-CFLAGS  = -Wall -Wextra -Werror -Iincludes
-CFLAGS	+= -fsanitize=address -g3
-LIBRARY := -L./minilibx -lmlx -lm -march=native -framework OpenGL AppKit -framework
+NAME        = cub3d
+BONUS_NAME  = cub3d_bonus
 
-MINILIBX := minilibx/
-get_next_line := get_next_line
-LIBFT = libft
+CC          = gcc
+CFLAGS      = -Wall -Wextra -Werror -Iincludes
+CFLAGS     += -fsanitize=address -g3
 
-SRC     = srcs/main.c \
-		srcs/init.c \
-		srcs/minimap.c \
-		srcs/make_texture_maps.c \
-		srcs/draw_2d.c \
-		srcs/movement_1.c \
-		srcs/movement_2.c \
-		srcs/rendering_2d.c \
-		srcs/rendering_3d.c \
-		srcs/rendering_3d_2.c \
-		srcs/raycast_v_h.c \
-		parsing/parse_map.c \
-		parsing/parse_map_utils.c \
-		parsing/parse_map_utils1.c \
-		parsing/parse.c \
-		parsing/parse_utils.c \
-		parsing/parse_utils1.c \
-		parsing/parse_textures.c \
-		parsing/parse_colors.c \
-		parsing/parse_colors_utils.c \
-		parsing/parse_player.c \
-		get_next_line/get_next_line.c \
-		get_next_line/get_next_line_utils.c
+LIBFT       = libft
+MINILIBX    = minilibx
 
-
-OS:= ${shell uname}
-ifeq (${OS},Darwin)
-	MINILIBX := minilibx/
-	MLXFLG = -framework OpenGL -framework Appkit
-	CFLAGS += -D OSX
+OS := $(shell uname)
+ifeq ($(OS),Darwin)
+    MLXFLG = -framework OpenGL -framework AppKit
+    CFLAGS += -D OSX
 else
-	MINILIBX = mlx-linux
-	MLXFLG = -lXext -lX11
-	CFLAGS += -D LINUX
- endif
+    MINILIBX = mlx-linux
+    MLXFLG = -lXext -lX11
+    CFLAGS += -D LINUX
+endif
+GNL = get_next_line
 
+GNL_SRC = \
+$(GNL)/get_next_line.c \
+$(GNL)/get_next_line_utils.c
+# Mandatory Sources
+SRC = \
+mandatory_part/srcs/main.c \
+mandatory_part/srcs/init.c \
+mandatory_part/srcs/make_texture_maps.c \
+mandatory_part/srcs/draw_2d.c \
+mandatory_part/srcs/movement_1.c \
+mandatory_part/srcs/movement_2.c \
+mandatory_part/srcs/rendering_2d.c \
+mandatory_part/srcs/rendering_3d.c \
+mandatory_part/srcs/rendering_3d_2.c \
+mandatory_part/srcs/raycast_v_h.c \
+mandatory_part/parsing/parse_map.c \
+mandatory_part/parsing/parse_map_utils.c \
+mandatory_part/parsing/parse_map_utils1.c \
+mandatory_part/parsing/parse.c \
+mandatory_part/parsing/parse_utils.c \
+mandatory_part/parsing/parse_utils1.c \
+mandatory_part/parsing/parse_textures.c \
+mandatory_part/parsing/parse_colors.c \
+mandatory_part/parsing/parse_colors_utils.c \
+mandatory_part/parsing/parse_player.c \
+$(GNL_SRC)
 
-OBJS    = $(SRC:.c=.o)
+# Bonus Sources
+SRC_BONUS = \
+bonus_part/srcs/main.c \
+bonus_part/srcs/init.c \
+bonus_part/srcs/minimap.c \
+bonus_part/srcs/make_texture_maps.c \
+bonus_part/srcs/draw_2d.c \
+bonus_part/srcs/movement_1.c \
+bonus_part/srcs/movement_2.c \
+bonus_part/srcs/rendering_2d.c \
+bonus_part/srcs/rendering_3d.c \
+bonus_part/srcs/rendering_3d_2.c \
+bonus_part/srcs/raycast_v_h.c \
+bonus_part/parsing/parse_map.c \
+bonus_part/parsing/parse_map_utils.c \
+bonus_part/parsing/parse_map_utils1.c \
+bonus_part/parsing/parse.c \
+bonus_part/parsing/parse_utils.c \
+bonus_part/parsing/parse_utils1.c \
+bonus_part/parsing/parse_textures.c \
+bonus_part/parsing/parse_colors.c \
+bonus_part/parsing/parse_colors_utils.c \
+bonus_part/parsing/parse_player.c \
+$(GNL_SRC)
 
-all: $(NAME)
+# Objects
+OBJS        = $(SRC:.c=.o)
+OBJS_BONUS  = $(SRC_BONUS:.c=.o)
+
+# Build Rules
+all: $(NAME) 
+
 $(LIBFT):
 	@$(MAKE) -C ./libft
+
+$(MINILIBX):
+	@make -C $(MINILIBX)
 
 $(NAME): $(OBJS)
 	make -C $(MINILIBX)
@@ -69,18 +102,29 @@ $(NAME): $(OBJS)
 
 	$(CC) $(OBJS) $(CFLAGS) -L$(MINILIBX) $(LIBFT)/libft.a -lmlx -lm -march=native $(MLXFLG) -o $(NAME)
 
+$(BONUS_NAME): $(OBJS_BONUS)
+	make -C $(MINILIBX)
+	@make -C $(LIBFT)
+
+	$(CC) $(OBJS_BONUS) $(CFLAGS) -L$(MINILIBX) $(LIBFT)/libft.a -lmlx -lm -march=native $(MLXFLG) -o $(NAME)
+
+$(GNL)/%.o: $(GNL)/%.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
+bonus: $(BONUS_NAME)
+
 clean:
 	@make clean -C $(LIBFT)
-	make clean -C $(MINILIBX)
-	rm -f $(OBJS)
-	
+	@make clean -C $(MINILIBX)
+	rm -f $(OBJS) $(OBJS_BONUS)
+
 fclean: clean
-	rm -f $(NAME)
+	rm -f $(NAME) $(BONUS_NAME)
 	@make fclean -C $(LIBFT)
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re bonus
