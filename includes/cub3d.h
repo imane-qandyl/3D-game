@@ -6,7 +6,7 @@
 /*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 08:19:31 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/05/26 03:40:07 by lalwafi          ###   ########.fr       */
+/*   Updated: 2025/05/29 19:16:35 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,9 +164,19 @@ t_error		validate_map(t_game *info);
 int			is_empty_line(const char *line);
 int			is_map_line(char *line);
 
+// New helper functions
+int			is_map_start(char *line);
+int			is_config_line(char *line);
+int			is_map_start_line(char *line);
+
+t_error		validate_horizontal_edges(char **map, int width, int height);
+t_error		validate_vertical_edges(char **map, int width, int height);
+t_error		validate_holes(char **map, int width, int height);
+
 void		print_error(t_error error);
 int			get_map_width(char **lines);
 int			count_map_lines(char **lines);
+void		strip_newline(char *line);
 char		*skip_spaces(char *line);
 void		free_lines(char **lines);
 char		**read_all_lines(int fd);

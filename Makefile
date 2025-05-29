@@ -6,7 +6,7 @@
 #    By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/04 07:50:40 by imqandyl          #+#    #+#              #
-#    Updated: 2025/05/26 03:41:33 by lalwafi          ###   ########.fr        #
+#    Updated: 2025/05/29 19:15:39 by lalwafi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,11 @@ SRC     = srcs/main.c \
 		srcs/rendering_3d_2.c\
 		srcs/raycast_v_h.c \
 		parsing/parse_map.c \
+		parsing/parse_map_utils.c\
+		parsing/parse_map_utils1.c\
 		parsing/parse.c \
+		parsing/parse_utils.c\
+		parsing/parse_utils1.c\
 		parsing/parse_textures.c \
 		parsing/parse_colors.c \
 		parsing/parse_colors_utils.c \

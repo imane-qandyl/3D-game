@@ -6,7 +6,7 @@
 /*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 20:51:27 by lalwafi           #+#    #+#             */
-/*   Updated: 2025/05/29 17:34:16 by lalwafi          ###   ########.fr       */
+/*   Updated: 2025/05/29 19:25:58 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void	draw_wall_line_2(t_game *game, t_draw draw, t_point end, int x)
 void	draw_wall_line(t_game *game, t_point end, int x)
 {
 	t_draw	draw;
-	double real_line_height;
+	double	real_line_height;
 
 	draw.line_height = ((WIN_WIDTH * TILE_SIZE) / end.length);
 	real_line_height = draw.line_height;
@@ -60,7 +60,8 @@ void	draw_wall_line(t_game *game, t_point end, int x)
 		draw.texture_y = 0;
 	draw.text_increment_y = game->tex_height
 		/ ((WIN_WIDTH * TILE_SIZE) / end.length);
-	draw.texture_y += draw.text_increment_y * ((real_line_height - draw.line_height) / 2);
+	draw.texture_y += draw.text_increment_y
+		* ((real_line_height - draw.line_height) / 2);
 	draw_wall_line_2(game, draw, end, x);
 }
 

@@ -17,3 +17,7 @@ Needed from executor
     raycast_custom_angle in line raycasting.c:103
 
 
+submission notes:
+- remove fsanitize and stuff
+- why is cleanup_and_exit exiting with 1
+- 
