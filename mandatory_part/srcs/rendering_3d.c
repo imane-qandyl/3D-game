@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rendering_3d.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 20:51:27 by lalwafi           #+#    #+#             */
-/*   Updated: 2025/05/29 19:43:06 by lalwafi          ###   ########.fr       */
+/*   Updated: 2025/05/29 22:16:44 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,5 @@ void	draw_3d(t_game *game)
 		rgb_to_hex(game->floor_color[0],
 			game->floor_color[1], game->floor_color[2]));
 	rendering_3d(game);
-	draw_minimap(game);
 	mlx_put_image_to_window(game->mlx, game->win, game->img.img, 0, 0);
 }

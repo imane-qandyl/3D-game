@@ -6,7 +6,7 @@
 /*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 08:19:31 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/05/29 21:10:19 by imqandyl         ###   ########.fr       */
+/*   Updated: 2025/05/29 22:16:21 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,6 @@ typedef struct s_game
 	double	angle;
 	double	dx;
 	double	dy;
-	int		minimap_tile_size;
 }			t_game;
 
 void		init_map_info(t_game *info);

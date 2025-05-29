@@ -6,7 +6,7 @@
 #    By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/04 07:50:40 by imqandyl          #+#    #+#              #
-#    Updated: 2025/05/29 22:11:02 by imqandyl         ###   ########.fr        #
+#    Updated: 2025/05/29 22:18:14 by imqandyl         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -106,7 +106,7 @@ $(BONUS_NAME): $(OBJS_BONUS)
 	make -C $(MINILIBX)
 	@make -C $(LIBFT)
 
-	$(CC) $(OBJS_BONUS) $(CFLAGS) -L$(MINILIBX) $(LIBFT)/libft.a -lmlx -lm -march=native $(MLXFLG) -o $(NAME)
+	$(CC) $(OBJS_BONUS) $(CFLAGS) -L$(MINILIBX) $(LIBFT)/libft.a -lmlx -lm -march=native $(MLXFLG) -o $(BONUS_NAME)
 
 $(GNL)/%.o: $(GNL)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
