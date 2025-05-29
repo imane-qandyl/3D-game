@@ -6,7 +6,7 @@
 /*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 01:32:23 by lalwafi           #+#    #+#             */
-/*   Updated: 2025/05/26 02:58:08 by lalwafi          ###   ########.fr       */
+/*   Updated: 2025/05/29 17:35:07 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,22 @@ int	movement(t_game *game)
 
 void	move_player(t_game *game, double dx, double dy)
 {
-	if (game->map[(int)((game->p.y + (dy * 5) + 5) / TILE_SIZE)]
+	if (game->map[(int)((game->p.y + (dy * 5) + 10) / TILE_SIZE)]
 		[(int)((game->p.x + (dx * 5)) / TILE_SIZE)] != '1' &&
-		game->map[(int)((game->p.y + (dy * 5) - 5) / TILE_SIZE)]
+		game->map[(int)((game->p.y + (dy * 5) - 10) / TILE_SIZE)]
 			[(int)((game->p.x + (dx * 5)) / TILE_SIZE)] != '1' &&
 		game->map[(int)((game->p.y + (dy * 5)) / TILE_SIZE)]
-			[(int)((game->p.x + (dx * 5) + 5) / TILE_SIZE)] != '1' &&
+			[(int)((game->p.x + (dx * 5) + 10) / TILE_SIZE)] != '1' &&
 		game->map[(int)((game->p.y + (dy * 5)) / TILE_SIZE)]
-			[(int)((game->p.x + (dx * 5) - 5) / TILE_SIZE)] != '1')
+			[(int)((game->p.x + (dx * 5) - 10) / TILE_SIZE)] != '1' &&
+		game->map[(int)((game->p.y + (dy * 5) + 10) / TILE_SIZE)]
+			[(int)((game->p.x + (dx * 5) + 10) / TILE_SIZE)] != '1' &&
+		game->map[(int)((game->p.y + (dy * 5) - 10) / TILE_SIZE)]
+			[(int)((game->p.x + (dx * 5) - 10) / TILE_SIZE)] != '1' &&
+			game->map[(int)((game->p.y + (dy * 5) + 10) / TILE_SIZE)]
+				[(int)((game->p.x + (dx * 5) - 10) / TILE_SIZE)] != '1' &&
+			game->map[(int)((game->p.y + (dy * 5) - 10) / TILE_SIZE)]
+				[(int)((game->p.x + (dx * 5) + 10) / TILE_SIZE)] != '1')
 	{
 		game->p.x += (dx * 5);
 		game->p.y += (dy * 5);
