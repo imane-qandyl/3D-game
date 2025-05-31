@@ -6,7 +6,7 @@
 /*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 19:45:27 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/05/25 21:03:08 by imqandyl         ###   ########.fr       */
+/*   Updated: 2025/05/31 07:53:03 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,9 @@ t_error	parse_file_loop(char **lines, t_game *info)
 t_error	parse_file(const char *filename, t_game *info)
 {
 	int		fd;
-	int		i;
 	char	**lines;
 	t_error	err;
 
-	i = -1;
 	err = validate_file(filename);
 	if (err != ERR_NONE)
 		return (err);
