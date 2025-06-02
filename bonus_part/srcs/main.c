@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 19:06:21 by lalwafi           #+#    #+#             */
-/*   Updated: 2025/05/29 22:22:12 by imqandyl         ###   ########.fr       */
+/*   Updated: 2025/06/02 20:44:13 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,8 @@ int	main(int argc, char **argv)
 	}
 	parse(&game, argv[1]);
 	make_texture_maps(&game);
-	draw_3d(&game);
 	get_minimap_tile_size(&game);
-	draw_minimap(&game);
+	draw_3d(&game);
 	mlx_hook(game.win, 2, 1L << 0, key_pressed, &game);
 	mlx_hook(game.win, 3, 1L << 1, key_release, &game);
 	mlx_hook(game.win, 17, 1L << 0, finish, &game);
