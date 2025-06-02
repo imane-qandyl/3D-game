@@ -21,3 +21,10 @@ submission notes:
 - remove fsanitize and stuff
 - why is cleanup_and_exit exiting with 1
 - 
+
+
+apt install -y libx11-dev libxext-dev libbsd-dev
+
+val:
+apt update && apt install -y \
+    libx11-dev libxext-dev libbsd-dev libxrandr-dev libxi-dev libgl1-mesa-dev

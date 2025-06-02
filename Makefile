@@ -6,7 +6,7 @@
 #    By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/04 07:50:40 by imqandyl          #+#    #+#              #
-#    Updated: 2025/05/31 07:58:40 by imqandyl         ###   ########.fr        #
+#    Updated: 2025/06/02 16:59:51 by imqandyl         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,24 +16,12 @@ BONUS_NAME  = cub3d_bonus
 CC          = gcc
 CFLAGS      = -Wall -Wextra -Werror -Iincludes
 CFLAGS     += -fsanitize=address -g3
+LIBRARY := -L./minilibx -lmlx -lm -march=native -framework OpenGL AppKit -framework
 
 LIBFT       = libft
-MINILIBX    = minilibx
+MINILIBX    = minilibx/
+get_next_line := get_next_line
 
-OS := $(shell uname)
-ifeq ($(OS),Darwin)
-    MLXFLG = -framework OpenGL -framework AppKit
-    CFLAGS += -D OSX
-else
-    MINILIBX = mlx-linux
-    MLXFLG = -lXext -lX11
-    CFLAGS += -D LINUX
-endif
-GNL = get_next_line
-
-GNL_SRC = \
-$(GNL)/get_next_line.c \
-$(GNL)/get_next_line_utils.c
 # Mandatory Sources
 SRC = \
 mandatory_part/srcs/main.c \
@@ -56,7 +44,8 @@ mandatory_part/parsing/parse_textures.c \
 mandatory_part/parsing/parse_colors.c \
 mandatory_part/parsing/parse_colors_utils.c \
 mandatory_part/parsing/parse_player.c \
-$(GNL_SRC)
+get_next_line/get_next_line.c\
+get_next_line/get_next_line_utils.c
 
 # Bonus Sources
 SRC_BONUS = \
@@ -81,7 +70,20 @@ bonus_part/parsing/parse_textures.c \
 bonus_part/parsing/parse_colors.c \
 bonus_part/parsing/parse_colors_utils.c \
 bonus_part/parsing/parse_player.c \
-$(GNL_SRC)
+get_next_line/get_next_line.c\
+get_next_line/get_next_line_utils.c
+
+OS := $(shell uname)
+ifeq (${OS},Darwin)
+	MINILIBX := minilibx/
+	MLXFLG = -framework OpenGL -framework Appkit
+	CFLAGS += -D OSX
+else
+	MINILIBX = mlx-linux
+	MLXFLG = -lXext -lX11
+	CFLAGS += -D LINUX
+endif
+ 
 
 # Objects
 OBJS        = $(SRC:.c=.o)
@@ -108,14 +110,9 @@ $(BONUS_NAME): $(OBJS_BONUS)
 
 	$(CC) $(OBJS_BONUS) $(CFLAGS) -L$(MINILIBX) $(LIBFT)/libft.a -lmlx -lm -march=native $(MLXFLG) -o $(BONUS_NAME)
 
-$(GNL)/%.o: $(GNL)/%.c
-	$(CC) $(CFLAGS) -c $< -o $@
-
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
-
 bonus: $(BONUS_NAME)
-
 clean:
 	@make clean -C $(LIBFT)
 	@make clean -C $(MINILIBX)
