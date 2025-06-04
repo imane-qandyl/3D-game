@@ -15,7 +15,7 @@ BONUS_NAME  = cub3d_bonus
 
 CC          = gcc
 CFLAGS      = -Wall -Wextra -Werror -Iincludes
-CFLAGS     += -fsanitize=address -g3
+
 LIBRARY := -L./minilibx -lmlx -lm -march=native -framework OpenGL AppKit -framework
 
 LIBFT       = libft
@@ -99,16 +99,15 @@ $(MINILIBX):
 	@make -C $(MINILIBX)
 
 $(NAME): $(OBJS)
-	make -C $(MINILIBX)
+	@make -C $(MINILIBX)
 	@make -C $(LIBFT)
-
-	$(CC) $(OBJS) $(CFLAGS) -L$(MINILIBX) $(LIBFT)/libft.a -lmlx -lm -march=native $(MLXFLG) -o $(NAME)
+	$(CC) $(OBJS) $(CFLAGS) -L$(LIBFT) -lft -L$(MINILIBX) -lmlx -lXext -lX11 -lm -o $(NAME)
 
 $(BONUS_NAME): $(OBJS_BONUS)
-	make -C $(MINILIBX)
+	@make -C $(MINILIBX)
 	@make -C $(LIBFT)
+	$(CC) $(OBJS_BONUS) $(CFLAGS) -L$(LIBFT) -lft -L$(MINILIBX) -lmlx -lXext -lX11 -lm -o $(BONUS_NAME)
 
-	$(CC) $(OBJS_BONUS) $(CFLAGS) -L$(MINILIBX) $(LIBFT)/libft.a -lmlx -lm -march=native $(MLXFLG) -o $(BONUS_NAME)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@

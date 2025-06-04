@@ -62,7 +62,10 @@ t_error	parse_textures(char *line, t_game *info)
 
 	path = extract_path(line);
 	if (!path || !validate_texture_file(path))
+	{	
+		free(path);
 		return (ERR_MISSING_TEXTURE);
+	}
 	if (ft_strncmp(line, "NO ", 3) == 0)
 		return (assign_texture(&info->no_texture, path));
 	else if (ft_strncmp(line, "SO ", 3) == 0)
@@ -71,6 +74,10 @@ t_error	parse_textures(char *line, t_game *info)
 		return (assign_texture(&info->we_texture, path));
 	else if (ft_strncmp(line, "EA ", 3) == 0)
 		return (assign_texture(&info->ea_texture, path));
-	free(path);
+	else
+	{
+		free(path);
+		return (ERR_MISSING_TEXTURE);
+	}
 	return (ERR_MISSING_TEXTURE);
 }

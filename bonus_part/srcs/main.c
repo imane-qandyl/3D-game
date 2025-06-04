@@ -12,6 +12,22 @@
 
 #include "../includes/bonus.h"
 
+static void	free_textures(t_game *game)
+{
+	if (game->no_texture)
+		free(game->no_texture);
+	if (game->so_texture)
+		free(game->so_texture);
+	if (game->we_texture)
+		free(game->we_texture);
+	if (game->ea_texture)
+		free(game->ea_texture);
+	game->no_texture = NULL;
+	game->so_texture = NULL;
+	game->we_texture = NULL;
+	game->ea_texture = NULL;
+}
+
 static void	cleanup_and_exit(t_game *game, char *error_msg)
 {
 	if (error_msg)
@@ -23,6 +39,7 @@ static void	cleanup_and_exit(t_game *game, char *error_msg)
 			free_map(game->map);
 			game->map = NULL;
 		}
+		free_textures(game);
 		if (game->mlx && game->win)
 		{
 			mlx_destroy_window(game->mlx, game->win);
