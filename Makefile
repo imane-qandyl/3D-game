@@ -6,7 +6,7 @@
 #    By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/04 07:50:40 by imqandyl          #+#    #+#              #
-#    Updated: 2025/06/02 16:59:51 by imqandyl         ###   ########.fr        #
+#    Updated: 2025/06/05 01:07:28 by imqandyl         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -99,14 +99,26 @@ $(MINILIBX):
 	@make -C $(MINILIBX)
 
 $(NAME): $(OBJS)
-	@make -C $(MINILIBX)
+	make -C $(MINILIBX)
 	@make -C $(LIBFT)
-	$(CC) $(OBJS) $(CFLAGS) -L$(LIBFT) -lft -L$(MINILIBX) -lmlx -lXext -lX11 -lm -o $(NAME)
+
+	$(CC) $(OBJS) $(CFLAGS) -L$(MINILIBX) $(LIBFT)/libft.a -lmlx -lm -march=native $(MLXFLG) -o $(NAME)
 
 $(BONUS_NAME): $(OBJS_BONUS)
-	@make -C $(MINILIBX)
+	make -C $(MINILIBX)
 	@make -C $(LIBFT)
-	$(CC) $(OBJS_BONUS) $(CFLAGS) -L$(LIBFT) -lft -L$(MINILIBX) -lmlx -lXext -lX11 -lm -o $(BONUS_NAME)
+
+	$(CC) $(OBJS_BONUS) $(CFLAGS) -L$(MINILIBX) $(LIBFT)/libft.a -lmlx -lm -march=native $(MLXFLG) -o $(BONUS_NAME)
+
+# $(NAME): $(OBJS)
+# 	@make -C $(MINILIBX)
+# 	@make -C $(LIBFT)
+# 	$(CC) $(OBJS) $(CFLAGS) -L$(LIBFT) -lft -L$(MINILIBX) -lmlx -lXext -lX11 -lm -o $(NAME)
+
+# $(BONUS_NAME): $(OBJS_BONUS)
+# 	@make -C $(MINILIBX)
+# 	@make -C $(LIBFT)
+# 	$(CC) $(OBJS_BONUS) $(CFLAGS) -L$(LIBFT) -lft -L$(MINILIBX) -lmlx -lXext -lX11 -lm -o $(BONUS_NAME)
 
 
 %.o: %.c

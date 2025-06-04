@@ -28,3 +28,7 @@ apt install -y libx11-dev libxext-dev libbsd-dev
 val:
 apt update && apt install -y \
     libx11-dev libxext-dev libbsd-dev libxrandr-dev libxi-dev libgl1-mesa-dev
+
+docker build -t valgrind_container . 
+
+valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./cub3d maps/level2.cub

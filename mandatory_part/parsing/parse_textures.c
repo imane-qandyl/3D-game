@@ -6,7 +6,7 @@
 /*   By: imqandyl <imqandyl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 08:48:11 by imqandyl          #+#    #+#             */
-/*   Updated: 2025/05/24 18:03:59 by imqandyl         ###   ########.fr       */
+/*   Updated: 2025/06/05 01:13:11 by imqandyl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ t_error	parse_textures(char *line, t_game *info)
 
 	path = extract_path(line);
 	if (!path || !validate_texture_file(path))
-	{	
+	{
 		free(path);
 		return (ERR_MISSING_TEXTURE);
 	}
